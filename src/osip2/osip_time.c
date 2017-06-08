@@ -95,6 +95,7 @@ time (time_t * t)
 
 #include <time.h>
 #include <sys/timeb.h>
+#include <windows.h>
 
 int
 osip_gettimeofday (struct timeval *tp, void *tz)
