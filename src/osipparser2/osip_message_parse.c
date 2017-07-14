@@ -965,10 +965,12 @@ osip_message_get_reason (int replycode)
     {181, "Call Is Being Forwarded"},
     {182, "Queued"},
     {183, "Session Progress"},
+    {199, "Early Dialog Terminated"},
   };
   static const struct code_to_reason reasons2xx[] = {
     {200, "OK"},
     {202, "Accepted"},
+    {204, "No Notification"},
   };
   static const struct code_to_reason reasons3xx[] = {
     {300, "Multiple Choices"},
@@ -1000,7 +1002,18 @@ osip_message_get_reason (int replycode)
     {421, "Extension Required"},
     {422, "Session Interval Too Small"},
     {423, "Interval Too Brief"},
+    {424, "Bad Location Information"},
+    {428, "Use Identity Header"},
+    {429, "Provide Referrer Identity"},
+    {430, "Flow Failed"},
+    {433, "Anonymity Disallowed"},
+    {436, "Bad Identity Info"},
+    {437, "Unsupported Credential"},
+    {438, "Invalid Identity Header"},
+    {439, "First Hop Lacks Outbound Support"},
+    {440, "Max-Breadth Exceeded"},
     {469, "Bad Info Package"},
+    {470, "Consent Needed"},
     {480, "Temporarily Unavailable"},
     {481, "Call/Transaction Does Not Exist"},
     {482, "Loop Detected"},
@@ -1013,6 +1026,7 @@ osip_message_get_reason (int replycode)
     {489, "Bad Event"},
     {491, "Request Pending"},
     {493, "Undecipherable"},
+    {494, "Security Agreement Required"},
   };
   static const struct code_to_reason reasons5xx[] = {
     {500, "Server Internal Error"},
@@ -1022,12 +1036,14 @@ osip_message_get_reason (int replycode)
     {504, "Server Time-out"},
     {505, "Version Not Supported"},
     {513, "Message Too Large"},
+    {580, "Precondition Failure"},
   };
   static const struct code_to_reason reasons6xx[] = {
     {600, "Busy Everywhere"},
     {603, "Decline"},
     {604, "Does Not Exist Anywhere"},
     {606, "Not Acceptable"},
+    {607, "Unwanted"},
     {687, "Dialog Terminated"}
   };
   const struct code_to_reason *reasons;
