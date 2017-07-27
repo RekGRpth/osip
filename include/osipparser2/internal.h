@@ -55,8 +55,9 @@
 #define HAVE_TIME_H 1
 #define HAVE_STDARG_H 1
 
+#if (_MSC_VER < 1900)
 #define snprintf _snprintf
-
+#endif
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #include <winapifamily.h>
 #endif
@@ -68,7 +69,7 @@
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 #undef WIN32_USE_CRYPTO
-#elif defined(WINAPI_FAMILY) && WINAPI_FAMILY_ONE_PARTITION( WINAPI_FAMILY, WINAPI_PARTITION_APP )
+#elif defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PC_APP)
 #undef WIN32_USE_CRYPTO
 #endif
 #endif

@@ -82,18 +82,13 @@
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 #include <winsock2.h>
-#elif defined(WINAPI_FAMILY) && WINAPI_FAMILY_ONE_PARTITION( WINAPI_FAMILY, WINAPI_PARTITION_APP )
-#else
-#ifdef WIN32_USE_CRYPTO
-#include <Wincrypt.h>
-#endif
-#endif
-#else
-#ifdef WIN32_USE_CRYPTO
-#include <Wincrypt.h>
+#elif defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PC_APP)
 #endif
 #endif
 
+#ifdef WIN32_USE_CRYPTO
+#include <Wincrypt.h>
+#endif
 #endif
 
 #if defined (__rtems__)
@@ -381,7 +376,7 @@ osip_atoi (const char *number)
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 #define HAVE_WINDOWSPHONE_API
-#elif defined(WINAPI_FAMILY) && WINAPI_FAMILY_ONE_PARTITION( WINAPI_FAMILY, WINAPI_PARTITION_APP )
+#elif defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PC_APP)
 #define HAVE_WINAPPSTORE_API
 #endif
 #endif

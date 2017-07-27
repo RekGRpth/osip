@@ -55,7 +55,9 @@
 #define HAVE_TIME_H 1
 #define HAVE_STDARG_H 1
 
+#if (_MSC_VER < 1900)
 #define snprintf _snprintf
+#endif
 
 /* use win32 crypto routines for random number generation */
 /* only use for vs .net (compiler v. 1300) or greater */
@@ -160,7 +162,7 @@ typedef pthread_t osip_thread_t;
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 #define HAVE_CPP11_THREAD
-#elif defined(WINAPI_FAMILY) && WINAPI_FAMILY_ONE_PARTITION( WINAPI_FAMILY, WINAPI_PARTITION_APP )
+#elif defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PC_APP)
 #define HAVE_CPP11_THREAD
 #endif
 #endif

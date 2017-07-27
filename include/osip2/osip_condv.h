@@ -52,6 +52,7 @@ extern "C" {
 /* condv implementation */
 #if defined(WIN32) || defined(_WIN32_WCE)
 /* Prevent struct redefinition if Pthreads for Win32 is used */
+#if (_MSC_VER < 1900)
 #ifndef HAVE_STRUCT_TIMESPEC
 #define HAVE_STRUCT_TIMESPEC 1
 /**
@@ -62,6 +63,7 @@ extern "C" {
     long tv_sec;
     long tv_nsec;
   };
+#endif
 #endif
 #endif
 

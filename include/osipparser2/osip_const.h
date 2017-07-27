@@ -25,10 +25,10 @@
 #include <mpatrol.h>
 #endif
 
-#define CRLF "\r\n\0"
-#define CR   "\r\0"
-#define LF   "\n\0"
-#define SP   " \0"
+#define OSIP_CRLF "\r\n\0"
+#define OSIP_CR   "\r\0"
+#define OSIP_LF   "\n\0"
+#define OSIP_SP   " \0"
 
 
 #define ACCEPT			"accept"

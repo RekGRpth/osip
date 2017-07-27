@@ -265,7 +265,7 @@ osip_body_parse_header (osip_body_t * body, const char *start_of_osip_body_heade
     if (i != 0)
       return i;
 
-    if (strncmp (end_of_line, CRLF, 2) == 0 || strncmp (end_of_line, "\n", 1) == 0 || strncmp (end_of_line, "\r", 1) == 0) {
+    if (strncmp (end_of_line, OSIP_CRLF, 2) == 0 || strncmp (end_of_line, "\n", 1) == 0 || strncmp (end_of_line, "\r", 1) == 0) {
       *next_body = end_of_line;
       return OSIP_SUCCESS;
     }
@@ -314,7 +314,7 @@ osip_body_parse_mime (osip_body_t * body, const char *start_of_body, size_t leng
 
   start_of_osip_body_header = end_of_osip_body_header;
   /* set the real start of body */
-  if (strncmp (start_of_osip_body_header, CRLF, 2) == 0)
+  if (strncmp (start_of_osip_body_header, OSIP_CRLF, 2) == 0)
     start_of_osip_body_header = start_of_osip_body_header + 2;
   else {
     if ((strncmp (start_of_osip_body_header, "\n", 1) == 0)
@@ -388,7 +388,7 @@ osip_body_to_str (const osip_body_t * body, char **dest, size_t * str_length)
 
     tmp_body = osip_str_append (tmp_body, tmp);
     osip_free (tmp);
-    tmp_body = osip_strn_append (tmp_body, CRLF, 2);
+    tmp_body = osip_strn_append (tmp_body, OSIP_CRLF, 2);
   }
 
   {
@@ -410,7 +410,7 @@ osip_body_to_str (const osip_body_t * body, char **dest, size_t * str_length)
       }
       tmp_body = osip_str_append (tmp_body, tmp);
       osip_free (tmp);
-      tmp_body = osip_strn_append (tmp_body, CRLF, 2);
+      tmp_body = osip_strn_append (tmp_body, OSIP_CRLF, 2);
       header = (osip_header_t *) osip_list_get_next(&it);
     }
   }
@@ -424,7 +424,7 @@ osip_body_to_str (const osip_body_t * body, char **dest, size_t * str_length)
       ptr = osip_realloc (ptr, length);
       tmp_body = ptr + len;
     }
-    tmp_body = osip_strn_append (tmp_body, CRLF, 2);
+    tmp_body = osip_strn_append (tmp_body, OSIP_CRLF, 2);
   }
   if (length < tmp_body - ptr + body->length + 4) {
     size_t len;
