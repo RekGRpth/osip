@@ -448,35 +448,12 @@ osip_message_set_multiple_header (osip_message_t * sip, char *hname, char *hvalu
 
   hname_len = strlen (hname);
 
-  if (comma == NULL || (hname_len == 4 && strncmp (hname, "date", 4) == 0)
-      || (hname_len == 1 && strncmp (hname, "t", 1) == 0)
-      || (hname_len == 2 && strncmp (hname, "to", 2) == 0)
-      || (hname_len == 1 && strncmp (hname, "f", 1) == 0)
-      || (hname_len == 4 && strncmp (hname, "from", 4) == 0)
-      || (hname_len == 1 && strncmp (hname, "i", 1) == 0)
-      || (hname_len == 7 && strncmp (hname, "call-id", 7) == 0)
-      || (hname_len == 4 && strncmp (hname, "cseq", 4) == 0)
-      || (hname_len == 1 && strncmp (hname, "s", 1) == 0)
-      || (hname_len == 7 && strncmp (hname, "subject", 7) == 0)
-      || (hname_len == 7 && strncmp (hname, "expires", 7) == 0)
-      || (hname_len == 6 && strncmp (hname, "server", 6) == 0)
-      || (hname_len == 10 && strncmp (hname, "user-agent", 10) == 0)
-      || (hname_len == 16 && strncmp (hname, "www-authenticate", 16) == 0)
-      || (hname_len == 19 && strncmp (hname, "authentication-info", 19) == 0)
-      || (hname_len == 18 && strncmp (hname, "proxy-authenticate", 18) == 0)
-      || (hname_len == 19 && strncmp (hname, "proxy-authorization", 19) == 0)
-      || (hname_len == 25 && strncmp (hname, "proxy-authentication-info", 25) == 0)
-      || (hname_len == 12 && strncmp (hname, "organization", 12) == 0)
-      || (hname_len == 13 && strncmp (hname, "authorization", 13) == 0)
-      || (hname_len == 1 && strncmp (hname, "r", 1) == 0) /* refer-to */
-      || (hname_len == 8 && strncmp (hname, "refer-to", 8) == 0)
-      || (hname_len == 1 && strncmp (hname, "b", 1) == 0) /* referred-by */
-      || (hname_len == 11 && strncmp (hname, "referred-by", 11) == 0))
-    /* there is no multiple header! likely      */
-    /* to happen most of the time...            */
-    /* or hname is a TEXT-UTF8-TRIM and may     */
-    /* contain a comma. this is not a separator */
-    /* THIS DOES NOT WORK FOR UNKNOWN HEADER!!!! */
+  /* if there is a COMMA, we check if the header is allowed on multiple line from an internal
+  list: those headers are defined in rfc to support the following format.
+  header  =  "header-name" HCOLON header-value *(COMMA header-value)
+  We cannot guess for any other headers and thus, we will handle other headers as one header.
+  */
+  if (comma == NULL || __osip_message_is_header_comma_separated(hname)!=OSIP_SUCCESS)
   {
     i = osip_message_set__header (sip, hname, hvalue);
     if (i != 0)
@@ -494,7 +471,7 @@ osip_message_set_multiple_header (osip_message_t * sip, char *hname, char *hvalu
     {
     case '"':
       /* Check that the '"' is not escaped */
-      for (i = 0, p = ptr; p >= beg && *p == '\\'; p--, i++);
+      for (i = 0, p = ptr - 1; p >= beg && *p == '\\'; p--, i++);
       if (i % 2 == 0)
         inquotes = !inquotes; /* the '"' was not escaped */
       break;

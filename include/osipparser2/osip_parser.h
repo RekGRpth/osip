@@ -40,9 +40,43 @@ extern "C" {
 #endif
 
 /**
- * Initialise the oSIP parser.
+ * Initialize the oSIP parser.
  */
   int parser_init (void);
+
+  /**
+  * Add a header, unknown to the stack, where the COMMA
+  * can be used to have multiple headers on one line.
+  * from rfc3261: header  =  "header-name" HCOLON header-value *(COMMA header-value)
+  * 
+  * This is the current list build 21/03/2018 from all known sip rfc:
+  * 
+  * rfc3261 Accept, a, Accept-Encoding, Accept-Language, Alert-Info, Allow, Authentication-Info,
+  * Proxy-Require,Call-Info, Contact, m, Content-Encoding, e ,Content-Language, Error-Info, In-Reply-To,
+  * Record-Route, Require, Route, Supported, k, Unsupported, Via, v, Warning
+  * rfc3313 P-Media-Authorization
+  * rfc3325 P-Asserted-Identity, P-Preferred-Identity
+  * rfc3326 Reason
+  * rfc3327 Path
+  * rfc3329 Security-Client, Security-Server, Security-Verify
+  * rfc3608 Service-Route
+  * rfc3841 Request-Disposition, d, Accept-Contact, a, Reject-Contact, j
+  * rfc4412 Resource-Priority, Accept-Resource-Priority
+  * rfc5009 P-Early-Media
+  * rfc5318 P-Refused-URI-List
+  * rfc5360 Permission-Missing, Trigger-Consent
+  * rfc6050 P-Asserted-Service, P-Preferred-Service
+  * rfc6086 Recv-Info
+  * rfc6665 Allow-Events, u
+  * rfc6794 Policy-ID, Policy-Contact
+  * rfc6809 Feature-Caps
+  * rfc7044 History-Info, Accept
+  * rfc7315 P-Associated-URI, P-Visited-Network-ID, P-Access-Network-Info, P-Charging-Function-Addresses
+  * rfc7433 User-to-User
+  * 
+  * @param hname The header name to add in the list.
+  */
+  int parser_add_comma_separated_header(const char *hname);
 
 /**
  * Fix the via header for INCOMING requests only.

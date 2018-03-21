@@ -385,3 +385,4 @@ EXPORTS
      osip_list_get_next          @413
      osip_list_get_first         @414
      osip_message_set_multiple_header @415
+     parser_add_comma_separated_header @416

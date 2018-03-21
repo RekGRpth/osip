@@ -29,6 +29,10 @@
 #define NUMBER_OF_HEADERS 22
 #endif
 
+#ifndef NUMBER_OF_HEADERS_COMMASEPARATED
+#define NUMBER_OF_HEADERS_COMMASEPARATED 256
+#endif
+
 /* internal type for parser's config */
 typedef struct ___osip_message_config_t {
   char *hname;
@@ -36,7 +40,12 @@ typedef struct ___osip_message_config_t {
   int ignored_when_invalid;
 } __osip_message_config_t;
 
+typedef struct ___osip_message_config_commaseparated_t {
+  char hname[256];
+} __osip_message_config_commaseparated_t;
+
 int __osip_message_call_method (int i, osip_message_t * dest, const char *hvalue);
+int __osip_message_is_header_comma_separated(const char *hname);
 int __osip_message_is_known_header (const char *hname);
 
 int __osip_find_next_occurence (const char *str, const char *buf, const char **index_of_str, const char *end_of_buf);
