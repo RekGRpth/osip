@@ -310,12 +310,12 @@ extern "C" {
  * @struct osip_srv_record
  */
   struct osip_srv_record {
-    char name[512];                  /**< name */
+    char name[1024];                 /**< name */
     int srv_state;                   /**< srv state */
-    char flag[512];                  /**< flag:  "S" (SRV), "A" (A or AAAA), "U" (URI), and "P" (ignore), are defined. */
-    char protocol[64];               /**< transport protocol*/
-    char regexp[2096];               /**< regexp */
-    char replacement[512];           /**< replacement */
+    char flag[256];                  /**< flag:  "S" (SRV), "A" (A or AAAA), "U" (URI), and "P" (ignore), are defined. */
+    char protocol[1024];             /**< transport protocol*/
+    char regexp[1024];               /**< regexp */
+    char replacement[1024];          /**< replacement */
     int order;                       /**< order */
     int preference;                  /**< preference */
     int index;                       /**< index */
