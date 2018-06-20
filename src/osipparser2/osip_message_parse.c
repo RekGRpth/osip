@@ -431,7 +431,6 @@ osip_message_set_multiple_header (osip_message_t * sip, char *hname, char *hvalu
   char *beg;                    /* beg of a header */
   char *end;                    /* end of a header */
   int inquotes, inuri;          /* state for inside/outside of double-qoutes or URI */
-  size_t hname_len;
 
   /* Find header based upon lowercase comparison */
   osip_tolower (hname);
@@ -445,8 +444,6 @@ osip_message_set_multiple_header (osip_message_t * sip, char *hname, char *hvalu
 
   ptr = hvalue;
   comma = strchr (ptr, ',');
-
-  hname_len = strlen (hname);
 
   /* if there is a COMMA, we check if the header is allowed on multiple line from an internal
   list: those headers are defined in rfc to support the following format.

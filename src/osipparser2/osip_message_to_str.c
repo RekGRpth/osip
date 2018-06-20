@@ -692,7 +692,7 @@ _osip_message_to_str (osip_message_t * sip, char **dest, size_t * message_length
     total_length += size;
     snprintf (tmp2, 15, "%i", (int) size);
     /* do not use osip_strncpy here! */
-    strncpy (content_length_to_modify + 5 - strlen (tmp2), tmp2, strlen (tmp2));
+    memcpy(content_length_to_modify + 5 - strlen(tmp2), tmp2, strlen(tmp2));
   }
 
   /* same remark as at the beginning of the method */
