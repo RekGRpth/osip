@@ -547,8 +547,7 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
 
       /* check for NULL param with an '=' character */
       tmp = equal + 1;
-      for (; *tmp == '\t' || *tmp == ' '; tmp++) {
-      }
+      tmp += strspn(tmp, "\t ");
       pvalue = NULL;
       if (*tmp != ',' && *tmp != '\0') {
         if (comma - equal < 2)
@@ -615,8 +614,7 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
 
     /* check for NULL param with an '=' character */
     tmp = equal + 1;
-    for (; *tmp == '\t' || *tmp == ' '; tmp++) {
-    }
+    tmp += strspn(tmp, "\t ");
     pvalue = NULL;
     if (*tmp != ',' && *tmp != '\0') {
       if (comma - equal < 2)

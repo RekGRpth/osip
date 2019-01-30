@@ -555,8 +555,7 @@ osip_clrspace (char *word)
   len = strlen (word);
 
   pbeg = word;
-  while ((' ' == *pbeg) || ('\r' == *pbeg) || ('\n' == *pbeg) || ('\t' == *pbeg))
-    pbeg++;
+  pbeg += strspn(pbeg, " \r\n\t");
 
   pend = word + len - 1;
   while ((' ' == *pend) || ('\r' == *pend) || ('\n' == *pend) || ('\t' == *pend)) {
@@ -1467,8 +1466,7 @@ osip_clrncpy (char *dst, const char *src, size_t len)
 
   /* find the start of relevant text */
   pbeg = src;
-  while ((' ' == *pbeg) || ('\r' == *pbeg) || ('\n' == *pbeg) || ('\t' == *pbeg))
-    pbeg++;
+  pbeg += strspn(pbeg," \r\n\t");
 
 
   /* find the end of relevant text */

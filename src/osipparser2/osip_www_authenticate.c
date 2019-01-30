@@ -104,10 +104,8 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       /* this should prevent from user manipulating empty    */
       /* strings */
       tmp = quote2 + 1;         /* next element start here */
-      for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-      }
-      for (; *tmp == '\n' || *tmp == '\r'; tmp++) {
-      }                         /* skip LWS */
+      tmp += strspn(tmp, " \t");
+      tmp += strspn(tmp, "\n\r");
       *next = NULL;
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
@@ -115,8 +113,7 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
         /* LWS here ? */
         *next = tmp;
       else {                    /* it is: skip it... */
-        for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-        }
+        tmp += strspn(tmp, " \t");
         if (*tmp == '\0')       /* end of header detected */
           return OSIP_SUCCESS;
         *next = tmp;
@@ -128,10 +125,8 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       return OSIP_NOMEM;
     osip_strncpy (*result, quote1, quote2 - quote1 + 1);
     tmp = quote2 + 1;           /* next element start here */
-    for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-    }
-    for (; *tmp == '\n' || *tmp == '\r'; tmp++) {
-    }                           /* skip LWS */
+    tmp += strspn(tmp, " \t");
+    tmp += strspn(tmp, "\n\r");
     *next = NULL;
     if (*tmp == '\0')           /* end of header detected */
       return OSIP_SUCCESS;
@@ -139,8 +134,7 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       /* LWS here ? */
       *next = tmp;
     else {                      /* it is: skip it... */
-      for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-      }
+      tmp += strspn(tmp, " \t");
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
       *next = tmp;
@@ -191,10 +185,8 @@ __osip_token_set (const char *name, const char *str, char **result, const char *
 
     /* make sure the element does not contain more parameter */
     tmp = (*end) ? (end + 1) : end;
-    for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-    }
-    for (; *tmp == '\n' || *tmp == '\r'; tmp++) {
-    }                           /* skip LWS */
+    tmp += strspn(tmp, " \t");
+    tmp += strspn(tmp, "\n\r");
     *next = NULL;
     if (*tmp == '\0')           /* end of header detected */
       return OSIP_SUCCESS;
@@ -202,8 +194,7 @@ __osip_token_set (const char *name, const char *str, char **result, const char *
       /* LWS here ? */
       *next = tmp;
     else {                      /* it is: skip it... */
-      for (; *tmp == ' ' || *tmp == '\t'; tmp++) {
-      }
+      tmp += strspn(tmp, " \t");
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
       *next = tmp;
