@@ -257,8 +257,8 @@ __osip_find_next_occurence (const char *str, const char *buf, const char **index
   *index_of_str = NULL;         /* AMD fix */
   if ((NULL == str) || (NULL == buf))
     return OSIP_BADPARAMETER;
-  /* TODO? we may prefer strcasestr instead of strstr? */
-  for (i = 0; i < 1000; i++) {
+  /* TODO? we may prefer strcasestr instead of strstr? // TODO? with large binary, it will break at 10000 loop with a syntax error */
+  for (i = 0; i < 10000; i++) {
     *index_of_str = strstr (buf, str);
     if (NULL == (*index_of_str)) {
       /* if '\0' (when binary data is used) is located before the separator,
