@@ -65,15 +65,21 @@ extern "C" {
   typedef struct osip_list osip_list_t;
 
 /**
- * Structure used to iterate list.
- * @var osip_list_iterator_t
- */
-  typedef struct {
+  * Structure used to iterate list.
+  * @var osip_list_iterator_t
+  */
+  typedef struct osip_list_iterator osip_list_iterator_t;
+
+/**
+  * Structure used to iterate list.
+  * @struct osip_list_iterator
+  */
+  struct osip_list_iterator {
     __node_t *actual; /**< actual */
     __node_t **prev;  /**< prev */
     osip_list_t *li;  /**< li */
     int pos;          /**< pos */
-  } osip_list_iterator_t;
+  };
 
 /**
  * Structure for referencing a list of elements.
