@@ -23,7 +23,7 @@ please ask the mailing list (osip-dev@gnu.org)
 #include <osip2/osip_time.h>
 ~~~~~~~
 
- * @section howto_portability1 Threads
+ * @section howto_portability2 Threads
 
 + Here is code to show how to start a thread:
 
@@ -52,7 +52,7 @@ please ask the mailing list (osip-dev@gnu.org)
   osip_free (thread);
 ~~~~~~~
 
- * @section howto_portability1 Mutex
+ * @section howto_portability3 Mutex
 
 + Here is code to show how to create/lock/unlock/release:
 
@@ -67,7 +67,7 @@ please ask the mailing list (osip-dev@gnu.org)
   osip_mutex_destroy (mutex);
 ~~~~~~~
 
- * @section howto_portability1 Time
+ * @section howto_portability4 Time
 
 libosip2 is also providing a common time API.
 
