@@ -47,12 +47,6 @@ osip_body_init (osip_body_t ** body)
   return OSIP_SUCCESS;
 }
 
-/**
- * Fill the body of message.
- * @param sip The structure to store results.
- * @param buf The pointer to the start of body.
- * @param length The length of body;
- */
 int
 osip_message_set_body (osip_message_t * sip, const char *buf, size_t length)
 {

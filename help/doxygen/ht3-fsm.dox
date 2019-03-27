@@ -141,7 +141,7 @@ transaction, the code will be the following:
       if ( osip_transaction_execute (transaction,se)<1)  // deletion asked
 	  osip_thread_exit ();
   }
-</pre>
+~~~~~~~
 
 * @section howto_transaction4 Announcing events to the application layer.
 
