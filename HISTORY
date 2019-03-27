@@ -33,4 +33,5 @@ Be aware, that if you use osip, you still have to read
 carefully the rfc. oSIP is not easy to use, but I'm
 convinced there are benefits in terms of flexibility.
 If you find osip too complex to use, please look for
-another adequate solution.
+another adequate solution. -eXosip2 is the first one
+to look at!-

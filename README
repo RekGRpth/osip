@@ -3,7 +3,7 @@
 
  The GNU oSIP library is an implementation of SIP - rfc3261.
 
- Email      : amoizard@antisip.com
+ Email      : amoizard@gmail.com
  License    : LGPL (http://www.gnu.org)
  Home Page  : http://www.gnu.org/software/osip/osip.html
  Download   : ftp://ftp.gnu.org/gnu/osip
@@ -57,7 +57,7 @@ Watch out the ./src/test/CHECK file for more informations.
        ====================
 
 For more information on the SIP stack, or any contributions,
-you can contact the author at <amoizard@antisip.com>.
+you can contact the author at <amoizard@gmail.com>.
 
 A Mailing list is available for support: <osip-dev@gnu.org>.
 You can subscribe by writing to: <osip-dev-request@gnu.org>
