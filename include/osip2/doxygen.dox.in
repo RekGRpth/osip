@@ -52,21 +52,21 @@
 
 /**
  * @defgroup osip2_parser The parser modules
- * @brief Parser API in libosipparser2-@VERSION@.
+ * @brief Parser APIs.
  *
  * XXX
  */
 
 /**
  * @defgroup osip2_port The OS port modules
- * @brief Thread/Semaphore/Mutex API in libosip2-@VERSION@.
+ * @brief Thread/Semaphore/Mutex APIs.
  *
  * XXX
  */
 
 /**
  * @defgroup osip2_fsm State Machines
- * @brief libosip2 APIs for transaction management
+ * @brief SIP transaction management APIs
  *
  * XXX
  */
