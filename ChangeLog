@@ -1,3 +1,28 @@
+libosip2 (5.1.0) - 2019-03-27
+	* STRUCTURE change: struct osip_srv_record
+	* STRUCTURE change: struct osip_naptr
+	* constant renamed: CRLF, LF, CR, SP renamed to OSIP_CRLF, OSIP_LF, OSIP_CR, OSIP_SP
+
+	* new API: int parser_add_comma_separated_header(const char *hname);
+
+	* support larger binary attachment.
+	* use strspn for better readability.
+	* update osip_naptr & osip_srv_record structures to hold more NAPTR info and store ENUM result.
+	* add AM_SILENT_RULES for autotools silent compilation.
+	* fix a bug introduced in version 5: The current code is not counting correctly escaped " for multiple
+	  headers on one line. This is fixed.
+	* In order to prevent incorrect parsing of header that should not appear on one line, osip now contains
+	  a list of known headers which are allowed to appear as "multiple header on one line separated with COMMA".
+	  Other headers will be parsed as ONE header.
+	* new API: parser_add_comma_separated_header API can be used to add other headers in the list, so they
+	  will be parsed by osip as "multiple header on one line".
+	* support for Visual Studio 2017: rename macro, better usage of WINAPI_FAMILY.
+	* add some pre-defined SIP answer code (from www.iana.org/assignments/sip-parameters/)
+	* fix windows compilation on mingw/msys if compiling without threads.
+	* fix bug report: sr #109265: SIP message body length underflow in libosip2-4.1.0
+	  https://savannah.gnu.org/support/?109265
+	* other minor changes: warning, compilation...
+
 libosip2 (5.0.0)
 	* STRUCTURE change: additionnal parameter for "struct osip_srv_entry" used for failover in eXosip2.
 
