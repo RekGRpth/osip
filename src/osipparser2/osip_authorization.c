@@ -191,49 +191,49 @@ osip_authorization_parse (osip_authorization_t * auth, const char *hvalue)
       parse_ok++;
     }
     i = __osip_token_set ("version", space, &(auth->version), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
-        space = next;
-        parse_ok++;
+      space = next;
+      parse_ok++;
     }
     i = __osip_quoted_string_set ("targetname", space, &(auth->targetname), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
-        space = next;
-        parse_ok++;
+      space = next;
+      parse_ok++;
     }
     i = __osip_quoted_string_set ("gssapi-data", space, &(auth->gssapi_data), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
-        space = next;
-        parse_ok++;
+      space = next;
+      parse_ok++;
     }
     i = __osip_quoted_string_set ("crand", space, &(auth->crand), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
-        space = next;
-        parse_ok++;
+      space = next;
+      parse_ok++;
     }
     i = __osip_quoted_string_set ("cnum", space, &(auth->cnum), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
-        space = next;
-        parse_ok++;
+      space = next;
+      parse_ok++;
     }
     /* nothing was recognized:
        here, we should handle a list of unknown tokens where:
@@ -440,8 +440,7 @@ osip_authorization_get_version (osip_authorization_t * authorization)
 }
 
 void
-osip_authorization_set_version (osip_authorization_t * authorization,
-				char *version)
+osip_authorization_set_version (osip_authorization_t * authorization, char *version)
 {
   authorization->version = (char *) version;
 }
@@ -453,8 +452,7 @@ osip_authorization_get_targetname (osip_authorization_t * authorization)
 }
 
 void
-osip_authorization_set_targetname (osip_authorization_t * authorization,
-				   char *targetname)
+osip_authorization_set_targetname (osip_authorization_t * authorization, char *targetname)
 {
   authorization->targetname = (char *) targetname;
 }
@@ -466,8 +464,7 @@ osip_authorization_get_gssapi_data (osip_authorization_t * authorization)
 }
 
 void
-osip_authorization_set_gssapi_data (osip_authorization_t * authorization,
-                                    char *gssapi_data)
+osip_authorization_set_gssapi_data (osip_authorization_t * authorization, char *gssapi_data)
 {
   authorization->gssapi_data = (char *) gssapi_data;
 }
@@ -479,8 +476,7 @@ osip_authorization_get_crand (osip_authorization_t * authorization)
 }
 
 void
-osip_authorization_set_crand (osip_authorization_t * authorization,
-			      char *crand)
+osip_authorization_set_crand (osip_authorization_t * authorization, char *crand)
 {
   authorization->crand = (char *) crand;
 }
@@ -492,8 +488,7 @@ osip_authorization_get_cnum (osip_authorization_t * authorization)
 }
 
 void
-osip_authorization_set_cnum (osip_authorization_t * authorization,
-			     char *cnum)
+osip_authorization_set_cnum (osip_authorization_t * authorization, char *cnum)
 {
   authorization->cnum = (char *) cnum;
 }
@@ -566,7 +561,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
   tmp = osip_str_append (tmp, auth->auth_type);
 
   if (auth->username != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " username=", 10);
@@ -575,7 +570,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
   }
 
   if (auth->realm != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " realm=", 7);
@@ -583,7 +578,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
     tmp = osip_str_append (tmp, auth->realm);
   }
   if (auth->nonce != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " nonce=", 7);
@@ -592,7 +587,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
   }
 
   if (auth->uri != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " uri=", 5);
@@ -600,7 +595,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
     tmp = osip_str_append (tmp, auth->uri);
   }
   if (auth->response != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " response=", 10);
@@ -609,7 +604,7 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
   }
 
   if (auth->digest != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " digest=", 8);
@@ -617,70 +612,70 @@ osip_authorization_to_str (const osip_authorization_t * auth, char **dest)
     tmp = osip_str_append (tmp, auth->digest);
   }
   if (auth->algorithm != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " algorithm=", 11);
     tmp = osip_str_append (tmp, auth->algorithm);
   }
   if (auth->cnonce != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " cnonce=", 8);
     tmp = osip_str_append (tmp, auth->cnonce);
   }
   if (auth->opaque != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " opaque=", 8);
     tmp = osip_str_append (tmp, auth->opaque);
   }
   if (auth->message_qop != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " qop=", 5);
     tmp = osip_str_append (tmp, auth->message_qop);
   }
   if (auth->nonce_count != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " nc=", 4);
     tmp = osip_str_append (tmp, auth->nonce_count);
   }
   if (auth->version != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " version=", 9);
     tmp = osip_str_append (tmp, auth->version);
   }
   if (auth->targetname != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " targetname=", 12);
     tmp = osip_str_append (tmp, auth->targetname);
   }
   if (auth->gssapi_data != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " gssapi-data=", 13);
     tmp = osip_str_append (tmp, auth->gssapi_data);
   }
   if (auth->crand != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " crand=", 7);
     tmp = osip_str_append (tmp, auth->crand);
   }
   if (auth->cnum != NULL) {
-    if(!first)
+    if (!first)
       tmp = osip_strn_append (tmp, ",", 1);
     first = 0;
     tmp = osip_strn_append (tmp, " cnum=", 6);

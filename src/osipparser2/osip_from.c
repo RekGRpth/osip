@@ -101,9 +101,9 @@ osip_from_free (osip_from_t * from)
 int
 osip_from_parse (osip_from_t * from, const char *hvalue)
 {
-  const char *displayname=NULL;
-  const char *url=NULL;
-  const char *url_end=NULL;
+  const char *displayname = NULL;
+  const char *url = NULL;
+  const char *url_end = NULL;
   const char *gen_params;
   const char *ptr;
   int i;
@@ -128,29 +128,29 @@ osip_from_parse (osip_from_t * from, const char *hvalue)
    */
   /* search for first char */
   ptr = hvalue;
-  while (ptr[0]!='\0') {
-    if (ptr[0]==' ') {
+  while (ptr[0] != '\0') {
+    if (ptr[0] == ' ') {
       ptr++;
       continue;
     }
-    if (ptr[0]=='"') {
+    if (ptr[0] == '"') {
       displayname = ptr;
       break;
     }
     break;
   }
 
-  if (ptr[0]=='\0')
-    return OSIP_SUCCESS; /* empty header allowed? */
+  if (ptr[0] == '\0')
+    return OSIP_SUCCESS;        /* empty header allowed? */
 
-  if (displayname!=NULL) {
+  if (displayname != NULL) {
     /* displayname IS A quoted-string (not a '*token') */
     const char *second = NULL;
 
     /* search for quotes */
     second = __osip_quote_find (displayname + 1);
     if (second == NULL)
-      return OSIP_SYNTAXERROR;        /* missing quote */
+      return OSIP_SYNTAXERROR;  /* missing quote */
 
     if (second - displayname + 2 >= 2) {
       from->displayname = (char *) osip_malloc (second - displayname + 2);
@@ -160,15 +160,15 @@ osip_from_parse (osip_from_t * from, const char *hvalue)
       /* osip_clrspace(from->displayname); *//*should we do that? */
 
       /* special case: "<sip:joe@big.org>" <sip:joe@really.big.com> */
-    }                         /* else displayname is empty? */
+    }                           /* else displayname is empty? */
 
-    ptr=second+1;
-    while (ptr[0]!='\0') {
-      if (ptr[0]==' ') {
+    ptr = second + 1;
+    while (ptr[0] != '\0') {
+      if (ptr[0] == ' ') {
         ptr++;
         continue;
       }
-      if (ptr[0]=='<') {
+      if (ptr[0] == '<') {
         url = ptr;
         break;
       }
@@ -176,15 +176,17 @@ osip_from_parse (osip_from_t * from, const char *hvalue)
     }
 
     if (url == NULL)
-      return OSIP_SYNTAXERROR;        /* '<' MUST exist */
+      return OSIP_SYNTAXERROR;  /* '<' MUST exist */
     if (ptr[1] == '\0')
-      return OSIP_SYNTAXERROR;        /* '<' MUST contain something */
-  } else {
+      return OSIP_SYNTAXERROR;  /* '<' MUST contain something */
+  }
+  else {
     /* 1*(alphanum / "-" / "." / "!" / "%" / "*" / "_" / "+" / "`" / "'" / "~" ) */
     /* search for URL -> continue until non allowed element is found */
-    const char *beg=ptr;
-    while (ptr[0]!='\0') {
-      if (ptr[0]==' ') {
+    const char *beg = ptr;
+
+    while (ptr[0] != '\0') {
+      if (ptr[0] == ' ') {
         ptr++;
         continue;
       }
@@ -200,7 +202,7 @@ osip_from_parse (osip_from_t * from, const char *hvalue)
         ptr++;
         continue;
       }
-      if (ptr[0]=='-' || ptr[0]=='.' || ptr[0]=='!' || ptr[0]=='%' || ptr[0]=='*' || ptr[0]=='_' || ptr[0]=='+' || ptr[0]=='`' || ptr[0]=='\'' || ptr[0]=='~') {
+      if (ptr[0] == '-' || ptr[0] == '.' || ptr[0] == '!' || ptr[0] == '%' || ptr[0] == '*' || ptr[0] == '_' || ptr[0] == '+' || ptr[0] == '`' || ptr[0] == '\'' || ptr[0] == '~') {
         ptr++;
         continue;
       }
@@ -208,50 +210,52 @@ osip_from_parse (osip_from_t * from, const char *hvalue)
       break;
     }
 
-    if (ptr[0]=='\0' || url==NULL)
-      return OSIP_SYNTAXERROR; /* not special char found? broken header? */
+    if (ptr[0] == '\0' || url == NULL)
+      return OSIP_SYNTAXERROR;  /* not special char found? broken header? */
 
-    if (ptr[0]=='<') {
+    if (ptr[0] == '<') {
       /* "<" found for URI */
       if (ptr[1] == '\0')
         return OSIP_SYNTAXERROR;        /* '<' MUST contain something */
 
-      if (url - beg>0) {
+      if (url - beg > 0) {
         from->displayname = (char *) osip_malloc (url - beg + 1);
         if (from->displayname == NULL)
           return OSIP_NOMEM;
         osip_clrncpy (from->displayname, hvalue, url - beg);
       }
 
-    } else if (ptr[0]==':') {
+    }
+    else if (ptr[0] == ':') {
       /* this was a scheme for a URL? */
-      url=beg;
-    } else {
+      url = beg;
+    }
+    else {
       /* this is some non URL header? */
-      url=beg;
+      url = beg;
     }
   }
 
   /* define url_end and gen_params for name-addr */
-  if (url[0]=='<') {
+  if (url[0] == '<') {
     url++;
-    ptr=url;
+    ptr = url;
     /* first occurence of ">" is the end of url */
     url_end = strchr (ptr, '>');
-    if (url_end==NULL)
+    if (url_end == NULL)
       return OSIP_SYNTAXERROR;
     url_end--;
     gen_params = strchr (url_end, ';');
   }
 
   /* define url_end and gen_params for addr-spec */
-  if (url_end==NULL) {
+  if (url_end == NULL) {
     /* rfc3261 // 20.10 Contact:
-    Even if the "display-name" is empty, the "name-addr" form MUST be
-    used if the "addr-spec" contains a comma, semicolon, or question
-    mark.  There may or may not be LWS between the display-name and the
-    "<". 
-    Conclusion: there is no semicolon (in username) before the semicolon generic param delimiter... */
+       Even if the "display-name" is empty, the "name-addr" form MUST be
+       used if the "addr-spec" contains a comma, semicolon, or question
+       mark.  There may or may not be LWS between the display-name and the
+       "<". 
+       Conclusion: there is no semicolon (in username) before the semicolon generic param delimiter... */
     gen_params = strchr (url, ';');
     if (gen_params != NULL)
       url_end = gen_params - 1;
@@ -331,7 +335,8 @@ osip_from_to_str (const osip_from_t * from, char **dest)
     size_t plen;
     char *tmp;
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&from->gen_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&from->gen_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (u_param->gvalue == NULL)
         plen = strlen (u_param->gname) + 2;
@@ -345,7 +350,7 @@ osip_from_to_str (const osip_from_t * from, char **dest)
         snprintf (tmp, len - (tmp - buf), ";%s", u_param->gname);
       else
         snprintf (tmp, len - (tmp - buf), ";%s=%s", u_param->gname, u_param->gvalue);
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
   *dest = buf;
@@ -463,24 +468,26 @@ osip_from_compare (osip_from_t * from1, osip_from_t * from2)
   tag2 = NULL;
   {
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&from1->gen_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&from1->gen_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (0 == strncmp (u_param->gname, "tag", 3)) {
         tag1 = u_param->gvalue;
         break;
       }
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
   {
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&from2->gen_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&from2->gen_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (0 == strncmp (u_param->gname, "tag", 3)) {
         tag2 = u_param->gvalue;
         break;
       }
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
 
@@ -523,16 +530,17 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
   /* If comma points after value start quote, move it to after end quote */
   if (equal != NULL) {
     const char *tmp;
-    startquote=NULL;
-    for (tmp=equal+1;tmp[0]==' ';tmp++) {
+
+    startquote = NULL;
+    for (tmp = equal + 1; tmp[0] == ' '; tmp++) {
     }
-    if (tmp[0]=='"')
+    if (tmp[0] == '"')
       startquote = tmp;
     if (startquote != NULL && comma > startquote) {
       comma = NULL;
-      endquote = __osip_quote_find(startquote + 1);
+      endquote = __osip_quote_find (startquote + 1);
       if (endquote)
-        comma = strchr(endquote, ';');
+        comma = strchr (endquote, ';');
     }
   }
 
@@ -547,7 +555,7 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
 
       /* check for NULL param with an '=' character */
       tmp = equal + 1;
-      tmp += strspn(tmp, "\t ");
+      tmp += strspn (tmp, "\t ");
       pvalue = NULL;
       if (*tmp != ',' && *tmp != '\0') {
         if (comma - equal < 2)
@@ -584,16 +592,17 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
     /* If comma points after value start quote, move it to after end quote */
     if (equal != NULL) {
       const char *tmp;
-      startquote=NULL;
-      for (tmp=equal+1;tmp[0]==' ';tmp++) {
+
+      startquote = NULL;
+      for (tmp = equal + 1; tmp[0] == ' '; tmp++) {
       }
-      if (tmp[0]=='"')
+      if (tmp[0] == '"')
         startquote = tmp;
       if (startquote != NULL && comma > startquote) {
         comma = NULL;
-        endquote = __osip_quote_find(startquote + 1);
+        endquote = __osip_quote_find (startquote + 1);
         if (endquote)
-          comma = strchr(endquote, ';');
+          comma = strchr (endquote, ';');
       }
     }
   }
@@ -614,7 +623,7 @@ __osip_generic_param_parseall (osip_list_t * gen_params, const char *params)
 
     /* check for NULL param with an '=' character */
     tmp = equal + 1;
-    tmp += strspn(tmp, "\t ");
+    tmp += strspn (tmp, "\t ");
     pvalue = NULL;
     if (*tmp != ',' && *tmp != '\0') {
       if (comma - equal < 2)

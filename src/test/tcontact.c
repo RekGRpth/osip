@@ -63,19 +63,20 @@ main (int argc, char **argv)
         if (osip_contact_to_str (contact, &dest) != -1) {
           printf ("result:           |%s|\n", dest);
 
-	  {
-	    int pos = 0;
-	    osip_generic_param_t *u_param;
-	    while (!osip_list_eol (&contact->gen_params, pos)) {
-	      u_param = (osip_generic_param_t *) osip_list_get (&contact->gen_params, pos);
-	      
-	      if (u_param->gvalue == NULL)
-		printf ("result:       ;%s\n", u_param->gname);
-	      else
-		printf ("result:       ;%s=%s\n", u_param->gname, u_param->gvalue);
-	      pos++;
-	    }
-	  }
+          {
+            int pos = 0;
+            osip_generic_param_t *u_param;
+
+            while (!osip_list_eol (&contact->gen_params, pos)) {
+              u_param = (osip_generic_param_t *) osip_list_get (&contact->gen_params, pos);
+
+              if (u_param->gvalue == NULL)
+                printf ("result:       ;%s\n", u_param->gname);
+              else
+                printf ("result:       ;%s=%s\n", u_param->gname, u_param->gvalue);
+              pos++;
+            }
+          }
 
           osip_free (dest);
         }

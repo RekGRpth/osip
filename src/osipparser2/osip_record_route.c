@@ -123,7 +123,8 @@ osip_record_route_to_str (const osip_record_route_t * record_route, char **dest)
     size_t plen;
     char *tmp;
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&record_route->gen_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&record_route->gen_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (u_param->gvalue == NULL)
         plen = strlen (u_param->gname) + 2;
@@ -137,7 +138,7 @@ osip_record_route_to_str (const osip_record_route_t * record_route, char **dest)
         snprintf (tmp, len - (tmp - buf), ";%s", u_param->gname);
       else
         snprintf (tmp, len - (tmp - buf), ";%s=%s", u_param->gname, u_param->gvalue);
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
   *dest = buf;

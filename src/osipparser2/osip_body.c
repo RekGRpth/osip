@@ -387,34 +387,35 @@ osip_body_to_str (const osip_body_t * body, char **dest, size_t * str_length)
 
   {
     osip_list_iterator_t it;
-    osip_header_t *header = (osip_header_t *) osip_list_get_first(body->headers, &it);  
+    osip_header_t *header = (osip_header_t *) osip_list_get_first (body->headers, &it);
+
     while (header != OSIP_SUCCESS) {
       i = osip_header_to_str (header, &tmp);
       if (i != 0) {
-	osip_free (ptr);
-	return i;
+        osip_free (ptr);
+        return i;
       }
       if (length < tmp_body - ptr + strlen (tmp) + 4) {
-	size_t len;
-	
-	len = tmp_body - ptr;
-	length = length + strlen (tmp) + 4;
-	ptr = osip_realloc (ptr, length);
-	tmp_body = ptr + len;
+        size_t len;
+
+        len = tmp_body - ptr;
+        length = length + strlen (tmp) + 4;
+        ptr = osip_realloc (ptr, length);
+        tmp_body = ptr + len;
       }
       tmp_body = osip_str_append (tmp_body, tmp);
       osip_free (tmp);
       tmp_body = osip_strn_append (tmp_body, OSIP_CRLF, 2);
-      header = (osip_header_t *) osip_list_get_next(&it);
+      header = (osip_header_t *) osip_list_get_next (&it);
     }
   }
-  
+
   if ((osip_list_size (body->headers) > 0) || (body->content_type != NULL)) {
     if (length < tmp_body - ptr + 3) {
       size_t len;
 
       len = tmp_body - ptr;
-      length = length + 3 + body->length; /* add body->length, to avoid calling realloc often */
+      length = length + 3 + body->length;       /* add body->length, to avoid calling realloc often */
       ptr = osip_realloc (ptr, length);
       tmp_body = ptr + len;
     }

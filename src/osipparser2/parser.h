@@ -45,7 +45,7 @@ typedef struct ___osip_message_config_commaseparated_t {
 } __osip_message_config_commaseparated_t;
 
 int __osip_message_call_method (int i, osip_message_t * dest, const char *hvalue);
-int __osip_message_is_header_comma_separated(const char *hname);
+int __osip_message_is_header_comma_separated (const char *hname);
 int __osip_message_is_known_header (const char *hname);
 
 int __osip_find_next_occurence (const char *str, const char *buf, const char **index_of_str, const char *end_of_buf);

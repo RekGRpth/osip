@@ -104,8 +104,8 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       /* this should prevent from user manipulating empty    */
       /* strings */
       tmp = quote2 + 1;         /* next element start here */
-      tmp += strspn(tmp, " \t");
-      tmp += strspn(tmp, "\n\r");
+      tmp += strspn (tmp, " \t");
+      tmp += strspn (tmp, "\n\r");
       *next = NULL;
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
@@ -113,7 +113,7 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
         /* LWS here ? */
         *next = tmp;
       else {                    /* it is: skip it... */
-        tmp += strspn(tmp, " \t");
+        tmp += strspn (tmp, " \t");
         if (*tmp == '\0')       /* end of header detected */
           return OSIP_SUCCESS;
         *next = tmp;
@@ -125,8 +125,8 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       return OSIP_NOMEM;
     osip_strncpy (*result, quote1, quote2 - quote1 + 1);
     tmp = quote2 + 1;           /* next element start here */
-    tmp += strspn(tmp, " \t");
-    tmp += strspn(tmp, "\n\r");
+    tmp += strspn (tmp, " \t");
+    tmp += strspn (tmp, "\n\r");
     *next = NULL;
     if (*tmp == '\0')           /* end of header detected */
       return OSIP_SUCCESS;
@@ -134,7 +134,7 @@ __osip_quoted_string_set (const char *name, const char *str, char **result, cons
       /* LWS here ? */
       *next = tmp;
     else {                      /* it is: skip it... */
-      tmp += strspn(tmp, " \t");
+      tmp += strspn (tmp, " \t");
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
       *next = tmp;
@@ -185,8 +185,8 @@ __osip_token_set (const char *name, const char *str, char **result, const char *
 
     /* make sure the element does not contain more parameter */
     tmp = (*end) ? (end + 1) : end;
-    tmp += strspn(tmp, " \t");
-    tmp += strspn(tmp, "\n\r");
+    tmp += strspn (tmp, " \t");
+    tmp += strspn (tmp, "\n\r");
     *next = NULL;
     if (*tmp == '\0')           /* end of header detected */
       return OSIP_SUCCESS;
@@ -194,7 +194,7 @@ __osip_token_set (const char *name, const char *str, char **result, const char *
       /* LWS here ? */
       *next = tmp;
     else {                      /* it is: skip it... */
-      tmp += strspn(tmp, " \t");
+      tmp += strspn (tmp, " \t");
       if (*tmp == '\0')         /* end of header detected */
         return OSIP_SUCCESS;
       *next = tmp;
@@ -298,35 +298,32 @@ osip_www_authenticate_parse (osip_www_authenticate_t * wwwa, const char *hvalue)
       parse_ok++;
     }
     i = __osip_token_set ("version", space, &(wwwa->version), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
-    else if (next != space)
-      {
-        space = next;
-        parse_ok++;
-      }
-       i = __osip_quoted_string_set ("targetname", space, &(wwwa->targetname), &next);
-    if (i!=0)
+      return OSIP_SUCCESS;      /* end of header detected! */
+    else if (next != space) {
+      space = next;
+      parse_ok++;
+    }
+    i = __osip_quoted_string_set ("targetname", space, &(wwwa->targetname), &next);
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
-    else if (next != space)
-      {
-        space = next;
-        parse_ok++;
-      }
-       i = __osip_quoted_string_set ("gssapi-data", space, &(wwwa->gssapi_data), &next);
-    if (i!=0)
+      return OSIP_SUCCESS;      /* end of header detected! */
+    else if (next != space) {
+      space = next;
+      parse_ok++;
+    }
+    i = __osip_quoted_string_set ("gssapi-data", space, &(wwwa->gssapi_data), &next);
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
-    else if (next != space)
-      {
-        space = next;
-        parse_ok++;
-      }
+      return OSIP_SUCCESS;      /* end of header detected! */
+    else if (next != space) {
+      space = next;
+      parse_ok++;
+    }
     if (0 == parse_ok) {
       const char *quote1, *quote2, *tmp;
 
@@ -481,8 +478,7 @@ osip_www_authenticate_get_version (osip_www_authenticate_t * www_authenticate)
 }
 
 void
-osip_www_authenticate_set_version (osip_www_authenticate_t *
-				   www_authenticate, char *version)
+osip_www_authenticate_set_version (osip_www_authenticate_t * www_authenticate, char *version)
 {
   www_authenticate->version = (char *) version;
 }
@@ -494,8 +490,7 @@ osip_www_authenticate_get_targetname (osip_www_authenticate_t * www_authenticate
 }
 
 void
-osip_www_authenticate_set_targetname (osip_www_authenticate_t *
-				      www_authenticate, char *targetname)
+osip_www_authenticate_set_targetname (osip_www_authenticate_t * www_authenticate, char *targetname)
 {
   www_authenticate->targetname = (char *) targetname;
 }
@@ -507,8 +502,7 @@ osip_www_authenticate_get_gssapi_data (osip_www_authenticate_t * www_authenticat
 }
 
 void
-osip_www_authenticate_set_gssapi_data (osip_www_authenticate_t *
-                                       www_authenticate, char *gssapi_data)
+osip_www_authenticate_set_gssapi_data (osip_www_authenticate_t * www_authenticate, char *gssapi_data)
 {
   www_authenticate->gssapi_data = (char *) gssapi_data;
 }
@@ -588,16 +582,16 @@ osip_www_authenticate_to_str (const osip_www_authenticate_t * wwwa, char **dest)
     tmp = osip_str_append (tmp, wwwa->qop_options);
   }
   if (wwwa->version != NULL) {
-      tmp = osip_strn_append (tmp, ", version=", 10);
-      tmp = osip_str_append (tmp, wwwa->version);
+    tmp = osip_strn_append (tmp, ", version=", 10);
+    tmp = osip_str_append (tmp, wwwa->version);
   }
   if (wwwa->targetname != NULL) {
-      tmp = osip_strn_append (tmp, ", targetname=", 13);
-      tmp = osip_str_append (tmp, wwwa->targetname);
+    tmp = osip_strn_append (tmp, ", targetname=", 13);
+    tmp = osip_str_append (tmp, wwwa->targetname);
   }
   if (wwwa->gssapi_data != NULL) {
-      tmp = osip_strn_append (tmp, ", gssapi-data=", 14);
-      tmp = osip_str_append (tmp, wwwa->gssapi_data);
+    tmp = osip_strn_append (tmp, ", gssapi-data=", 14);
+    tmp = osip_str_append (tmp, wwwa->gssapi_data);
   }
   if (wwwa->realm == NULL) {
     /* remove comma */
@@ -696,24 +690,21 @@ osip_www_authenticate_clone (const osip_www_authenticate_t * wwwa, osip_www_auth
   }
   if (wwwa->version != NULL)
     wa->version = osip_strdup (wwwa->version);
-  if (wa->version==NULL && wwwa->version!=NULL)
-  {
-	  osip_www_authenticate_free (wa);
-	  return OSIP_NOMEM;
+  if (wa->version == NULL && wwwa->version != NULL) {
+    osip_www_authenticate_free (wa);
+    return OSIP_NOMEM;
   }
   if (wwwa->targetname != NULL)
     wa->targetname = osip_strdup (wwwa->targetname);
-  if (wa->targetname==NULL && wwwa->targetname!=NULL)
-  {
-	  osip_www_authenticate_free (wa);
-	  return OSIP_NOMEM;
+  if (wa->targetname == NULL && wwwa->targetname != NULL) {
+    osip_www_authenticate_free (wa);
+    return OSIP_NOMEM;
   }
   if (wwwa->gssapi_data != NULL)
     wa->gssapi_data = osip_strdup (wwwa->gssapi_data);
-  if (wa->gssapi_data==NULL && wwwa->gssapi_data!=NULL)
-  {
-	  osip_www_authenticate_free (wa);
-	  return OSIP_NOMEM;
+  if (wa->gssapi_data == NULL && wwwa->gssapi_data != NULL) {
+    osip_www_authenticate_free (wa);
+    return OSIP_NOMEM;
   }
 
   *dest = wa;

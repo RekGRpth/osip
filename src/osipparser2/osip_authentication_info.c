@@ -77,17 +77,17 @@ osip_message_set_authentication_info (osip_message_t * sip, const char *hvalue)
 int
 osip_authentication_info_parse (osip_authentication_info_t * ainfo, const char *hvalue)
 {
-	const char *space, *hack;
+  const char *space, *hack;
   const char *next = NULL;
   int i;
 
   space = strchr (hvalue, ' ');
-  hack = strchr( hvalue, '=');
-  if(space && hack && hack > space) {
-	  ainfo->auth_type = (char *) osip_malloc (space - hvalue + 1);
-	  if (ainfo->auth_type==NULL)
-		  return OSIP_NOMEM;
-	  osip_strncpy (ainfo->auth_type, hvalue, space - hvalue);
+  hack = strchr (hvalue, '=');
+  if (space && hack && hack > space) {
+    ainfo->auth_type = (char *) osip_malloc (space - hvalue + 1);
+    if (ainfo->auth_type == NULL)
+      return OSIP_NOMEM;
+    osip_strncpy (ainfo->auth_type, hvalue, space - hvalue);
   }
   else
     space = hvalue;
@@ -141,46 +141,46 @@ osip_authentication_info_parse (osip_authentication_info_t * ainfo, const char *
       parse_ok++;
     }
     i = __osip_quoted_string_set ("snum", space, &(ainfo->snum), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
     }
     i = __osip_quoted_string_set ("srand", space, &(ainfo->srand), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
     }
     i = __osip_quoted_string_set ("targetname", space, &(ainfo->targetname), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
     }
     i = __osip_quoted_string_set ("realm", space, &(ainfo->realm), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
     }
     i = __osip_quoted_string_set ("opaque", space, &(ainfo->opaque), &next);
-    if (i!=0)
+    if (i != 0)
       return i;
     if (next == NULL)
-      return OSIP_SUCCESS;               /* end of header detected! */
+      return OSIP_SUCCESS;      /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -235,13 +235,13 @@ osip_message_get_authentication_info (const osip_message_t * sip, int pos, osip_
 }
 
 char *
-osip_authentication_info_get_auth_type (osip_authentication_info_t *authentication_info)
+osip_authentication_info_get_auth_type (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->auth_type;
 }
 
 void
-osip_authentication_info_set_auth_type (osip_authentication_info_t *authentication_info, char *auth_type)
+osip_authentication_info_set_auth_type (osip_authentication_info_t * authentication_info, char *auth_type)
 {
   authentication_info->auth_type = (char *) auth_type;
 }
@@ -307,71 +307,61 @@ osip_authentication_info_set_qop_options (osip_authentication_info_t * authentic
 }
 
 char *
-osip_authentication_info_get_snum (osip_authentication_info_t *
-				   authentication_info)
+osip_authentication_info_get_snum (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->snum;
 }
 
 void
-osip_authentication_info_set_snum (osip_authentication_info_t *
-				   authentication_info, char *snum)
+osip_authentication_info_set_snum (osip_authentication_info_t * authentication_info, char *snum)
 {
   authentication_info->snum = (char *) snum;
 }
 
 char *
-osip_authentication_info_get_srand (osip_authentication_info_t *
-				   authentication_info)
+osip_authentication_info_get_srand (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->srand;
 }
 
 void
-osip_authentication_info_set_srand (osip_authentication_info_t *
-				   authentication_info, char *srand)
+osip_authentication_info_set_srand (osip_authentication_info_t * authentication_info, char *srand)
 {
   authentication_info->srand = (char *) srand;
 }
 
 char *
-osip_authentication_info_get_targetname (osip_authentication_info_t *
-				   authentication_info)
+osip_authentication_info_get_targetname (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->targetname;
 }
 
 void
-osip_authentication_info_set_targetname (osip_authentication_info_t *
-				   authentication_info, char *targetname)
+osip_authentication_info_set_targetname (osip_authentication_info_t * authentication_info, char *targetname)
 {
   authentication_info->targetname = (char *) targetname;
 }
 
 char *
-osip_authentication_info_get_realm (osip_authentication_info_t *
-				   authentication_info)
+osip_authentication_info_get_realm (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->realm;
 }
 
 void
-osip_authentication_info_set_realm (osip_authentication_info_t *
-				   authentication_info, char *realm)
+osip_authentication_info_set_realm (osip_authentication_info_t * authentication_info, char *realm)
 {
   authentication_info->realm = (char *) realm;
 }
 
 char *
-osip_authentication_info_get_opaque (osip_authentication_info_t *
-				   authentication_info)
+osip_authentication_info_get_opaque (osip_authentication_info_t * authentication_info)
 {
   return authentication_info->opaque;
 }
 
 void
-osip_authentication_info_set_opaque (osip_authentication_info_t *
-				   authentication_info, char *opaque)
+osip_authentication_info_set_opaque (osip_authentication_info_t * authentication_info, char *opaque)
 {
   authentication_info->opaque = (char *) opaque;
 }
@@ -479,7 +469,7 @@ osip_authentication_info_to_str (const osip_authentication_info_t * ainfo, char 
     }
     tmp = osip_strn_append (tmp, "srand=", 6);
     tmp = osip_str_append (tmp, ainfo->srand);
-    }
+  }
   if (ainfo->targetname != NULL) {
     if (tmp != start) {
       tmp = osip_strn_append (tmp, ", ", 2);

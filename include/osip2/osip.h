@@ -178,7 +178,7 @@ extern "C" {
    * in order to send the message.
    * The default value is 50ms.
    */
-#define DEFAULT_T1_TCP_PROGRESS 50         /* 50ms */
+#define DEFAULT_T1_TCP_PROGRESS 50      /* 50ms */
 #endif
 #ifndef DEFAULT_T2
   /**

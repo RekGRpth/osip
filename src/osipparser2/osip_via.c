@@ -251,7 +251,7 @@ osip_via_parse (osip_via_t * via, const char *hvalue)
     if (via->port == NULL)
       return OSIP_NOMEM;
     osip_clrncpy (via->port, port + 1, via_params - port - 1);
-    if(osip_atoi(via->port) < 0)
+    if (osip_atoi (via->port) < 0)
       return OSIP_SYNTAXERROR;
   }
   else
@@ -314,7 +314,8 @@ osip_via_to_str (const osip_via_t * via, char **dest)
 
   {
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&via->via_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&via->via_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (u_param->gvalue == NULL)
         plen = strlen (u_param->gname) + 2;
@@ -328,7 +329,7 @@ osip_via_to_str (const osip_via_t * via, char **dest)
         sprintf (tmp, ";%s", u_param->gname);
       else
         sprintf (tmp, ";%s=%s", u_param->gname, u_param->gvalue);
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
 

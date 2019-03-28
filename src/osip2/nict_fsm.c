@@ -145,6 +145,7 @@ nict_snd_request (osip_transaction_t * nict, osip_event_t * evt)
       osip_via_t *via;
       char *proto;
       int k;
+
       k = osip_message_get_via (nict->orig_request, 0, &via);   /* get top via */
       if (k < 0) {
         nict_handle_transport_error (nict, -1);
@@ -155,17 +156,18 @@ nict_snd_request (osip_transaction_t * nict, osip_event_t * evt)
         nict_handle_transport_error (nict, -1);
         return;
       }
-      if (i == 0) {               /* but message was really sent */
+      if (i == 0) {             /* but message was really sent */
         if (osip_strcasecmp (proto, "TCP") != 0 && osip_strcasecmp (proto, "TLS") != 0 && osip_strcasecmp (proto, "SCTP") != 0) {
         }
-        else {                    /* reliable protocol is used: */
-          nict->nict_context->timer_e_length = -1;        /* E is not ACTIVE */
+        else {                  /* reliable protocol is used: */
+          nict->nict_context->timer_e_length = -1;      /* E is not ACTIVE */
           nict->nict_context->timer_e_start.tv_sec = -1;
         }
-      } else {
+      }
+      else {
         if (osip_strcasecmp (proto, "TCP") != 0 && osip_strcasecmp (proto, "TLS") != 0 && osip_strcasecmp (proto, "SCTP") != 0) {
         }
-        else {                    /* reliable protocol is used: */
+        else {                  /* reliable protocol is used: */
           nict->nict_context->timer_e_length = DEFAULT_T1_TCP_PROGRESS;
         }
       }

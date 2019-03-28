@@ -555,7 +555,7 @@ osip_clrspace (char *word)
   len = strlen (word);
 
   pbeg = word;
-  pbeg += strspn(pbeg, " \r\n\t");
+  pbeg += strspn (pbeg, " \r\n\t");
 
   pend = word + len - 1;
   while ((' ' == *pend) || ('\r' == *pend) || ('\n' == *pend) || ('\t' == *pend)) {
@@ -957,7 +957,7 @@ osip_trace (char *filename_long, int li, osip_trace_level_t level, FILE * f, cha
   }
   __osip_port_gettimeofday (&now, NULL);
 
-  relative_time = (int)(1000 * (now.tv_sec - start.tv_sec));
+  relative_time = (int) (1000 * (now.tv_sec - start.tv_sec));
   if (now.tv_usec - start.tv_usec > 0)
     relative_time = relative_time + ((now.tv_usec - start.tv_usec) / 1000);
   else
@@ -1466,7 +1466,7 @@ osip_clrncpy (char *dst, const char *src, size_t len)
 
   /* find the start of relevant text */
   pbeg = src;
-  pbeg += strspn(pbeg," \r\n\t");
+  pbeg += strspn (pbeg, " \r\n\t");
 
 
   /* find the end of relevant text */

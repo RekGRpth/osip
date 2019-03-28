@@ -125,15 +125,15 @@ __osip_ict_init (osip_ict_t ** ict, osip_t * osip, osip_message_t * invite)
       port = osip_atoi (invite->req_uri->port);
 
     /* if ob was used in Contact, then exosip adds "x-obr" and "x-obp", thus, when
-    processing request, the ip/port destination are re-used here */
-    osip_uri_uparam_get_byname(invite->req_uri, "x-obr", &obr_param);
-    osip_uri_uparam_get_byname(invite->req_uri, "x-obp", &obp_param);
+       processing request, the ip/port destination are re-used here */
+    osip_uri_uparam_get_byname (invite->req_uri, "x-obr", &obr_param);
+    osip_uri_uparam_get_byname (invite->req_uri, "x-obp", &obp_param);
 
     osip_uri_uparam_get_byname (invite->req_uri, "maddr", &maddr_param);
     if (maddr_param != NULL && maddr_param->gvalue != NULL)
       osip_ict_set_destination ((*ict), osip_strdup (maddr_param->gvalue), port);
     else if (obr_param != NULL && obr_param->gvalue != NULL && obp_param != NULL && obp_param->gvalue != NULL)
-      osip_ict_set_destination ((*ict), osip_strdup (obr_param->gvalue), osip_atoi(obp_param->gvalue));
+      osip_ict_set_destination ((*ict), osip_strdup (obr_param->gvalue), osip_atoi (obp_param->gvalue));
     else
       osip_ict_set_destination ((*ict), osip_strdup (invite->req_uri->host), port);
   }

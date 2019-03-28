@@ -115,16 +115,16 @@ __osip_nict_init (osip_nict_t ** nict, osip_t * osip, osip_message_t * request)
       port = osip_atoi (request->req_uri->port);
 
     /* if ob was used in Contact, then exosip adds "x-obr" and "x-obp", thus, when
-    processing request, the ip/port destination are re-used here */
-    osip_uri_uparam_get_byname(request->req_uri, "x-obr", &obr_param);
-    osip_uri_uparam_get_byname(request->req_uri, "x-obp", &obp_param);
+       processing request, the ip/port destination are re-used here */
+    osip_uri_uparam_get_byname (request->req_uri, "x-obr", &obr_param);
+    osip_uri_uparam_get_byname (request->req_uri, "x-obp", &obp_param);
 
     osip_uri_uparam_get_byname (request->req_uri, "maddr", &maddr_param);
 
     if (maddr_param != NULL && maddr_param->gvalue != NULL)
       osip_nict_set_destination ((*nict), osip_strdup (maddr_param->gvalue), port);
     else if (obr_param != NULL && obr_param->gvalue != NULL && obp_param != NULL && obp_param->gvalue != NULL)
-      osip_nict_set_destination ((*nict), osip_strdup (obr_param->gvalue), osip_atoi(obp_param->gvalue));
+      osip_nict_set_destination ((*nict), osip_strdup (obr_param->gvalue), osip_atoi (obp_param->gvalue));
     else
       osip_nict_set_destination ((*nict), osip_strdup (request->req_uri->host), port);
   }

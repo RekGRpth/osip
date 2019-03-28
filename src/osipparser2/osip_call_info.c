@@ -132,7 +132,8 @@ osip_call_info_to_str (const osip_call_info_t * call_info, char **dest)
 
   {
     osip_list_iterator_t it;
-    osip_generic_param_t *u_param = (osip_generic_param_t*) osip_list_get_first(&call_info->gen_params, &it);
+    osip_generic_param_t *u_param = (osip_generic_param_t *) osip_list_get_first (&call_info->gen_params, &it);
+
     while (u_param != OSIP_SUCCESS) {
       if (u_param->gvalue == NULL)
         plen = strlen (u_param->gname) + 2;
@@ -146,7 +147,7 @@ osip_call_info_to_str (const osip_call_info_t * call_info, char **dest)
         sprintf (tmp, ";%s", u_param->gname);
       else
         sprintf (tmp, ";%s=%s", u_param->gname, u_param->gvalue);
-      u_param = (osip_generic_param_t *) osip_list_get_next(&it);
+      u_param = (osip_generic_param_t *) osip_list_get_next (&it);
     }
   }
   *dest = buf;
@@ -212,4 +213,3 @@ osip_call_info_set_uri (osip_call_info_t * ae, char *uri)
 {
   ae->element = uri;
 }
-

@@ -50,4 +50,3 @@ osip_content_disposition_parse (osip_content_disposition_t * cd, const char *hva
 
   return OSIP_SUCCESS;
 }
-

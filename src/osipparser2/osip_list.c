@@ -201,14 +201,14 @@ osip_list_get (const osip_list_t * li, int pos)
 void *
 osip_list_get_first (const osip_list_t * li, osip_list_iterator_t * iterator)
 {
-  if (li==NULL || 0 >= li->nb_elt) {
+  if (li == NULL || 0 >= li->nb_elt) {
     iterator->actual = 0;
     return OSIP_SUCCESS;
   }
 
   iterator->actual = li->node;
-  iterator->prev = (__node_t**)&li->node;
-  iterator->li = (osip_list_t*)li;
+  iterator->prev = (__node_t **) & li->node;
+  iterator->li = (osip_list_t *) li;
   iterator->pos = 0;
 
   return li->node->element;

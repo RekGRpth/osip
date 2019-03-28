@@ -76,7 +76,7 @@ extern "C" {
   * 
   * @param hname The header name to add in the list.
   */
-  int parser_add_comma_separated_header(const char *hname);
+  int parser_add_comma_separated_header (const char *hname);
 
 /**
  * Fix the via header for INCOMING requests only.
