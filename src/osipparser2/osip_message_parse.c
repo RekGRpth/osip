@@ -254,28 +254,20 @@ __osip_message_startline_parse (osip_message_t * dest, const char *buf, const ch
 int
 __osip_find_next_occurence (const char *str, const char *buf, const char **index_of_str, const char *end_of_buf)
 {
-  int i;
+  size_t slen;
 
   *index_of_str = NULL;         /* AMD fix */
-  if ((NULL == str) || (NULL == buf))
+  if (str == NULL || buf == NULL)
     return OSIP_BADPARAMETER;
-  /* TODO? we may prefer strcasestr instead of strstr? // TODO? with large binary, it will break at 10000 loop with a syntax error */
-  for (i = 0; i < 10000; i++) {
-    *index_of_str = strstr (buf, str);
-    if (NULL == (*index_of_str)) {
-      /* if '\0' (when binary data is used) is located before the separator,
-         then we have to continue searching */
-      const char *ptr = buf + strlen (buf);
 
-      if (end_of_buf - ptr > 0) {
-        buf = ptr + 1;
-        continue;
-      }
-      return OSIP_SYNTAXERROR;
+  slen = strlen(str);
+  while (slen < (size_t)(end_of_buf - buf)) {
+    if (!memcmp(str, buf, slen)) {
+      *index_of_str = buf;
+      return OSIP_SUCCESS;
     }
-    return OSIP_SUCCESS;
+    ++buf;
   }
-  OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_BUG, NULL, "This was probably an infinite loop?\n"));
   return OSIP_SYNTAXERROR;
 }
 
