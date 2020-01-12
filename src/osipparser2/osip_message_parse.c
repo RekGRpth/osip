@@ -190,6 +190,8 @@ __osip_message_startline_parseresp (osip_message_t * dest, const char *buf, cons
   statuscode = strchr (buf, ' ');       /* search for first SPACE */
   if (statuscode == NULL)
     return OSIP_SYNTAXERROR;
+  if (statuscode - (*headers)<7)        /* must be at least "SIP" "/"  1*DIGIT "." 1*DIGIT */
+    return OSIP_SYNTAXERROR;
   dest->sip_version = (char *) osip_malloc (statuscode - (*headers) + 1);
   if (dest->sip_version == NULL)
     return OSIP_NOMEM;
