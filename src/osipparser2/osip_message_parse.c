@@ -190,7 +190,7 @@ __osip_message_startline_parseresp (osip_message_t * dest, const char *buf, cons
   statuscode = strchr (buf, ' ');       /* search for first SPACE */
   if (statuscode == NULL)
     return OSIP_SYNTAXERROR;
-  if (statuscode - (*headers)<7)        /* must be at least "SIP" "/"  1*DIGIT "." 1*DIGIT */
+  if (statuscode - (*headers) < 7)      /* must be at least "SIP" "/"  1*DIGIT "." 1*DIGIT */
     return OSIP_SYNTAXERROR;
   dest->sip_version = (char *) osip_malloc (statuscode - (*headers) + 1);
   if (dest->sip_version == NULL)
@@ -260,9 +260,9 @@ __osip_find_next_occurence (const char *str, const char *buf, const char **index
   if (str == NULL || buf == NULL)
     return OSIP_BADPARAMETER;
 
-  slen = strlen(str);
-  while (slen < (size_t)(end_of_buf - buf)) {
-    if (!memcmp(str, buf, slen)) {
+  slen = strlen (str);
+  while (slen < (size_t) (end_of_buf - buf)) {
+    if (!memcmp (str, buf, slen)) {
       *index_of_str = buf;
       return OSIP_SUCCESS;
     }
@@ -311,8 +311,8 @@ osip_util_replace_all_lws (char *sip_message)
         tmp[0] = ' ';
         tmp++;
       }
-      if (tmp[0] == '\0') /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
-	return;
+      if (tmp[0] == '\0')       /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
+        return;
     }
   }
 }
