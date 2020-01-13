@@ -311,7 +311,7 @@ osip_util_replace_all_lws (char *sip_message)
         tmp[0] = ' ';
         tmp++;
       }
-      if (tmp[0] != '\0') /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
+      if (tmp[0] == '\0') /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
 	return;
     }
   }
