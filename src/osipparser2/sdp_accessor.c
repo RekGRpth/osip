@@ -580,51 +580,37 @@ sdp_message_a_attribute_del (sdp_message_t * sdp, int pos_media, char *att_field
 int
 sdp_message_a_attribute_del_at_index (sdp_message_t * sdp, int pos_media, char *att_field, int pos_attr)
 {
-  int i;
   sdp_media_t *med;
   sdp_attribute_t *attr;
 
   if (sdp == NULL)
     return OSIP_BADPARAMETER;
   if ((pos_media != -1) && (osip_list_size (&sdp->m_medias) < pos_media + 1))
-    return OSIP_UNDEFINED_ERROR;
+    return OSIP_BADPARAMETER;
+  if (pos_attr == -1)
+    return sdp_message_a_attribute_del (sdp, pos_media, att_field);
+
   if (pos_media == -1) {
-    if (pos_attr == -1) {
-      for (i = 0; i < osip_list_size (&sdp->a_attributes);) {
-        attr = osip_list_get (&sdp->a_attributes, i);
-        if (strcmp (attr->a_att_field, att_field) == 0) {
-          osip_list_remove (&sdp->a_attributes, i);
-          sdp_attribute_free (attr);
-        }
-        else
-          i++;
+    if ((attr = osip_list_get (&sdp->a_attributes, pos_attr)) != NULL) {
+      if (strcmp (attr->a_att_field, att_field) == 0) {
+        osip_list_remove (&sdp->a_attributes, pos_attr);
+        sdp_attribute_free (attr);
+        return OSIP_SUCCESS;
       }
     }
-    else if ((attr = osip_list_get (&sdp->a_attributes, pos_attr)) != NULL) {
-      osip_list_remove (&sdp->a_attributes, pos_attr);
-      sdp_attribute_free (attr);
-    }
-    return OSIP_SUCCESS;
+    return OSIP_BADPARAMETER;
   }
   med = (sdp_media_t *) osip_list_get (&sdp->m_medias, pos_media);
   if (med == NULL)
     return OSIP_UNDEFINED_ERROR;
-  for (i = 0; i < osip_list_size (&med->a_attributes);) {
-    if (pos_attr == -1) {
-      attr = osip_list_get (&med->a_attributes, i);
-      if (strcmp (attr->a_att_field, att_field) == 0) {
-        osip_list_remove (&med->a_attributes, i);
-        sdp_attribute_free (attr);
-      }
-      else
-        i++;
-    }
-    else if ((attr = osip_list_get (&med->a_attributes, pos_attr)) != NULL) {
+  if ((attr = osip_list_get (&med->a_attributes, pos_attr)) != NULL) {
+    if (strcmp (attr->a_att_field, att_field) == 0) {
       osip_list_remove (&med->a_attributes, pos_attr);
       sdp_attribute_free (attr);
+      return OSIP_SUCCESS;
     }
   }
-  return OSIP_SUCCESS;
+  return OSIP_BADPARAMETER;
 }
 
 
