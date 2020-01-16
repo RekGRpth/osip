@@ -1149,6 +1149,10 @@ sdp_message_parse_k (sdp_message_t * sdp, char *buf, char **next)
   else {
     sdp_media_t *last_sdp_media = (sdp_media_t *) osip_list_get (&sdp->m_medias, i - 1);
 
+    if (last_sdp_media != NULL) { /* fixed Jan 10,2020: avoid a possible memory leak with k appearing several times after media line */
+      sdp_key_free(k_header);
+      return -1;
+    }
     last_sdp_media->k_key = k_header;
   }
 
@@ -1272,7 +1276,7 @@ sdp_message_parse_m (sdp_message_t * sdp, char *buf, char **next)
 
   /* check if header is "m" */
   if (equal[-1] != 'm')
-    return ERR_DISCARD;
+    return ERR_ERROR; /* fixed Jan 10,2020: avoid a possible memory leak with m being not detected */
 
   crlf = equal + 1;
 
@@ -1433,8 +1437,6 @@ sdp_message_parse (sdp_message_t * sdp, const char *buf)
 
   ptr = next_buf;
 
-
-
   i = sdp_message_parse_o (sdp, ptr, &next_buf);
   if (i == -1)                  /* header is bad */
     return -1;
@@ -1442,14 +1444,16 @@ sdp_message_parse (sdp_message_t * sdp, const char *buf)
     return -1;
   ptr = next_buf;
 
-  i = sdp_message_parse_s (sdp, ptr, &next_buf);
-  if (i == -1)                  /* header is bad */
-    return -1;
-  else if (0 == i) {            /* header is not "s" */
-    /* return -1; */
-    OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_INFO4, NULL, "The \"s\" parameter is mandatory, but this packet does not contain any! - anyway, we don't mind about it.\n"));
+  if (sdp->s_name == NULL) { /* fixed Jan 10,2020: avoid a possible memory leak with s appearing both before o and after o */
+    i = sdp_message_parse_s(sdp, ptr, &next_buf);
+    if (i == -1)                  /* header is bad */
+      return -1;
+    else if (0 == i) {            /* header is not "s" */
+      /* return -1; */
+      OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_INFO4, NULL, "The \"s\" parameter is mandatory, but this packet does not contain any! - anyway, we don't mind about it.\n"));
+    }
+    ptr = next_buf;
   }
-  ptr = next_buf;
 
   i = sdp_message_parse_i (sdp, ptr, &next_buf);
   if (i == -1)                  /* header is bad */
