@@ -599,6 +599,18 @@ _osip_message_to_str (osip_message_t * sip, char **dest, size_t * message_length
         return OSIP_SYNTAXERROR;
       }
 
+      if (len == 1 && ct_param->gvalue[0] == '"') { /* fixed Jan 10,2020: avoid a negative length copy if boundary contains only one quote */
+        osip_free(*dest);
+        *dest = NULL;
+        return OSIP_SYNTAXERROR;
+      }
+
+      if (len == 2 && ct_param->gvalue[0] == '"' && ct_param->gvalue[1] == '"') { /* do not accept empty boundary */
+        osip_free(*dest);
+        *dest = NULL;
+        return OSIP_SYNTAXERROR;
+      }
+
       boundary = osip_malloc (len + 5);
       if (boundary == NULL) {
         osip_free (*dest);
