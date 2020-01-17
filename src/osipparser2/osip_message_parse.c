@@ -165,7 +165,7 @@ __osip_message_startline_parsereq (osip_message_t * dest, const char *buf, const
     osip_strncpy (dest->sip_version, p1 + 1, (hp - p1 - 1));
 
     if (0 != osip_strcasecmp (dest->sip_version, "SIP/2.0")) {
-      OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_ERROR, NULL, "Wrong version number\n"));
+      OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_WARNING, NULL, "Wrong version number\n"));
     }
 
     hp++;
