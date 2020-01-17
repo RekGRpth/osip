@@ -1,3 +1,11 @@
+libosip2 (5.1.1) - 2020-01-16
+	* fix vulnerability report: Authentication-Info or Proxy-Authentication-Info are affected by a buffer overflow when building sip messages.
+	* fix vulnerability report: when boundary only contains one quote, strncpy will use the unsigned value of -1 as size parameter.
+	* fix: avoid several memory leaks detected in the SDP parser upon invalid SDP formats.
+	* fix bug #57467: infinite loop in sdp_message_a_attribute_del_at_index
+	* fix bug #56071: Heap-buffer-overflow in osip_util_replace_all_lws function in osip_message_parse.c
+	* fix to reject any non compliant answer with missing version digits.
+
 libosip2 (5.1.0) - 2019-03-27
 	* STRUCTURE change: struct osip_srv_record
 	* STRUCTURE change: struct osip_naptr
