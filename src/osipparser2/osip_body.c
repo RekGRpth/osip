@@ -411,7 +411,7 @@ osip_body_to_str (const osip_body_t * body, char **dest, size_t * str_length)
   }
 
   if ((osip_list_size (body->headers) > 0) || (body->content_type != NULL)) {
-    if (length < tmp_body - ptr + 3) {
+    if (length < (size_t)(tmp_body - ptr + 3)) {
       size_t len;
 
       len = tmp_body - ptr;

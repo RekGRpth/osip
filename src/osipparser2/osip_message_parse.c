@@ -494,6 +494,8 @@ osip_message_set_multiple_header (osip_message_t * sip, char *hname, char *hvalu
       /* we discard any validation we tried: no valid uri detected */
       inquotes = 0;
       inuri = 0;
+      // (keep next comment to avoid fall through warning)
+      // fall through
     case ',':
       if (!inquotes && !inuri) {
         char *avalue;
