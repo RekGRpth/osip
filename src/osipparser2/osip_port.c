@@ -940,13 +940,13 @@ __osip_port_gettimeofday (struct timeval *tp, void *tz)
 #endif
 
 int
-osip_trace (char *filename_long, int li, osip_trace_level_t level, FILE * f, char *chfr, ...)
+osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * f, const char *chfr, ...)
 {
 #ifdef ENABLE_TRACE
   va_list ap;
   int relative_time = 0;
 
-  char *fi = NULL;
+  const char *fi = NULL;
 
 #if (defined(WIN32)  && !defined(_WIN32_WCE)) || defined(__linux) || defined(__APPLE__)
   static struct timeval start = { 0, 0 };

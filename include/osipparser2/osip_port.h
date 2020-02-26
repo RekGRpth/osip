@@ -224,7 +224,7 @@ extern "C" {
   } osip_trace_level_t;
 
 
-  typedef void osip_trace_func_t (char *fi, int li, osip_trace_level_t level, char *chfr, va_list ap);
+  typedef void osip_trace_func_t (const char *fi, int li, osip_trace_level_t level, const char *chfr, va_list ap);
 
 /* these are defined in all cases, but are empty when oSIP is compiled
    without trace */
@@ -257,7 +257,7 @@ extern "C" {
 /* INPUT: level | level of the trace               */
 /* INPUT: f | use f instead of default log file    */
 /* INPUT: chfr | format string for next args       */
-  int osip_trace (char *fi, int li, osip_trace_level_t level, FILE * f, char *chfr, ...);
+  int osip_trace (const char *fi, int li, osip_trace_level_t level, FILE * f, const char *chfr, ...);
 
 #ifdef ENABLE_TRACE
 #define OSIP_TRACE(P) P
