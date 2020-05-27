@@ -816,10 +816,8 @@ osip_trace_initialize (osip_trace_level_t level, FILE * file)
   logfile = NULL;
   if (file != NULL)
     logfile = file;
-#ifndef SYSTEM_LOGGER_ENABLED
   else
     logfile = stdout;
-#endif
 
   /* enable all lower levels */
   while (i < END_TRACE_LEVEL) {
@@ -932,11 +930,7 @@ __osip_port_gettimeofday (struct timeval *tp, void *tz)
 #endif
 
 #ifndef MAX_LENGTH_TR
-#ifdef SYSTEM_LOGGER_ENABLED
 #define MAX_LENGTH_TR 2024      /* NEVER DEFINE MORE THAN 2024 */
-#else
-#define MAX_LENGTH_TR 512       /* NEVER DEFINE MORE THAN 2024 */
-#endif
 #endif
 
 int
@@ -944,24 +938,34 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
 {
 #ifdef ENABLE_TRACE
   va_list ap;
-  int relative_time = 0;
+  char time_buffer[80] = { '\0' };
 
   const char *fi = NULL;
 
-#if (defined(WIN32)  && !defined(_WIN32_WCE)) || defined(__linux) || defined(__APPLE__)
-  static struct timeval start = { 0, 0 };
-  struct timeval now;
-
-  if (start.tv_sec == 0 && start.tv_usec == 0) {
-    __osip_port_gettimeofday (&start, NULL);
+  if (logfile == NULL && use_syslog == 0 && trace_func == NULL && f == NULL) {
+    /* user did not initialize logger: Let's make it default. */
+    osip_trace_initialize(OSIP_WARNING, stdout);
   }
-  __osip_port_gettimeofday (&now, NULL);
 
-  relative_time = (int) (1000 * (now.tv_sec - start.tv_sec));
-  if (now.tv_usec - start.tv_usec > 0)
-    relative_time = relative_time + ((now.tv_usec - start.tv_usec) / 1000);
-  else
-    relative_time = relative_time - ((start.tv_usec - now.tv_usec) / 1000);
+  if (tracing_table[level] == LOG_FALSE)
+    return OSIP_SUCCESS;
+
+#if defined(HAVE_LOCALTIME)
+  {
+    time_t timestamp;
+    struct timeval now;
+    struct tm * ptm;
+    int tenths_ms;
+    __osip_port_gettimeofday(&now, NULL);
+
+    timestamp = now.tv_sec;
+    tenths_ms = now.tv_usec / (100L);
+    ptm = localtime(&timestamp);
+
+    snprintf(time_buffer, 80, "%04d-%02d-%02d %02d:%02d:%02d.%04d",
+      1900 + ptm->tm_year, ptm->tm_mon + 1, ptm->tm_mday,
+      ptm->tm_hour, ptm->tm_min, ptm->tm_sec, tenths_ms);
+  }
 #endif
 
   if (filename_long != NULL) {
@@ -974,29 +978,24 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
       fi = filename_long;
   }
 
-#if !defined(WIN32) && !defined(SYSTEM_LOGGER_ENABLED)
-  if (logfile == NULL && use_syslog == 0 && trace_func == NULL) {       /* user did not initialize logger.. */
-    return 1;
-  }
-#endif
-
-  if (tracing_table[level] == LOG_FALSE)
-    return OSIP_SUCCESS;
-
-  if (f == NULL && trace_func == NULL)
+  if (f == NULL)
     f = logfile;
-
-  VA_START (ap, chfr);
 
 #if  defined(__VXWORKS_OS__) || defined(__rtems__)
   /* vxworks can't have a local file */
   f = stdout;
 #endif
 
-  if (0) {
+  VA_START (ap, chfr);
+
+  if (trace_func) {
+    trace_func(fi, li, level, chfr, ap);
+    va_end(ap);
+    return OSIP_SUCCESS;
   }
+
 #ifdef ANDROID
-  else if (trace_func == 0) {
+  {
     int lev;
 
     switch (level) {
@@ -1029,145 +1028,92 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
       break;
     }
     __android_log_vprint (lev, "osip2", chfr, ap);
+    va_end(ap);
+    return OSIP_SUCCESS;
   }
-#elif defined(__APPLE__)  && defined(__OBJC__)
-  else if (trace_func == 0) {
+#endif
+
+  {
     char buffer[MAX_LENGTH_TR];
     int in = 0;
 
-    memset (buffer, 0, sizeof (buffer));
+    memset(buffer, 0, sizeof(buffer));
     if (level == OSIP_FATAL)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| FATAL | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| FATAL | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_BUG)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "|  BUG  | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|  BUG  | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_ERROR)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| ERROR | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| ERROR | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_WARNING)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "|WARNING| <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|WARNING| %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO1)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO1 | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO1 | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO2)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO2 | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO2 | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO3)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO3 | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO3 | %s <%s: %i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO4)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO4 | <%s: %i> ", fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO4 | %s <%s: %i> ", time_buffer, fi, li);
 
-    vsnprintf (buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
-    NSLog (@"%s", buffer);
-  }
-#endif
-  else if (f && use_syslog == 0) {
-    if (level == OSIP_FATAL)
-      fprintf (f, "| FATAL | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_BUG)
-      fprintf (f, "|  BUG  | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_ERROR)
-      fprintf (f, "| ERROR | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_WARNING)
-      fprintf (f, "|WARNING| %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO1)
-      fprintf (f, "| INFO1 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO2)
-      fprintf (f, "| INFO2 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO3)
-      fprintf (f, "| INFO3 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO4)
-      fprintf (f, "| INFO4 | %i <%s: %i> ", relative_time, fi, li);
-
-    vfprintf (f, chfr, ap);
-
-    fflush (f);
-  }
-  else if (trace_func) {
-    trace_func (fi, li, level, chfr, ap);
-  }
+    vsnprintf(buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
 
 #if defined (HAVE_SYSLOG_H) && !defined(__arc__)
-  else if (use_syslog == 1) {
-    char buffer[MAX_LENGTH_TR];
-    int in = 0;
-
-    memset (buffer, 0, sizeof (buffer));
-    if (level == OSIP_FATAL)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| FATAL | <%s: %i> ", fi, li);
-    else if (level == OSIP_BUG)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "|  BUG  | <%s: %i> ", fi, li);
-    else if (level == OSIP_ERROR)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| ERROR | <%s: %i> ", fi, li);
-    else if (level == OSIP_WARNING)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "|WARNING| <%s: %i> ", fi, li);
-    else if (level == OSIP_INFO1)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO1 | <%s: %i> ", fi, li);
-    else if (level == OSIP_INFO2)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO2 | <%s: %i> ", fi, li);
-    else if (level == OSIP_INFO3)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO3 | <%s: %i> ", fi, li);
-    else if (level == OSIP_INFO4)
-      in = snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO4 | <%s: %i> ", fi, li);
-
-    vsnprintf (buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
-    if (level == OSIP_FATAL)
-      syslog (LOG_ERR, "%s", buffer);
-    else if (level == OSIP_BUG)
-      syslog (LOG_ERR, "%s", buffer);
-    else if (level == OSIP_ERROR)
-      syslog (LOG_ERR, "%s", buffer);
-    else if (level == OSIP_WARNING)
-      syslog (LOG_WARNING, "%s", buffer);
-    else if (level == OSIP_INFO1)
-      syslog (LOG_INFO, "%s", buffer);
-    else if (level == OSIP_INFO2)
-      syslog (LOG_INFO, "%s", buffer);
-    else if (level == OSIP_INFO3)
-      syslog (LOG_DEBUG, "%s", buffer);
-    else if (level == OSIP_INFO4)
-      syslog (LOG_DEBUG, "%s", buffer);
-  }
-#endif
-#ifdef SYSTEM_LOGGER_ENABLED
-  else {
-    char buffer[MAX_LENGTH_TR];
-    int in = 0;
-
-#ifdef DISPLAY_TIME
-    int relative_time;
+    if (use_syslog == 1) {
+      if (level == OSIP_FATAL)
+        syslog(LOG_ERR, "%s", buffer);
+      else if (level == OSIP_BUG)
+        syslog(LOG_ERR, "%s", buffer);
+      else if (level == OSIP_ERROR)
+        syslog(LOG_ERR, "%s", buffer);
+      else if (level == OSIP_WARNING)
+        syslog(LOG_WARNING, "%s", buffer);
+      else if (level == OSIP_INFO1)
+        syslog(LOG_INFO, "%s", buffer);
+      else if (level == OSIP_INFO2)
+        syslog(LOG_INFO, "%s", buffer);
+      else if (level == OSIP_INFO3)
+        syslog(LOG_DEBUG, "%s", buffer);
+      else if (level == OSIP_INFO4)
+        syslog(LOG_DEBUG, "%s", buffer);
+      va_end(ap);
+      return OSIP_SUCCESS;
+    }
 #endif
 
-    memset (buffer, 0, sizeof (buffer));
-    if (level == OSIP_FATAL)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| FATAL | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_BUG)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "|  BUG  | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_ERROR)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| ERROR | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_WARNING)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "|WARNING| %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO1)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO1 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO2)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO2 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO3)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO3 | %i <%s: %i> ", relative_time, fi, li);
-    else if (level == OSIP_INFO4)
-      in = _snprintf (buffer, MAX_LENGTH_TR - 1, "| INFO4 | %i <%s: %i> ", relative_time, fi, li);
-
-    _vsnprintf (buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
+#if defined(WIN32)
+    if (f == stdout) {
 #ifdef UNICODE
-    {
       WCHAR wUnicode[MAX_LENGTH_TR * 2];
       int size;
 
-      size = MultiByteToWideChar (CP_UTF8, 0, buffer, -1, wUnicode, MAX_LENGTH_TR * 2);
+      size = MultiByteToWideChar(CP_UTF8, 0, buffer, -1, wUnicode, MAX_LENGTH_TR * 2);
       wUnicode[size - 2] = '\n';
       wUnicode[size - 1] = '\0';
-      OutputDebugString (wUnicode);
-    }
+      OutputDebugString(wUnicode);
 #else
-    OutputDebugString (buffer);
+      OutputDebugString(buffer);
 #endif
+      va_end(ap);
+      return OSIP_SUCCESS;
+    }
+#endif
+
+#if defined(__APPLE__)  && defined(__OBJC__)
+    if (f == stdout) {
+      NSLog(@"%s", buffer);
+      va_end(ap);
+      return OSIP_SUCCESS;
+    }
+#endif
+
+    if (f) {
+      fprintf(f, "%s", buffer);
+      fflush(f);
+      va_end(ap);
+      return OSIP_SUCCESS;
+    }
+
   }
-#endif
 
   va_end (ap);
 #endif

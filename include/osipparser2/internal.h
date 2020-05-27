@@ -45,8 +45,8 @@
 #define HAVE_TIME_H 1
 #define HAVE_STDARG_H 1
 
-#define snprintf  _snprintf
-
+#define snprintf _snprintf
+#define vsnprintf _vsnprintf
 #elif defined(WIN32)
 
 #define HAVE_CTYPE_H 1
@@ -55,8 +55,11 @@
 #define HAVE_TIME_H 1
 #define HAVE_STDARG_H 1
 
+#define HAVE_LOCALTIME 1
+
 #if (_MSC_VER < 1900)
 #define snprintf _snprintf
+#define vsnprintf _vsnprintf
 #endif
 #if (_MSC_VER >= 1700) && !defined(_USING_V110_SDK71_)
 #include <winapifamily.h>
