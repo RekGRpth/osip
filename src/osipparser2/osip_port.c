@@ -1039,21 +1039,21 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
 
     memset(buffer, 0, sizeof(buffer));
     if (level == OSIP_FATAL)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| FATAL | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| FATAL | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_BUG)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|  BUG  | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|  BUG  | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_ERROR)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| ERROR | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| ERROR | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_WARNING)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|WARNING| %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "|WARNING| %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO1)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO1 | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO1 | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO2)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO2 | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO2 | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO3)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO3 | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO3 | %s <%10.10s:%5i> ", time_buffer, fi, li);
     else if (level == OSIP_INFO4)
-      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO4 | %s <%s: %i> ", time_buffer, fi, li);
+      in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO4 | %s <%10.10s:%5i> ", time_buffer, fi, li);
 
     vsnprintf(buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
 
