@@ -18,13 +18,16 @@ upload: dist
 	gpg --clearsign $(PACKAGE)-$(VERSION).tar.gz.directive
 
 doxygen:
-	doxygen help/doxygen/DoxyFile
+	doxygen $(top_srcdir)/help/doxygen/DoxyFile
 
 indent:
-	indent */*/*.c
-	indent */*/*.h
-	rm -rf */*/*.c~
-	rm -rf */*/*.h~
+	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/include/*/*.h
+	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/include/*/*/*.h
+	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/src/*/*.h
+	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/src/*/*.c
+	rm -rf $(top_srcdir)/*/*/*.h~
+	rm -rf $(top_srcdir)/*/*/*/*.h~
+	rm -rf $(top_srcdir)/*/*/*.c~
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libosip2.pc

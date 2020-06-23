@@ -1,17 +1,17 @@
 /*
   The oSIP library implements the Session Initiation Protocol (SIP -rfc3261-)
   Copyright (C) 2001-2020 Aymeric MOIZARD amoizard@antisip.com
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
-  
+
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -56,113 +56,111 @@ static int hdr_ref_table[HASH_TABLE_SIZE];      /* the hashtable contains indice
   v: Via   => ok
 */
 /* This method must be called before using the parser */
-int
-parser_init (void)
-{
+int parser_init(void) {
   int i = 0;
-  int hname_length = sizeof (pconfig_commasep[0].hname);
+  int hname_length = sizeof(pconfig_commasep[0].hname);
 
-  memset (pconfig_commasep, 0, sizeof (pconfig_commasep));
+  memset(pconfig_commasep, 0, sizeof(pconfig_commasep));
   /* rfc3261 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "a");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Encoding");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Language");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Alert-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Allow");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Authentication-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Call-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Contact");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "m");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Content-Encoding");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "e");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Content-Language");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Error-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "In-Reply-To");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Proxy-Require");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Record-Route");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Require");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Route");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Supported");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "k");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Unsupported");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Via");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "v");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Warning");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "a");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Encoding");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Language");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Alert-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Allow");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Authentication-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Call-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Contact");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "m");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Content-Encoding");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "e");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Content-Language");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Error-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "In-Reply-To");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Proxy-Require");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Record-Route");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Require");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Route");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Supported");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "k");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Unsupported");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Via");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "v");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Warning");
 
   /* rfc3313 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Media-Authorization");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Media-Authorization");
 
   /* rfc3325 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Asserted-Identity");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Preferred-Identity");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Asserted-Identity");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Preferred-Identity");
 
   /* rfc3326 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Reason");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Reason");
 
   /* rfc3327 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Path");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Path");
 
   /* rfc3329 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Security-Client");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Security-Server");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Security-Verify");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Security-Client");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Security-Server");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Security-Verify");
 
   /* rfc3608 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Service-Route");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Service-Route");
 
   /* rfc3841 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Request-Disposition");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "d");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Contact");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "a");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Reject-Contact");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "j");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Request-Disposition");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "d");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Contact");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "a");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Reject-Contact");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "j");
 
   /* rfc4412 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Resource-Priority");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Resource-Priority");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Resource-Priority");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept-Resource-Priority");
 
   /* rfc5009 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Early-Media");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Early-Media");
 
   /* rfc5318 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Refused-URI-List");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Refused-URI-List");
 
   /* rfc5360 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Permission-Missing");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Trigger-Consent");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Permission-Missing");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Trigger-Consent");
 
   /* rfc6050 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Asserted-Service");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Preferred-Service");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Asserted-Service");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Preferred-Service");
 
   /* rfc6086 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Recv-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Recv-Info");
 
   /* rfc6665 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Allow-Events");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "u");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Allow-Events");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "u");
 
   /* rfc6794 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Policy-ID");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Policy-Contact");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Policy-ID");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Policy-Contact");
 
   /* rfc6809 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Feature-Caps");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Feature-Caps");
 
   /* rfc7044 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "History-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "Accept");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "History-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "Accept");
 
   /* rfc7315 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Associated-URI");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Visited-Network-ID");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Access-Network-Info");
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "P-Charging-Function-Addresses");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Associated-URI");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Visited-Network-ID");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Access-Network-Info");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "P-Charging-Function-Addresses");
 
   /* rfc7433 */
-  snprintf (pconfig_commasep[i++].hname, hname_length, "%s", "User-to-User");
+  snprintf(pconfig_commasep[i++].hname, hname_length, "%s", "User-to-User");
 
   i = 0;
 #ifndef MINISIZE
@@ -287,17 +285,17 @@ parser_init (void)
 
     /* calculate hash value using lower case */
     /* Fixed: do not lower constant... osip_tolower( pconfig[i].hname ); */
-    hash = osip_hash (pconfig[i].hname);
+    hash = osip_hash(pconfig[i].hname);
     hash = hash % HASH_TABLE_SIZE;
 
     if (hdr_ref_table[hash] == -1) {
       /* store reference(index) to pconfig table */
       hdr_ref_table[hash] = i;
-    }
-    else {
+
+    } else {
       /* oops, conflict!-> change the hash table or use another hash function size */
 
-      OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_ERROR, NULL, "conflict with current hashtable size\n"));
+      OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "conflict with current hashtable size\n"));
       return OSIP_UNDEFINED_ERROR;
     }
   }
@@ -305,49 +303,46 @@ parser_init (void)
   return OSIP_SUCCESS;
 }
 
-int
-parser_add_comma_separated_header (const char *hname)
-{
+int parser_add_comma_separated_header(const char *hname) {
   int i;
 
   for (i = 0; i < NUMBER_OF_HEADERS_COMMASEPARATED; i++) {
     if (pconfig_commasep[i].hname[0] == '\0') {
-      snprintf (pconfig_commasep[i].hname, sizeof (pconfig_commasep[i].hname), "%s", hname);
+      snprintf(pconfig_commasep[i].hname, sizeof(pconfig_commasep[i].hname), "%s", hname);
       return OSIP_SUCCESS;
     }
   }
+
   return OSIP_UNDEFINED_ERROR;
 }
 
-int
-__osip_message_is_header_comma_separated (const char *hname)
-{
+int __osip_message_is_header_comma_separated(const char *hname) {
   int i;
 
   for (i = 0; i < NUMBER_OF_HEADERS_COMMASEPARATED; i++) {
     if (pconfig_commasep[i].hname[0] == '\0')
       break;
-    if (osip_strcasecmp (pconfig_commasep[i].hname, hname) == 0)
+
+    if (osip_strcasecmp(pconfig_commasep[i].hname, hname) == 0)
       return OSIP_SUCCESS;
   }
+
   return OSIP_UNDEFINED_ERROR;
 }
 
 /* improved look-up mechanism
    precondition: hname is all lowercase */
-int
-__osip_message_is_known_header (const char *hname)
-{
+int __osip_message_is_known_header(const char *hname) {
   unsigned long hash;
   int result = -1;
 
   int index;
 
-  hash = osip_hash (hname);
+  hash = osip_hash(hname);
   hash = hash % HASH_TABLE_SIZE;
   index = hdr_ref_table[hash];
 
-  if ((index != -1) && (0 == strcmp (pconfig[index].hname, hname))) {
+  if ((index != -1) && (0 == strcmp(pconfig[index].hname, hname))) {
     result = index;
   }
 
@@ -357,16 +352,17 @@ __osip_message_is_known_header (const char *hname)
 #endif
 
 /* This method calls the method that is able to parse the header */
-int
-__osip_message_call_method (int i, osip_message_t * dest, const char *hvalue)
-{
+int __osip_message_call_method(int i, osip_message_t *dest, const char *hvalue) {
   int err;
 
-  err = pconfig[i].setheader (dest, hvalue);
+  err = pconfig[i].setheader(dest, hvalue);
+
   if (err < 0) {
-    OSIP_TRACE (osip_trace (__FILE__, __LINE__, OSIP_WARNING, NULL, "Could not set header: %s: %s\n", pconfig[i].hname, hvalue));
+    OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_WARNING, NULL, "Could not set header: %s: %s\n", pconfig[i].hname, hvalue));
   }
+
   if (pconfig[i].ignored_when_invalid == 1)
     return OSIP_SUCCESS;
+
   return err;
 }

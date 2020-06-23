@@ -1,17 +1,17 @@
 /*
   The oSIP library implements the Session Initiation Protocol (SIP -rfc3261-)
   Copyright (C) 2001-2020 Aymeric MOIZARD amoizard@antisip.com
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
-  
+
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -38,7 +38,7 @@
  * Structure for Contact headers.
  * @var osip_contact_t
  */
-  typedef osip_from_t osip_contact_t;
+typedef osip_from_t osip_contact_t;
 
 #ifdef __cplusplus
 extern "C"
@@ -50,36 +50,36 @@ extern "C"
  * Allocate a Contact element.
  * @param header The element to work on.
  */
-  int osip_contact_init (osip_contact_t ** header);
+int osip_contact_init(osip_contact_t **header);
 /**
  * Free a Contact element.
  * @param header The element to work on.
  */
-  void osip_contact_free (osip_contact_t * header);
+void osip_contact_free(osip_contact_t *header);
 #endif
 /**
  * Parse a Contact element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-  int osip_contact_parse (osip_contact_t * header, const char *hvalue);
+int osip_contact_parse(osip_contact_t *header, const char *hvalue);
 /**
  * Get a string representation of a Contact element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-  int osip_contact_to_str (const osip_contact_t * header, char **dest);
+int osip_contact_to_str(const osip_contact_t *header, char **dest);
 #ifndef MINISIZE
 /**
  * Clone a Contact element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-  int osip_contact_clone (const osip_contact_t * header, osip_contact_t ** dest);
+int osip_contact_clone(const osip_contact_t *header, osip_contact_t **dest);
 #else
-  #define osip_contact_init  osip_from_init
-  #define osip_contact_free  osip_from_free
-  #define osip_contact_clone osip_from_clone
+#define osip_contact_init  osip_from_init
+#define osip_contact_free  osip_from_free
+#define osip_contact_clone osip_from_clone
 #endif
 /**
  * Get the displayname from a Contact header.

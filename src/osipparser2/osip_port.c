@@ -1,17 +1,17 @@
 /*
   The oSIP library implements the Session Initiation Protocol (SIP -rfc3261-)
   Copyright (C) 2001-2020 Aymeric MOIZARD amoizard@antisip.com
-  
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
   version 2.1 of the License, or (at your option) any later version.
-  
+
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
-  
+
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -54,12 +54,12 @@
 #endif
 
 #if defined(__PALMOS__) && (__PALMOS__ < 0x06000000)
-#	include <TimeMgr.h>
-#	include <SysUtils.h>
-#	include <SystemMgr.h>
-#	include <StringMgr.h>
+# include <TimeMgr.h>
+# include <SysUtils.h>
+# include <SystemMgr.h>
+# include <StringMgr.h>
 #else
-#	include <time.h>
+# include <time.h>
 #endif
 
 #if defined(__VXWORKS_OS__)
@@ -71,10 +71,10 @@
 #include <string.h>
 
 #elif defined(__PALMOS__)
-#	if __PALMOS__ >= 0x06000000
-#		include <sys/time.h>
-#		include <SysThread.h>
-#	endif
+# if __PALMOS__ >= 0x06000000
+#   include <sys/time.h>
+#   include <SysThread.h>
+# endif
 #elif (!defined(WIN32) && !defined(_WIN32_WCE))
 #include <sys/time.h>
 #elif defined(WIN32)
@@ -198,104 +198,106 @@ const char *osip_error_table[] = {
   "undefined",                  /* -60 */
 };
 
-const char *
-osip_strerror (int err)
-{
+const char *osip_strerror(int err) {
   if (err > 0)
     return osip_error_table[0];
+
   if (err > -60)
     return osip_error_table[-err];
+
   return osip_error_table[59];
 }
 
 #ifndef WIN32_USE_CRYPTO
 unsigned int
-osip_build_random_number ()
+osip_build_random_number()
 #else
 static unsigned int
-osip_fallback_random_number ()
+osip_fallback_random_number()
 #endif
 {
   if (!random_seed_set) {
     unsigned int ticks;
 
 #ifdef __PALMOS__
-#	if __PALMOS__ < 0x06000000
-    SysRandom ((Int32) TimGetTicks ());
-#	else
+# if __PALMOS__ < 0x06000000
+    SysRandom((Int32) TimGetTicks());
+# else
     struct timeval tv;
 
-    gettimeofday (&tv, NULL);
-    srand (tv.tv_usec);
+    gettimeofday(&tv, NULL);
+    srand(tv.tv_usec);
     ticks = tv.tv_sec + tv.tv_usec;
-#	endif
+# endif
 #elif defined(WIN32)
     LARGE_INTEGER lCount;
 
-    QueryPerformanceCounter (&lCount);
+    QueryPerformanceCounter(&lCount);
     ticks = lCount.LowPart + lCount.HighPart;
 #elif defined(_WIN32_WCE)
-    ticks = GetTickCount ();
+    ticks = GetTickCount();
 #elif defined(__PSOS__)
 #elif defined(__rtems__)
-    rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &ticks);
+    rtems_clock_get(RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &ticks);
 #elif defined(__VXWORKS_OS__)
     struct timespec tp;
 
-    clock_gettime (CLOCK_REALTIME, &tp);
+    clock_gettime(CLOCK_REALTIME, &tp);
     ticks = tp.tv_sec + tp.tv_nsec;
 #else
     struct timeval tv;
     int fd;
 
-    gettimeofday (&tv, NULL);
-    ticks = (unsigned int) (tv.tv_sec + tv.tv_usec);
-    fd = open ("/dev/urandom", O_RDONLY);
+    gettimeofday(&tv, NULL);
+    ticks = (unsigned int)(tv.tv_sec + tv.tv_usec);
+    fd = open("/dev/urandom", O_RDONLY);
+
     if (fd > 0) {
       unsigned int r;
       int i;
 
       for (i = 0; i < 512; i++) {
-        read (fd, &r, sizeof (r));
+        read(fd, &r, sizeof(r));
         ticks += r;
       }
-      close (fd);
+
+      close(fd);
     }
+
 #endif
 
 #ifdef HAVE_LRAND48
-    srand48 (ticks);
+    srand48(ticks);
 #else
-    srand (ticks);
+    srand(ticks);
 #endif
     random_seed_set = 1;
   }
+
 #ifdef HAVE_LRAND48
   {
-    int val = (int) lrand48 ();
+    int val = (int) lrand48();
 
     if (val == 0) {
       unsigned int ticks;
       struct timeval tv;
 
-      gettimeofday (&tv, NULL);
-      ticks = (unsigned int) (tv.tv_sec + tv.tv_usec);
-      srand48 (ticks);
-      return (unsigned int) lrand48 ();
+      gettimeofday(&tv, NULL);
+      ticks = (unsigned int)(tv.tv_sec + tv.tv_usec);
+      srand48(ticks);
+      return (unsigned int) lrand48();
     }
 
     return val;
   }
 #else
-  return rand ();
+  return rand();
 #endif
 }
 
 #ifdef WIN32_USE_CRYPTO
 
-unsigned int
-osip_build_random_number ()
-{
+unsigned int osip_build_random_number() {
   HCRYPTPROV crypto;
   BOOL err;
   unsigned int num;
@@ -304,19 +306,23 @@ osip_build_random_number ()
     unsigned int ticks;
     LARGE_INTEGER lCount;
 
-    QueryPerformanceCounter (&lCount);
+    QueryPerformanceCounter(&lCount);
     ticks = lCount.LowPart + lCount.HighPart;
-    srand (ticks);
+    srand(ticks);
     random_seed_set = 1;
   }
-  err = CryptAcquireContext (&crypto, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+
+  err = CryptAcquireContext(&crypto, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+
   if (err) {
-    err = CryptGenRandom (crypto, sizeof (num), (BYTE *) & num);
-    CryptReleaseContext (crypto, 0);
+    err = CryptGenRandom(crypto, sizeof(num), (BYTE *) & num);
+    CryptReleaseContext(crypto, 0);
   }
+
   if (!err) {
-    num = osip_fallback_random_number ();
+    num = osip_fallback_random_number();
   }
+
   return num;
 }
 
@@ -327,48 +333,48 @@ osip_build_random_number ()
 #endif
 
 
-char *
-osip_strncpy (char *dest, const char *src, size_t length)
-{
-  strncpy (dest, src, length);
+char *osip_strncpy(char *dest, const char *src, size_t length) {
+  strncpy(dest, src, length);
   dest[length] = '\0';
   return dest;
 }
 
 #undef osip_strdup
 
-char *
-osip_strdup (const char *ch)
-{
+char *osip_strdup(const char *ch) {
   char *copy;
   size_t length;
 
   if (ch == NULL)
     return NULL;
-  length = strlen (ch);
-  copy = (char *) osip_malloc (length + 1);
+
+  length = strlen(ch);
+  copy = (char *) osip_malloc(length + 1);
+
   if (copy == NULL)
     return NULL;
-  osip_strncpy (copy, ch, length);
+
+  osip_strncpy(copy, ch, length);
   return copy;
 }
 
 #ifndef MINISIZE
-int
-osip_atoi (const char *number)
-{
+int osip_atoi(const char *number) {
 #if defined(__linux) || defined(HAVE_STRTOL)
   long int i;
 
   if (number == NULL)
     return OSIP_UNDEFINED_ERROR;
-  i = strtol (number, (char **) NULL, 10);
+
+  i = strtol(number, (char **) NULL, 10);
+
   if (i == LONG_MIN || i == LONG_MAX)
     return OSIP_UNDEFINED_ERROR;
+
   return i;
 #endif
 
-  return atoi (number);
+  return atoi(number);
 }
 
 #endif
@@ -381,185 +387,193 @@ osip_atoi (const char *number)
 #endif
 #endif
 
-void
-osip_usleep (int useconds)
-{
+void osip_usleep(int useconds) {
 #if defined(__PALMOS__) && (__PALMOS__ >= 0x06000000)
   /* This bit will work for the Protein API, but not the Palm 68K API */
   nsecs_t nanoseconds = useconds * 1000;
 
-  SysThreadDelay (nanoseconds, P_ABSOLUTE_TIMEOUT);
+  SysThreadDelay(nanoseconds, P_ABSOLUTE_TIMEOUT);
 #elif defined(__PALMOS__) && (__PALMOS__ < 0x06000000)
-  UInt32 stoptime = TimGetTicks () + (useconds / 1000000) * SysTicksPerSecond ();
+  UInt32 stoptime = TimGetTicks() + (useconds / 1000000) * SysTicksPerSecond();
 
-  while (stoptime > TimGetTicks ())
+  while (stoptime > TimGetTicks())
     /* I wish there was some type of yield function here */
     ;
+
 #elif defined(HAVE_WINDOWSPHONE_API)
   struct timeval delay;
   int sec;
 
   sec = (int) useconds / 1000000;
+
   if (sec > 0) {
     delay.tv_sec = sec;
     delay.tv_usec = 0;
-  }
-  else {
+
+  } else {
     delay.tv_sec = 0;
     delay.tv_usec = useconds;
   }
-  select (0, 0, 0, 0, &delay);
+
+  select(0, 0, 0, 0, &delay);
 #elif defined(HAVE_WINAPPSTORE_API)
   TODO
 #elif defined(WIN32)
-  Sleep (useconds / 1000);
+  Sleep(useconds / 1000);
 #elif defined(__rtems__)
-  rtems_task_wake_after (RTEMS_MICROSECONDS_TO_TICKS (useconds));
+  rtems_task_wake_after(RTEMS_MICROSECONDS_TO_TICKS(useconds));
 #elif defined(__arc__)
   struct timespec req;
   struct timespec rem;
 
   req.tv_sec = (int) useconds / 1000000;
-  req.tv_nsec = (int) (useconds % 1000000) * 1000;
-  nanosleep (&req, &rem);
+  req.tv_nsec = (int)(useconds % 1000000) * 1000;
+  nanosleep(&req, &rem);
 #else
   struct timeval delay;
   int sec;
 
   sec = (int) useconds / 1000000;
+
   if (sec > 0) {
     delay.tv_sec = sec;
     delay.tv_usec = 0;
-  }
-  else {
+
+  } else {
     delay.tv_sec = 0;
     delay.tv_usec = useconds;
   }
-  select (0, 0, 0, 0, &delay);
+
+  select(0, 0, 0, 0, &delay);
 #endif
 }
 
-char *
-osip_strdup_without_quote (const char *ch)
-{
-  char *copy = (char *) osip_malloc (strlen (ch) + 1);
+char *osip_strdup_without_quote(const char *ch) {
+  char *copy = (char *) osip_malloc(strlen(ch) + 1);
 
   if (copy == NULL)
     return NULL;
 
   /* remove leading and trailing " */
   if ((*ch == '\"')) {
-    osip_strncpy (copy, ch + 1, strlen (ch + 1));
-    osip_strncpy (copy + strlen (copy) - 1, "\0", 1);
-  }
-  else
-    osip_strncpy (copy, ch, strlen (ch));
+    osip_strncpy(copy, ch + 1, strlen(ch + 1));
+    osip_strncpy(copy + strlen(copy) - 1, "\0", 1);
+
+  } else
+    osip_strncpy(copy, ch, strlen(ch));
+
   return copy;
 }
 
-int
-osip_tolower (char *word)
-{
+int osip_tolower(char *word) {
 #if defined(HAVE_CTYPE_H) && !defined (_WIN32_WCE)
 
   for (; *word; word++)
-    *word = (char) tolower (*word);
+    *word = (char) tolower(*word);
+
 #else
   size_t i;
-  size_t len = strlen (word);
+  size_t len = strlen(word);
 
   for (i = 0; i <= len - 1; i++) {
     if ('A' <= word[i] && word[i] <= 'Z')
       word[i] = word[i] + 32;
   }
+
 #endif
   return OSIP_SUCCESS;
 }
 
 #ifndef MINISIZE
-int
-osip_strcasecmp (const char *s1, const char *s2)
-{
+int osip_strcasecmp(const char *s1, const char *s2) {
 #if defined(__VXWORKS_OS__) || defined( __PSOS__)
-  while ((*s1 != '\0') && (tolower (*s1) == tolower (*s2))) {
+
+  while ((*s1 != '\0') && (tolower(*s1) == tolower(*s2))) {
     s1++;
     s2++;
   }
-  return (tolower (*s1) - tolower (*s2));
+
+  return (tolower(*s1) - tolower(*s2));
 #elif defined(__PALMOS__) && (__PALMOS__ < 0x06000000)
-  return StrCaselessCompare (s1, s2);
+  return StrCaselessCompare(s1, s2);
 #elif defined(__PALMOS__) || (!defined WIN32 && !defined _WIN32_WCE)
-  return strcasecmp (s1, s2);
+  return strcasecmp(s1, s2);
 #else
-  return _stricmp (s1, s2);
+  return _stricmp(s1, s2);
 #endif
 }
 
-int
-osip_strncasecmp (const char *s1, const char *s2, size_t len)
-{
+int osip_strncasecmp(const char *s1, const char *s2, size_t len) {
 #if defined(__VXWORKS_OS__) || defined( __PSOS__)
+
   if (len == 0)
     return OSIP_SUCCESS;
-  while ((len > 0) && (tolower (*s1) == tolower (*s2))) {
+
+  while ((len > 0) && (tolower(*s1) == tolower(*s2))) {
     len--;
+
     if ((len == 0) || (*s1 == '\0') || (*s2 == '\0'))
       break;
+
     s1++;
     s2++;
   }
-  return tolower (*s1) - tolower (*s2);
+
+  return tolower(*s1) - tolower(*s2);
 #elif defined(__PALMOS__) && (__PALMOS__ < 0x06000000)
-  return StrNCaselessCompare (s1, s2, len);
+  return StrNCaselessCompare(s1, s2, len);
 #elif defined(__PALMOS__) || (!defined WIN32 && !defined _WIN32_WCE)
-  return strncasecmp (s1, s2, len);
+  return strncasecmp(s1, s2, len);
 #else
-  return _strnicmp (s1, s2, len);
+  return _strnicmp(s1, s2, len);
 #endif
 }
 
 #endif
 
-char *
-osip_strcasestr (const char *haystack, const char *needle)
-{
+char *osip_strcasestr(const char *haystack, const char *needle) {
   char c, sc;
   size_t len;
 
   if ((c = *needle++) != 0) {
-    c = tolower ((unsigned char) c);
-    len = strlen (needle);
+    c = tolower((unsigned char) c);
+    len = strlen(needle);
+
     do {
       do {
         if ((sc = *haystack++) == 0)
           return (NULL);
-      } while ((char) tolower ((unsigned char) sc) != c);
-    } while (osip_strncasecmp (haystack, needle, len) != 0);
+      } while ((char) tolower((unsigned char) sc) != c);
+    } while (osip_strncasecmp(haystack, needle, len) != 0);
+
     haystack--;
   }
+
   return (char *) haystack;
 }
 
 /* remove SPACE before and after the content */
-int
-osip_clrspace (char *word)
-{
+int osip_clrspace(char *word) {
   char *pbeg;
   char *pend;
   size_t len;
 
   if (word == NULL)
     return OSIP_UNDEFINED_ERROR;
+
   if (*word == '\0')
     return OSIP_SUCCESS;
-  len = strlen (word);
+
+  len = strlen(word);
 
   pbeg = word;
-  pbeg += strspn (pbeg, " \r\n\t");
+  pbeg += strspn(pbeg, " \r\n\t");
 
   pend = word + len - 1;
+
   while ((' ' == *pend) || ('\r' == *pend) || ('\n' == *pend) || ('\t' == *pend)) {
     pend--;
+
     if (pend < pbeg) {
       *word = '\0';
       return OSIP_SUCCESS;
@@ -571,7 +585,7 @@ osip_clrspace (char *word)
     pend[1] = '\0';
 
   if (pbeg != word)
-    memmove (word, pbeg, pend - pbeg + 2);
+    memmove(word, pbeg, pend - pbeg + 2);
 
   return OSIP_SUCCESS;
 }
@@ -588,30 +602,34 @@ osip_clrspace (char *word)
    return -1 on error
    return 1 on success
 */
-int
-__osip_set_next_token (char **dest, char *buf, int end_separator, char **next)
-{
+int __osip_set_next_token(char **dest, char *buf, int end_separator, char **next) {
   char *sep;                    /* separator */
 
   *next = NULL;
 
   sep = buf;
+
   while ((*sep != end_separator) && (*sep != '\0') && (*sep != '\r')
          && (*sep != '\n'))
     sep++;
+
   if ((*sep == '\r') || (*sep == '\n')) {       /* we should continue normally only if this is the separator asked! */
     if (*sep != end_separator)
       return OSIP_UNDEFINED_ERROR;
   }
+
   if (*sep == '\0')
     return OSIP_UNDEFINED_ERROR;        /* value must not end with this separator! */
+
   if (sep == buf)
     return OSIP_UNDEFINED_ERROR;        /* empty value (or several space!) */
 
-  *dest = osip_malloc (sep - (buf) + 1);
+  *dest = osip_malloc(sep - (buf) + 1);
+
   if (*dest == NULL)
     return OSIP_NOMEM;
-  osip_strncpy (*dest, buf, sep - buf);
+
+  osip_strncpy(*dest, buf, sep - buf);
 
   *next = sep + 1;              /* return the position right after the separator */
   return OSIP_SUCCESS;
@@ -620,30 +638,34 @@ __osip_set_next_token (char **dest, char *buf, int end_separator, char **next)
 #if 0
 /*  not yet done!!! :-)
  */
-int
-__osip_set_next_token_better (char **dest, char *buf, int end_separator, int *forbidden_tab[], int size_tab, char **next)
-{
+int __osip_set_next_token_better(char **dest, char *buf, int end_separator, int *forbidden_tab[], int size_tab, char **next) {
   char *sep;                    /* separator */
 
   *next = NULL;
 
   sep = buf;
+
   while ((*sep != end_separator) && (*sep != '\0') && (*sep != '\r')
          && (*sep != '\n'))
     sep++;
+
   if ((*sep == '\r') && (*sep == '\n')) {       /* we should continue normally only if this is the separator asked! */
     if (*sep != end_separator)
       return OSIP_UNDEFINED_ERROR;
   }
+
   if (*sep == '\0')
     return OSIP_UNDEFINED_ERROR;        /* value must not end with this separator! */
+
   if (sep == buf)
     return OSIP_UNDEFINED_ERROR;        /* empty value (or several space!) */
 
-  *dest = osip_malloc (sep - (buf) + 1);
+  *dest = osip_malloc(sep - (buf) + 1);
+
   if (*dest == NULL)
     return OSIP_NOMEM;
-  osip_strncpy (*dest, buf, sep - buf);
+
+  osip_strncpy(*dest, buf, sep - buf);
 
   *next = sep + 1;              /* return the position right after the separator */
   return 1;
@@ -652,12 +674,11 @@ __osip_set_next_token_better (char **dest, char *buf, int end_separator, int *fo
 
 /* in quoted-string, many characters can be escaped...   */
 /* __osip_quote_find returns the next quote that is not escaped */
-const char *
-__osip_quote_find (const char *qstring)
-{
+const char *__osip_quote_find(const char *qstring) {
   const char *quote;
 
-  quote = strchr (qstring, '"');
+  quote = strchr(qstring, '"');
+
   if (quote == qstring)         /* the first char matches and is not escaped... */
     return quote;
 
@@ -676,18 +697,22 @@ __osip_quote_find (const char *qstring)
     int i = 1;
 
     for (;;) {
-      if (0 == strncmp (quote - i, "\\", 1))
+      if (0 == strncmp(quote - i, "\\", 1))
         i++;
+
       else {
         if (i % 2 == 1)         /* the '"' was not escaped */
           return quote;
 
         /* else continue with the next '"' */
-        quote = strchr (quote + 1, '"');
+        quote = strchr(quote + 1, '"');
+
         if (quote == NULL)
           return NULL;
+
         i = 1;
       }
+
       if (quote - i == qstring - 1)
         /* example: "\"john"  */
         /* example: "\\"jack" */
@@ -695,33 +720,39 @@ __osip_quote_find (const char *qstring)
         /* special case where the string start with '\' */
         if (*qstring == '\\')
           i++;                  /* an escape char was not counted */
+
         if (i % 2 == 0)         /* the '"' was not escaped */
           return quote;
+
         else {                  /* else continue with the next '"' */
           qstring = quote + 1;  /* reset qstring because
                                    (*quote+1) may be also == to '\\' */
-          quote = strchr (quote + 1, '"');
+          quote = strchr(quote + 1, '"');
+
           if (quote == NULL)
             return NULL;
+
           i = 1;
         }
 
       }
     }
+
     return NULL;
   }
 }
 
-char *
-osip_enquote (const char *s)
-{
+char *osip_enquote(const char *s) {
   char *rtn;
   char *t;
 
-  t = rtn = osip_malloc (strlen (s) * 2 + 3);
+  t = rtn = osip_malloc(strlen(s) * 2 + 3);
+
   if (rtn == NULL)
     return NULL;
+
   *t++ = '"';
+
   for (; *s != '\0'; s++) {
     switch (*s) {
     case '"':
@@ -730,36 +761,41 @@ osip_enquote (const char *s)
       *t++ = '\\';
       *t++ = *s;
       break;
+
     case '\n':
     case '\r':
       *t++ = ' ';
       break;
+
     default:
       *t++ = *s;
       break;
     }
   }
+
   *t++ = '"';
   *t++ = '\0';
   return rtn;
 }
 
-void
-osip_dequote (char *s)
-{
+void osip_dequote(char *s) {
   size_t len;
 
   if (*s == '\0')
     return;
+
   if (*s != '"')
     return;
-  len = strlen (s);
-  memmove (s, s + 1, len--);
+
+  len = strlen(s);
+  memmove(s, s + 1, len--);
+
   if (len > 0 && s[len - 1] == '"')
     s[--len] = '\0';
+
   for (; *s != '\0'; s++, len--) {
     if (*s == '\\')
-      memmove (s, s + 1, len--);
+      memmove(s, s + 1, len--);
   }
 }
 
@@ -771,35 +807,23 @@ osip_dequote (char *s)
 /* IS_TRACE_LEVEL_ACTIVATE(level)                         */
 /**********************************************************/
 #ifndef ENABLE_TRACE
-void
-osip_trace_initialize_func (osip_trace_level_t level, osip_trace_func_t * func)
-{
+void osip_trace_initialize_func(osip_trace_level_t level, osip_trace_func_t *func) {
 }
 
-void
-osip_trace_initialize_syslog (osip_trace_level_t level, char *ident)
-{
+void osip_trace_initialize_syslog(osip_trace_level_t level, char *ident) {
 }
 
-int
-osip_trace_initialize (osip_trace_level_t level, FILE * file)
-{
+int osip_trace_initialize(osip_trace_level_t level, FILE *file) {
   return OSIP_UNDEFINED_ERROR;
 }
 
-void
-osip_trace_enable_level (osip_trace_level_t level)
-{
+void osip_trace_enable_level(osip_trace_level_t level) {
 }
 
-void
-osip_trace_disable_level (osip_trace_level_t level)
-{
+void osip_trace_disable_level(osip_trace_level_t level) {
 }
 
-int
-osip_is_trace_level_activate (osip_trace_level_t level)
-{
+int osip_is_trace_level_activate(osip_trace_level_t level) {
   return LOG_FALSE;
 }
 
@@ -807,15 +831,15 @@ osip_is_trace_level_activate (osip_trace_level_t level)
 
 /* initialize log */
 /* all lower levels of level are logged in file. */
-int
-osip_trace_initialize (osip_trace_level_t level, FILE * file)
-{
+int osip_trace_initialize(osip_trace_level_t level, FILE *file) {
   osip_trace_level_t i = TRACE_LEVEL0;
 
   /* enable trace in log file by default */
   logfile = NULL;
+
   if (file != NULL)
     logfile = file;
+
   else
     logfile = stdout;
 
@@ -823,49 +847,51 @@ osip_trace_initialize (osip_trace_level_t level, FILE * file)
   while (i < END_TRACE_LEVEL) {
     if (i < level)
       tracing_table[i] = LOG_TRUE;
+
     else
       tracing_table[i] = LOG_FALSE;
+
     i++;
   }
+
   return 0;
 }
 
-void
-osip_trace_initialize_syslog (osip_trace_level_t level, char *ident)
-{
+void osip_trace_initialize_syslog(osip_trace_level_t level, char *ident) {
   osip_trace_level_t i = TRACE_LEVEL0;
 
 #if defined (HAVE_SYSLOG_H) && !defined(__arc__)
-  openlog (ident, LOG_CONS | LOG_PID, LOG_DAEMON);
+  openlog(ident, LOG_CONS | LOG_PID, LOG_DAEMON);
   use_syslog = 1;
 #endif
+
   /* enable all lower levels */
   while (i < END_TRACE_LEVEL) {
     if (i < level)
       tracing_table[i] = LOG_TRUE;
+
     else
       tracing_table[i] = LOG_FALSE;
+
     i++;
   }
 }
 
-void
-osip_trace_enable_until_level (osip_trace_level_t level)
-{
+void osip_trace_enable_until_level(osip_trace_level_t level) {
   osip_trace_level_t i = 0;
 
   while (i < END_TRACE_LEVEL) {
     if (i < level)
       tracing_table[i] = LOG_TRUE;
+
     else
       tracing_table[i] = LOG_FALSE;
+
     i++;
   }
 }
 
-void
-osip_trace_initialize_func (osip_trace_level_t level, osip_trace_func_t * func)
-{
+void osip_trace_initialize_func(osip_trace_level_t level, osip_trace_func_t *func) {
   osip_trace_level_t i = 0;
 
   trace_func = func;
@@ -874,30 +900,26 @@ osip_trace_initialize_func (osip_trace_level_t level, osip_trace_func_t * func)
   while (i < END_TRACE_LEVEL) {
     if (i < level)
       tracing_table[i] = LOG_TRUE;
+
     else
       tracing_table[i] = LOG_FALSE;
+
     i++;
   }
 }
 
 /* enable a special debugging level! */
-void
-osip_trace_enable_level (osip_trace_level_t level)
-{
+void osip_trace_enable_level(osip_trace_level_t level) {
   tracing_table[level] = LOG_TRUE;
 }
 
 /* disable a special debugging level! */
-void
-osip_trace_disable_level (osip_trace_level_t level)
-{
+void osip_trace_disable_level(osip_trace_level_t level) {
   tracing_table[level] = LOG_FALSE;
 }
 
 /* not so usefull? */
-int
-osip_is_trace_level_activate (osip_trace_level_t level)
-{
+int osip_is_trace_level_activate(osip_trace_level_t level) {
   return tracing_table[level];
 }
 #endif
@@ -907,12 +929,10 @@ osip_is_trace_level_activate (osip_trace_level_t level)
 #include <time.h>
 #include <sys/timeb.h>
 
-int
-__osip_port_gettimeofday (struct timeval *tp, void *tz)
-{
+int __osip_port_gettimeofday(struct timeval *tp, void *tz) {
   struct _timeb timebuffer;
 
-  _ftime (&timebuffer);
+  _ftime(&timebuffer);
   tp->tv_sec = (long) timebuffer.time;
   tp->tv_usec = timebuffer.millitm * 1000;
   return OSIP_SUCCESS;
@@ -933,9 +953,7 @@ __osip_port_gettimeofday (struct timeval *tp, void *tz)
 #define MAX_LENGTH_TR 2024      /* NEVER DEFINE MORE THAN 2024 */
 #endif
 
-int
-osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * f, const char *chfr, ...)
-{
+int osip_trace(const char *filename_long, int li, osip_trace_level_t level, FILE *f, const char *chfr, ...) {
 #ifdef ENABLE_TRACE
   va_list ap;
   char time_buffer[80] = { '\0' };
@@ -954,7 +972,7 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
   {
     time_t timestamp;
     struct timeval now;
-    struct tm * ptm;
+    struct tm *ptm;
     int tenths_ms;
     __osip_port_gettimeofday(&now, NULL);
 
@@ -963,17 +981,20 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
     ptm = localtime(&timestamp);
 
     snprintf(time_buffer, 80, "%04d-%02d-%02d %02d:%02d:%02d.%04d",
-      1900 + ptm->tm_year, ptm->tm_mon + 1, ptm->tm_mday,
-      ptm->tm_hour, ptm->tm_min, ptm->tm_sec, tenths_ms);
+             1900 + ptm->tm_year, ptm->tm_mon + 1, ptm->tm_mday,
+             ptm->tm_hour, ptm->tm_min, ptm->tm_sec, tenths_ms);
   }
 #endif
 
   if (filename_long != NULL) {
-    fi = strrchr (filename_long, '/');
+    fi = strrchr(filename_long, '/');
+
     if (fi == NULL)
-      fi = strrchr (filename_long, '\\');
+      fi = strrchr(filename_long, '\\');
+
     if (fi != NULL)
       fi++;
+
     if (fi == NULL)
       fi = filename_long;
   }
@@ -986,7 +1007,7 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
   f = stdout;
 #endif
 
-  VA_START (ap, chfr);
+  VA_START(ap, chfr);
 
   if (trace_func) {
     trace_func(fi, li, level, chfr, ap);
@@ -1002,32 +1023,41 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
     case OSIP_INFO3:
       lev = ANDROID_LOG_DEBUG;
       break;
+
     case OSIP_INFO4:
       lev = ANDROID_LOG_DEBUG;
       break;
+
     case OSIP_INFO2:
       lev = ANDROID_LOG_INFO;
       break;
+
     case OSIP_INFO1:
       lev = ANDROID_LOG_INFO;
       break;
+
     case OSIP_WARNING:
       lev = ANDROID_LOG_WARN;
       break;
+
     case OSIP_ERROR:
       lev = ANDROID_LOG_ERROR;
       break;
+
     case OSIP_BUG:
       lev = ANDROID_LOG_FATAL;
       break;
+
     case OSIP_FATAL:
       lev = ANDROID_LOG_FATAL;
       break;
+
     default:
       lev = ANDROID_LOG_DEFAULT;
       break;
     }
-    __android_log_vprint (lev, "osip2", chfr, ap);
+
+    __android_log_vprint(lev, "osip2", chfr, ap);
     va_end(ap);
     return OSIP_SUCCESS;
   }
@@ -1038,49 +1068,68 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
     int in = 0;
 
     memset(buffer, 0, sizeof(buffer));
+
     if (level == OSIP_FATAL)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| FATAL | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_BUG)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "|  BUG  | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_ERROR)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| ERROR | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_WARNING)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "|WARNING| %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_INFO1)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO1 | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_INFO2)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO2 | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_INFO3)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO3 | %s <%10.10s:%5i> ", time_buffer, fi, li);
+
     else if (level == OSIP_INFO4)
       in = snprintf(buffer, MAX_LENGTH_TR - 1, "| INFO4 | %s <%10.10s:%5i> ", time_buffer, fi, li);
 
     vsnprintf(buffer + in, MAX_LENGTH_TR - 1 - in, chfr, ap);
 
 #if defined (HAVE_SYSLOG_H) && !defined(__arc__)
+
     if (use_syslog == 1) {
       if (level == OSIP_FATAL)
         syslog(LOG_ERR, "%s", buffer);
+
       else if (level == OSIP_BUG)
         syslog(LOG_ERR, "%s", buffer);
+
       else if (level == OSIP_ERROR)
         syslog(LOG_ERR, "%s", buffer);
+
       else if (level == OSIP_WARNING)
         syslog(LOG_WARNING, "%s", buffer);
+
       else if (level == OSIP_INFO1)
         syslog(LOG_INFO, "%s", buffer);
+
       else if (level == OSIP_INFO2)
         syslog(LOG_INFO, "%s", buffer);
+
       else if (level == OSIP_INFO3)
         syslog(LOG_DEBUG, "%s", buffer);
+
       else if (level == OSIP_INFO4)
         syslog(LOG_DEBUG, "%s", buffer);
+
       va_end(ap);
       return OSIP_SUCCESS;
     }
+
 #endif
 
 #if defined(WIN32)
+
     if (f == stdout) {
 #ifdef UNICODE
       WCHAR wUnicode[MAX_LENGTH_TR * 2];
@@ -1096,14 +1145,17 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
       va_end(ap);
       return OSIP_SUCCESS;
     }
+
 #endif
 
 #if defined(__APPLE__)  && defined(__OBJC__)
+
     if (f == stdout) {
       NSLog(@"%s", buffer);
       va_end(ap);
       return OSIP_SUCCESS;
     }
+
 #endif
 
     if (f) {
@@ -1115,7 +1167,7 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
 
   }
 
-  va_end (ap);
+  va_end(ap);
 #endif
   return OSIP_SUCCESS;
 }
@@ -1125,38 +1177,32 @@ osip_trace (const char *filename_long, int li, osip_trace_level_t level, FILE * 
 #if defined(WIN32) || defined(_WIN32_WCE)
 
 #undef osip_malloc
-void *
-osip_malloc (size_t size)
-{
-  void *ptr = malloc (size);
+void *osip_malloc(size_t size) {
+  void *ptr = malloc(size);
 
   if (ptr != NULL)
-    memset (ptr, 0, size);
+    memset(ptr, 0, size);
+
   return ptr;
 }
 
 #undef osip_realloc
-void *
-osip_realloc (void *ptr, size_t size)
-{
-  return realloc (ptr, size);
+void *osip_realloc(void *ptr, size_t size) {
+  return realloc(ptr, size);
 }
 
 #undef osip_free
-void
-osip_free (void *ptr)
-{
+void osip_free(void *ptr) {
   if (ptr == NULL)
     return;
-  free (ptr);
+
+  free(ptr);
 }
 
 #else
 
 #ifndef MINISIZE
-void
-osip_set_allocators (osip_malloc_func_t * malloc_func, osip_realloc_func_t * realloc_func, osip_free_func_t * free_func)
-{
+void osip_set_allocators(osip_malloc_func_t *malloc_func, osip_realloc_func_t *realloc_func, osip_free_func_t *free_func) {
   osip_malloc_func = malloc_func;
   osip_realloc_func = realloc_func;
   osip_free_func = free_func;
@@ -1173,11 +1219,9 @@ typedef struct {
   int len;
 } _context;
 
-STATUS _cb_snprintf (char *buffer, int nc, int arg);
+STATUS _cb_snprintf(char *buffer, int nc, int arg);
 
-STATUS
-_cb_snprintf (char *buffer, int nc, int arg)
-{
+STATUS _cb_snprintf(char *buffer, int nc, int arg) {
   _context *ctx = (_context *) arg;
 
   if (ctx->max - ctx->len - nc < 1) {   /* retain 1 pos for terminating \0 */
@@ -1185,7 +1229,7 @@ _cb_snprintf (char *buffer, int nc, int arg)
   }
 
   if (nc > 0) {
-    memcpy (ctx->str + ctx->len, buffer, nc);
+    memcpy(ctx->str + ctx->len, buffer, nc);
     ctx->len += nc;
   }
 
@@ -1195,31 +1239,27 @@ _cb_snprintf (char *buffer, int nc, int arg)
 }
 
 
-int
-osip_vsnprintf (char *buf, int max, const char *fmt, va_list ap)
-{
+int osip_vsnprintf(char *buf, int max, const char *fmt, va_list ap) {
   _context ctx;
 
   ctx.str = buf;
   ctx.max = max;
   ctx.len = 0;
 
-  if (fioFormatV (fmt, ap, _cb_snprintf, (int) &ctx) != OK) {
+  if (fioFormatV(fmt, ap, _cb_snprintf, (int) &ctx) != OK) {
     return OSIP_UNDEFINED_ERROR;
   }
 
   return ctx.len;
 }
 
-int
-osip_snprintf (char *buf, int max, const char *fmt, ...)
-{
+int osip_snprintf(char *buf, int max, const char *fmt, ...) {
   int retval;
   va_list ap;
 
-  va_start (ap, fmt);
-  retval = osip_vsnprintf (buf, max, fmt, ap);
-  va_end (ap);
+  va_start(ap, fmt);
+  retval = osip_vsnprintf(buf, max, fmt, ap);
+  va_end(ap);
   return retval;
 }
 
@@ -1228,21 +1268,21 @@ osip_snprintf (char *buf, int max, const char *fmt, ...)
 
 #if defined(__PSOS__)
 
-int
-osip_snprintf (char *buf, int max, const char *fmt, ...)
-{
+int osip_snprintf(char *buf, int max, const char *fmt, ...) {
   static char buffer[1024];
   int retval;
   va_list ap;
 
   buffer[0] = '\n';
-  va_start (ap, fmt);
-  vsprintf (&(buffer[strlen (buffer)]), fmt, ap);
-  va_end (ap);
-  retval = strlen (buffer);
-  memmove (buf, buffer, max);
+  va_start(ap, fmt);
+  vsprintf(&(buffer[strlen(buffer)]), fmt, ap);
+  va_end(ap);
+  retval = strlen(buffer);
+  memmove(buf, buffer, max);
+
   if (retval > max)
     return OSIP_UNDEFINED_ERROR;
+
   return retval;
 }
 
@@ -1257,56 +1297,57 @@ osip_snprintf (char *buf, int max, const char *fmt, ...)
   have any usefull tools: in this case, use this code!
  */
 
-void *
-_osip_malloc (size_t size, char *file, unsigned short line)
-{
+void *_osip_malloc(size_t size, char *file, unsigned short line) {
   void *mem;
 
-  mem = osip_malloc_func (size + 20);
+  mem = osip_malloc_func(size + 20);
+
   if (mem != NULL) {
     char *s;
 
-    memcpy (mem, &line, 2);
-    for (s = file + strlen (file); s != file; s--) {
+    memcpy(mem, &line, 2);
+
+    for (s = file + strlen(file); s != file; s--) {
       if (*s == '\\' || *s == '/') {
         s++;
         break;
       }
     }
-    strncpy ((char *) mem + 2, s, 18);
-    return (void *) ((char *) mem + 20);
+
+    strncpy((char *) mem + 2, s, 18);
+    return (void *)((char *) mem + 20);
   }
+
   return NULL;
 }
 
-void
-_osip_free (void *ptr)
-{
+void _osip_free(void *ptr) {
   if (ptr != NULL) {
-    osip_free_func ((char *) ptr - 20);
+    osip_free_func((char *) ptr - 20);
   }
 }
 
-void *
-_osip_realloc (void *ptr, size_t size, char *file, unsigned short line)
-{
+void *_osip_realloc(void *ptr, size_t size, char *file, unsigned short line) {
   void *mem;
 
-  mem = osip_realloc_func ((char *) ptr - 20, size + 20);
+  mem = osip_realloc_func((char *) ptr - 20, size + 20);
+
   if (mem != NULL) {
     char *s;
 
-    memcpy (mem, &line, 2);
+    memcpy(mem, &line, 2);
 
-    for (s = file + strlen (file); s != file; s--) {
+    for (s = file + strlen(file); s != file; s--) {
       if (*s == '\\' || *s == '/') {
         s++;
         break;
       }
     }
-    strncpy ((char *) mem + 2, s, 18);
+
+    strncpy((char *) mem + 2, s, 18);
     return (char *) mem + 20;
   }
+
   return NULL;
 }
 
@@ -1322,30 +1363,22 @@ _osip_realloc (void *ptr, size_t size, char *file, unsigned short line)
   have any usefull tools: in this case, use this code!
  */
 
-void *
-_osip_malloc (size_t size, char *file, unsigned short line)
-{
-  return _malloc_dbg (size, _NORMAL_BLOCK, file, line);
+void *_osip_malloc(size_t size, char *file, unsigned short line) {
+  return _malloc_dbg(size, _NORMAL_BLOCK, file, line);
 }
 
-void
-_osip_free (void *ptr)
-{
-  _free_dbg (ptr, _NORMAL_BLOCK);
+void _osip_free(void *ptr) {
+  _free_dbg(ptr, _NORMAL_BLOCK);
 }
 
-void *
-_osip_realloc (void *ptr, size_t size, char *file, unsigned short line)
-{
-  return _realloc_dbg (ptr, size, _NORMAL_BLOCK, file, line);
+void *_osip_realloc(void *ptr, size_t size, char *file, unsigned short line) {
+  return _realloc_dbg(ptr, size, _NORMAL_BLOCK, file, line);
 }
 #endif
 
 /* ---For better performance---
    Calculates a hash value for the given string */
-unsigned long
-osip_hash (const char *str)
-{
+unsigned long osip_hash(const char *str) {
   unsigned int hash = 5381;
   int c;
 
@@ -1357,35 +1390,32 @@ osip_hash (const char *str)
 
 /* ---For better performance---
    Appends src-string to dst-string.
-   
-   This was introduced to replace the 
+
+   This was introduced to replace the
    inefficient constructions like:
-   
+
    osip_strncpy (tmp, src, strlen(src) );
    tmp = tmp + strlen (src);
-   
+
    This function returns a pointer to the
    end of the destination string
-   
+
    Pre: src is null terminated */
-char *
-osip_str_append (char *dst, const char *src)
-{
+char *osip_str_append(char *dst, const char *src) {
   while (*src != '\0') {
     *dst = *src;
     src++;
     dst++;
   }
+
   *dst = '\0';
   return dst;
 }
 
 /* ---For better performance---
    Same as above, only this time we know the length */
-char *
-osip_strn_append (char *dst, const char *src, size_t len)
-{
-  memmove ((void *) dst, (void *) src, len);
+char *osip_strn_append(char *dst, const char *src, size_t len) {
+  memmove((void *) dst, (void *) src, len);
   dst += len;
   *dst = '\0';
   return dst;
@@ -1397,9 +1427,7 @@ osip_strn_append (char *dst, const char *src, size_t len)
    osip_strncpy (  dest, source, length);
    osip_clrspace ( dest ); */
 #ifndef MINISIZE
-char *
-osip_clrncpy (char *dst, const char *src, size_t len)
-{
+char *osip_clrncpy(char *dst, const char *src, size_t len) {
   const char *pbeg;
   const char *pend;
   char *p;
@@ -1412,13 +1440,15 @@ osip_clrncpy (char *dst, const char *src, size_t len)
 
   /* find the start of relevant text */
   pbeg = src;
-  pbeg += strspn (pbeg, " \r\n\t");
+  pbeg += strspn(pbeg, " \r\n\t");
 
 
   /* find the end of relevant text */
   pend = src + len - 1;
+
   while ((' ' == *pend) || ('\r' == *pend) || ('\n' == *pend) || ('\t' == *pend)) {
     pend--;
+
     if (pend < pbeg) {
       *dst = '\0';
       return dst;
@@ -1427,7 +1457,7 @@ osip_clrncpy (char *dst, const char *src, size_t len)
 
   /* if pend == pbeg there is only one char to copy */
   spaceless_length = pend - pbeg + 1;   /* excluding any '\0' */
-  memmove (dst, pbeg, spaceless_length);
+  memmove(dst, pbeg, spaceless_length);
   p = dst + spaceless_length;
 
 #if defined(__GNUC__)
@@ -1435,19 +1465,23 @@ osip_clrncpy (char *dst, const char *src, size_t len)
      99% of the time (SPACELESS_LENGTH == LEN) or
      (SPACELESS_LENGHT + 1 == LEN). We handle these cases efficiently.  */
   *p = '\0';
-  if (__builtin_expect (++spaceless_length < len, 0)) {
+
+  if (__builtin_expect(++spaceless_length < len, 0)) {
     do
       *++p = '\0';
+
     while (++spaceless_length < len);
   }
+
 #else
+
   /* terminate the string and pad dest with zeros until len */
   do {
     *p = '\0';
     p++;
     spaceless_length++;
-  }
-  while (spaceless_length < len);
+  } while (spaceless_length < len);
+
 #endif
 
   return dst;
@@ -1455,11 +1489,9 @@ osip_clrncpy (char *dst, const char *src, size_t len)
 
 #else
 
-char *
-osip_clrncpy (char *dst, const char *src, size_t len)
-{
-  osip_strncpy (dst, src, len);
-  osip_clrspace (dst);
+char *osip_clrncpy(char *dst, const char *src, size_t len) {
+  osip_strncpy(dst, src, len);
+  osip_clrspace(dst);
   return dst;
 }
 
