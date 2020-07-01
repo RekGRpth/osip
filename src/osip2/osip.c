@@ -239,7 +239,7 @@ void osip_stop_retransmissions_from_dialog(osip_t *osip, osip_dialog_t *dialog) 
 }
 
 static void ixt_retransmit(osip_t *osip, ixt_t *ixt, struct timeval *current) {
-  if (osip_timercmp(current, &ixt->start, >)) {
+  if (osip_timercmp(current, &ixt->start, >=)) {
     ixt->interval = ixt->interval * 2;
 
     if (ixt->interval > DEFAULT_T2)
@@ -1333,7 +1333,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
       if (tr->state == ICT_COMPLETED)
         min_timercmp(lower_tv, &tr->ict_context->timer_d_start);
 
-      if (osip_timercmp(&now, lower_tv, >)) {
+      if (osip_timercmp(&now, lower_tv, >=)) {
         lower_tv->tv_sec = 0;
         lower_tv->tv_usec = 0;
 #ifndef OSIP_MONOTHREAD
@@ -1366,7 +1366,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
     if (tr->state == IST_COMPLETED)
       min_timercmp(lower_tv, &tr->ist_context->timer_g_start);
 
-    if (osip_timercmp(&now, lower_tv, >)) {
+    if (osip_timercmp(&now, lower_tv, >=)) {
       lower_tv->tv_sec = 0;
       lower_tv->tv_usec = 0;
 #ifndef OSIP_MONOTHREAD
@@ -1398,7 +1398,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
     if (tr->state == NICT_PROCEEDING || tr->state == NICT_TRYING)
       min_timercmp(lower_tv, &tr->nict_context->timer_e_start);
 
-    if (osip_timercmp(&now, lower_tv, >)) {
+    if (osip_timercmp(&now, lower_tv, >=)) {
       lower_tv->tv_sec = 0;
       lower_tv->tv_usec = 0;
 #ifndef OSIP_MONOTHREAD
@@ -1424,7 +1424,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
     if (tr->state == NIST_COMPLETED)
       min_timercmp(lower_tv, &tr->nist_context->timer_j_start);
 
-    if (osip_timercmp(&now, lower_tv, >)) {
+    if (osip_timercmp(&now, lower_tv, >=)) {
       lower_tv->tv_sec = 0;
       lower_tv->tv_usec = 0;
 #ifndef OSIP_MONOTHREAD
@@ -1451,7 +1451,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
     while (osip_list_iterator_has_elem(iterator)) {
       min_timercmp(lower_tv, &ixt->start);
 
-      if (osip_timercmp(&now, lower_tv, >)) {
+      if (osip_timercmp(&now, lower_tv, >=)) {
         lower_tv->tv_sec = 0;
         lower_tv->tv_usec = 0;
 #ifndef OSIP_MONOTHREAD

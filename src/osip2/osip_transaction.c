@@ -831,7 +831,7 @@ osip_event_t *__osip_transaction_need_timer_x_event(void *xixt, struct timeval *
     if (timer->tv_sec == -1)
       return NULL;
 
-    if (osip_timercmp(&now, timer, >))
+    if (osip_timercmp(&now, timer, >=))
       return __osip_event_new(TIMER_VAL, transactionid);
   }
 
