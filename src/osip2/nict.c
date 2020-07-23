@@ -40,7 +40,7 @@ int __osip_nict_init(osip_nict_t **nict, osip_t *osip, osip_message_t *request) 
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(request, 0, &via);         /* get top via */
+    i = osip_message_get_via(request, 0, &via); /* get top via */
 
     if (i < 0) {
       osip_free(*nict);
@@ -62,13 +62,13 @@ int __osip_nict_init(osip_nict_t **nict, osip_t *osip, osip_message_t *request) 
       (*nict)->timer_e_length = DEFAULT_T1;
       (*nict)->timer_k_length = DEFAULT_T4;
       (*nict)->timer_e_start.tv_sec = -1;
-      (*nict)->timer_k_start.tv_sec = -1;       /* not started */
+      (*nict)->timer_k_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
-      (*nict)->timer_e_length = -1;     /* E is not ACTIVE */
-      (*nict)->timer_k_length = 0;      /* MUST do the transition immediatly */
+    } else {                        /* reliable protocol is used: */
+      (*nict)->timer_e_length = -1; /* E is not ACTIVE */
+      (*nict)->timer_k_length = 0;  /* MUST do the transition immediatly */
       (*nict)->timer_e_start.tv_sec = -1;
-      (*nict)->timer_k_start.tv_sec = -1;       /* not started */
+      (*nict)->timer_k_start.tv_sec = -1; /* not started */
     }
   }
 #else
@@ -77,13 +77,13 @@ int __osip_nict_init(osip_nict_t **nict, osip_t *osip, osip_message_t *request) 
       (*nict)->timer_e_length = DEFAULT_T1;
       (*nict)->timer_k_length = DEFAULT_T4;
       (*nict)->timer_e_start.tv_sec = -1;
-      (*nict)->timer_k_start.tv_sec = -1;       /* not started */
+      (*nict)->timer_k_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
+    } else { /* reliable protocol is used: */
       (*nict)->timer_e_length = DEFAULT_T1;
-      (*nict)->timer_k_length = 0;      /* MUST do the transition immediatly */
+      (*nict)->timer_k_length = 0; /* MUST do the transition immediatly */
       (*nict)->timer_e_start.tv_sec = -1;
-      (*nict)->timer_k_start.tv_sec = -1;       /* not started */
+      (*nict)->timer_k_start.tv_sec = -1; /* not started */
     }
   }
 #endif

@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_ACCEPT_ENCONDING_H_
 #define _OSIP_ACCEPT_ENCONDING_H_
 
@@ -45,14 +44,12 @@ typedef struct osip_accept_encoding osip_accept_encoding_t;
  * @struct osip_accept_encoding
  */
 struct osip_accept_encoding {
-  char *element;           /**< accept encoding main value */
-  osip_list_t gen_params;  /**< accept encoding parameters */
+  char *element;          /**< accept encoding main value */
+  osip_list_t gen_params; /**< accept encoding parameters */
 };
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -82,16 +79,14 @@ void osip_accept_encoding_free(osip_accept_encoding_t *header);
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-int osip_accept_encoding_clone(const osip_accept_encoding_t *header,
-                               osip_accept_encoding_t **dest);
+int osip_accept_encoding_clone(const osip_accept_encoding_t *header, osip_accept_encoding_t **dest);
 
 /**
  * Set the value of an Accept-Encoding element.
  * @param header The element to work on.
  * @param value The token value to set.
  */
-void osip_accept_encoding_set_element(osip_accept_encoding_t *header,
-                                      char *value);
+void osip_accept_encoding_set_element(osip_accept_encoding_t *header, char *value);
 /**
  * Get the value of an Accept-Encoding element.
  * @param header The element to work on.
@@ -103,15 +98,14 @@ char *osip_accept_encoding_get_element(const osip_accept_encoding_t *header);
  * @param name The token name for the new parameter.
  * @param value The token value for the new parameter.
  */
-#define osip_accept_encoding_param_add(header,name,value)  osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_accept_encoding_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in an Accept-Encoding element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_accept_encoding_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
-
+#define osip_accept_encoding_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

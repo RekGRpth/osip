@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_ACCEPT_H_
 #define _OSIP_ACCEPT_H_
 
@@ -41,21 +40,19 @@
 typedef osip_content_type_t osip_accept_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /**
  * Allocate an Accept element.
  * @param header The element to work on.
  */
-#define accept_init(header)     osip_content_type_init(header)
+#define accept_init(header) osip_content_type_init(header)
 /**
  * Free an Accept element.
  * @param header The element to work on.
  */
-#define osip_accept_free     osip_content_type_free
+#define osip_accept_free osip_content_type_free
 /**
  * Parse an Accept element.
  * @param header The element to work on.
@@ -80,15 +77,14 @@ int osip_accept_to_str(const osip_accept_t *header, char **dest);
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_accept_param_add(header,name,value)  osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_accept_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in an Accept element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_accept_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
-
+#define osip_accept_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

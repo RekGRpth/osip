@@ -17,20 +17,16 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifdef ENABLE_MPATROL
 #include <mpatrol.h>
 #endif
-
 
 #include <osipparser2/internal.h>
 #include <osipparser2/osip_port.h>
 #include <osipparser2/osip_message.h>
 
-
 int main(int argc, char **argv) {
   FILE *record_routes_file;
-
 
   osip_record_route_t *record_route;
   char *a_record_route;
@@ -45,10 +41,9 @@ int main(int argc, char **argv) {
   }
 
   a_record_route = (char *) osip_malloc(200);
-  res = fgets(a_record_route, 200, record_routes_file);         /* lines are under 200 */
+  res = fgets(a_record_route, 200, record_routes_file); /* lines are under 200 */
 
   while (res != NULL) {
-
     int errcode;
 
     /* remove the last '\n' before parsing */
@@ -74,7 +69,7 @@ int main(int argc, char **argv) {
       printf("=================================================\n");
     }
 
-    res = fgets(a_record_route, 200, record_routes_file);       /* lines are under 200 */
+    res = fgets(a_record_route, 200, record_routes_file); /* lines are under 200 */
   }
 
   osip_free(a_record_route);

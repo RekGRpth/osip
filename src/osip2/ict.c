@@ -40,7 +40,7 @@ int __osip_ict_init(osip_ict_t **ict, osip_t *osip, osip_message_t *invite) {
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(invite, 0, &via);  /* get top via */
+    i = osip_message_get_via(invite, 0, &via); /* get top via */
 
     if (i < 0) {
       osip_free(*ict);
@@ -69,13 +69,13 @@ int __osip_ict_init(osip_ict_t **ict, osip_t *osip, osip_message_t *invite) {
 
       osip_gettimeofday(&(*ict)->timer_a_start, NULL);
       add_gettimeofday(&(*ict)->timer_a_start, (*ict)->timer_a_length);
-      (*ict)->timer_d_start.tv_sec = -1;        /* not started */
+      (*ict)->timer_d_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
-      (*ict)->timer_a_length = -1;      /* A is not ACTIVE */
-      (*ict)->timer_d_length = 0;       /* MUST do the transition immediatly */
-      (*ict)->timer_a_start.tv_sec = -1;        /* not started */
-      (*ict)->timer_d_start.tv_sec = -1;        /* not started */
+    } else {                             /* reliable protocol is used: */
+      (*ict)->timer_a_length = -1;       /* A is not ACTIVE */
+      (*ict)->timer_d_length = 0;        /* MUST do the transition immediatly */
+      (*ict)->timer_a_start.tv_sec = -1; /* not started */
+      (*ict)->timer_d_start.tv_sec = -1; /* not started */
     }
   }
 #else
@@ -93,14 +93,14 @@ int __osip_ict_init(osip_ict_t **ict, osip_t *osip, osip_message_t *invite) {
 
       osip_gettimeofday(&(*ict)->timer_a_start, NULL);
       add_gettimeofday(&(*ict)->timer_a_start, (*ict)->timer_a_length);
-      (*ict)->timer_d_start.tv_sec = -1;        /* not started */
+      (*ict)->timer_d_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
+    } else { /* reliable protocol is used: */
       (*ict)->timer_a_length = DEFAULT_T1;
-      (*ict)->timer_d_length = 0;       /* MUST do the transition immediatly */
+      (*ict)->timer_d_length = 0; /* MUST do the transition immediatly */
       osip_gettimeofday(&(*ict)->timer_a_start, NULL);
       add_gettimeofday(&(*ict)->timer_a_start, (*ict)->timer_a_length);
-      (*ict)->timer_d_start.tv_sec = -1;        /* not started */
+      (*ict)->timer_d_start.tv_sec = -1; /* not started */
     }
   }
 #endif

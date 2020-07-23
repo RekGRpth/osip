@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_FROM_H_
 #define _OSIP_FROM_H_
 
@@ -46,14 +45,13 @@ typedef struct osip_from osip_from_t;
  * @struct osip_from
  */
 struct osip_from {
-  char *displayname;       /**< Display Name */
-  osip_uri_t *url;         /**< url */
-  osip_list_t gen_params;  /**< other From parameters */
+  char *displayname;      /**< Display Name */
+  osip_uri_t *url;        /**< url */
+  osip_list_t gen_params; /**< other From parameters */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -119,29 +117,29 @@ int osip_from_param_get(osip_from_t *header, int pos, osip_generic_param_t **des
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_from_param_add(header,name,value)      osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_from_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in a From element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_from_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
+#define osip_from_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 /**
  * Find the tag parameter in a From element.
  * @param header The element to work on.
  * @param dest A pointer on the element found.
  */
-#define osip_from_get_tag(header,dest)    osip_generic_param_get_byname((&(header)->gen_params), "tag",dest)
+#define osip_from_get_tag(header, dest) osip_generic_param_get_byname((&(header)->gen_params), "tag", dest)
 /**
  * Allocate and add a tag parameter element in a Contact element.
  * @param header The element to work on.
  * @param value The token value.
  */
-#define osip_from_set_tag(header,value)     osip_generic_param_add((&(header)->gen_params), osip_strdup("tag"),value)
+#define osip_from_set_tag(header, value) osip_generic_param_add((&(header)->gen_params), osip_strdup("tag"), value)
 
-#ifndef DOXYGEN     /* avoid DOXYGEN warning */
+#ifndef DOXYGEN /* avoid DOXYGEN warning */
 /* Compare the username, host and tag part (if exist) of the two froms */
 int osip_from_compare(osip_from_t *header1, osip_from_t *header2);
 #endif
@@ -153,7 +151,6 @@ int osip_from_compare(osip_from_t *header1, osip_from_t *header2);
  * @param from2 The second From header.
  */
 int osip_from_tag_match(osip_from_t *from1, osip_from_t *from2);
-
 
 #ifdef __cplusplus
 }

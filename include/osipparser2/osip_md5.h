@@ -28,7 +28,6 @@ documentation and/or software.
 
 #ifndef DOXYGEN
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -59,21 +58,19 @@ If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it
 #define PROTO_LIST(list) ()
 #endif
 
-
 /**
  * Structure for holding MD5 context.
  * @var MD5_CTX
  */
 typedef struct {
-  UINT4 state[4];             /* state (ABCD) */
-  UINT4 count[2];             /* number of bits, modulo 2^64 (lsb first) */
-  unsigned char buffer[64];   /* input buffer */
+  UINT4 state[4];           /* state (ABCD) */
+  UINT4 count[2];           /* number of bits, modulo 2^64 (lsb first) */
+  unsigned char buffer[64]; /* input buffer */
 } osip_MD5_CTX;
 
-void osip_MD5Init PROTO_LIST((osip_MD5_CTX *));
-void osip_MD5Update PROTO_LIST((osip_MD5_CTX *, unsigned char *, unsigned int));
-void osip_MD5Final PROTO_LIST((unsigned char[16], osip_MD5_CTX *));
-
+void osip_MD5Init PROTO_LIST((osip_MD5_CTX *) );
+void osip_MD5Update PROTO_LIST((osip_MD5_CTX *, unsigned char *, unsigned int) );
+void osip_MD5Final PROTO_LIST((unsigned char[16], osip_MD5_CTX *) );
 
 #ifdef __cplusplus
 }

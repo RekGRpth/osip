@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_ALLOW_H_
 #define _OSIP_ALLOW_H_
 
@@ -41,39 +40,37 @@
 typedef osip_content_length_t osip_allow_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate a Allow element.
  * @param header The element to work on.
  */
-#define osip_allow_init(header)      osip_content_length_init(header)
+#define osip_allow_init(header) osip_content_length_init(header)
 /**
  * Parse a Allow element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-#define osip_allow_parse(header, hvalue)  osip_content_length_parse(header, hvalue)
+#define osip_allow_parse(header, hvalue) osip_content_length_parse(header, hvalue)
 /**
  * Get a string representation of a Allow element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define osip_allow_to_str  osip_content_length_to_str
+#define osip_allow_to_str osip_content_length_to_str
 /**
  * Free a Allow element.
  * @param header The element to work on.
  */
-#define osip_allow_free      osip_content_length_free
+#define osip_allow_free osip_content_length_free
 /**
  * Clone a Allow element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_allow_clone  osip_content_length_clone
-
+#define osip_allow_clone osip_content_length_clone
 
 #ifdef __cplusplus
 }

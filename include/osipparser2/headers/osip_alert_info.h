@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_ALERT_INFO_H_
 #define _OSIP_ALERT_INFO_H_
 
@@ -41,49 +40,48 @@
 typedef osip_call_info_t osip_alert_info_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate a Alert-Info element.
  * @param header The element to work on.
  */
-#define  osip_alert_info_init(header)      osip_call_info_init(header)
+#define osip_alert_info_init(header) osip_call_info_init(header)
 /**
  * Free a Alert-Info element.
  * @param header The element to work on.
  */
-#define  osip_alert_info_free      osip_call_info_free
+#define osip_alert_info_free osip_call_info_free
 /**
  * Parse a Alert-Info element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-#define  osip_alert_info_parse(header, hvalue)  osip_call_info_parse(header, hvalue)
+#define osip_alert_info_parse(header, hvalue) osip_call_info_parse(header, hvalue)
 /**
  * Get a string representation of a Alert-Info element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define  osip_alert_info_to_str(header,dest)   osip_call_info_to_str(header,dest)
+#define osip_alert_info_to_str(header, dest) osip_call_info_to_str(header, dest)
 /**
  * Clone a Alert-Info element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define  osip_alert_info_clone  osip_call_info_clone
+#define osip_alert_info_clone osip_call_info_clone
 /**
  * Get uri from an Alert-Info element.
  * @param header The element to work on.
  */
-#define  osip_alert_info_get_uri(header)    osip_call_info_get_uri(header)
+#define osip_alert_info_get_uri(header) osip_call_info_get_uri(header)
 /**
  * Set the uri of an Alert-Info element.
  * @param header The element to work on.
  * @param uri The value of the new parameter.
  */
-#define  osip_alert_info_set_uri(header, uri) osip_call_info_set_uri(header, uri)
+#define osip_alert_info_set_uri(header, uri) osip_call_info_set_uri(header, uri)
 
 #ifdef __cplusplus
 }

@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_RECORD_H_
 #define _OSIP_RECORD_H_
 
@@ -41,8 +40,7 @@
 typedef osip_from_t osip_route_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifndef MINISIZE
@@ -73,46 +71,46 @@ int osip_route_to_str(const osip_route_t *header, char **dest);
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_route_clone       osip_from_clone
+#define osip_route_clone osip_from_clone
 #else
-#define osip_route_init   osip_from_init
-#define osip_route_free   osip_from_free
-#define osip_route_parse  osip_from_parse
+#define osip_route_init osip_from_init
+#define osip_route_free osip_from_free
+#define osip_route_parse osip_from_parse
 #define osip_route_to_str osip_from_to_str
-#define osip_route_clone  osip_from_clone
+#define osip_route_clone osip_from_clone
 #endif
 /**
  * Set the url in the Route element.
  * @param header The element to work on.
  * @param url The value of the element.
  */
-#define osip_route_set_url(header,url)    osip_from_set_url((osip_from_t*)header,url)
+#define osip_route_set_url(header, url) osip_from_set_url((osip_from_t *) header, url)
 /**
  * Get the url from a Route header.
  * @param header The element to work on.
  */
-#define osip_route_get_url(header)        osip_from_get_url((osip_from_t*)header)
+#define osip_route_get_url(header) osip_from_get_url((osip_from_t *) header)
 /**
  * Get a header parameter from a Route element.
  * @param header The element to work on.
  * @param pos The index of the element to get.
  * @param dest A pointer on the element found.
  */
-#define osip_route_param_get(header,pos,dest) osip_from_param_get((osip_from_t*)header,pos,dest)
+#define osip_route_param_get(header, pos, dest) osip_from_param_get((osip_from_t *) header, pos, dest)
 /**
  * Allocate and add a generic parameter element in a Route element.
  * @param header The element to work on.
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_route_param_add(header,name,value)   osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_route_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in a Route element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_route_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
+#define osip_route_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

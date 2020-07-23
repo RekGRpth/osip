@@ -188,8 +188,7 @@ void osip_start_ack_retransmissions(osip_t *osip, osip_dialog_t *dialog, osip_me
 }
 
 /* we stop the 200ok when receiving the corresponding ack */
-struct osip_dialog *
-osip_stop_200ok_retransmissions(osip_t *osip, osip_message_t *ack) {
+struct osip_dialog *osip_stop_200ok_retransmissions(osip_t *osip, osip_message_t *ack) {
   osip_dialog_t *dialog = NULL;
   int i;
   ixt_t *ixt;
@@ -346,7 +345,7 @@ int osip_nist_unlock(osip_t *osip) {
 }
 
 #if defined(HAVE_DICT_DICT_H)
-#define HSIZE           200
+#define HSIZE 200
 
 unsigned s_hash(const unsigned char *p);
 
@@ -722,8 +721,7 @@ osip_transaction_t *__osip_find_transaction(osip_t *osip, osip_event_t *evt, int
 
   if (EVT_IS_INCOMINGMSG(evt)) {
     if (MSG_IS_REQUEST(evt->sip)) {
-      if (0 == strcmp(evt->sip->cseq->method, "INVITE")
-          || 0 == strcmp(evt->sip->cseq->method, "ACK")) {
+      if (0 == strcmp(evt->sip->cseq->method, "INVITE") || 0 == strcmp(evt->sip->cseq->method, "ACK")) {
         transactions = &osip->osip_ist_transactions;
 #ifndef OSIP_MONOTHREAD
         mut = osip->ist_fastmutex;
@@ -767,8 +765,7 @@ osip_transaction_t *__osip_find_transaction(osip_t *osip, osip_event_t *evt, int
       }
 
     } else {
-      if (0 == strcmp(evt->sip->cseq->method, "INVITE")
-          || 0 == strcmp(evt->sip->cseq->method, "ACK")) {
+      if (0 == strcmp(evt->sip->cseq->method, "INVITE") || 0 == strcmp(evt->sip->cseq->method, "ACK")) {
         transactions = &osip->osip_ict_transactions;
 #ifndef OSIP_MONOTHREAD
         mut = osip->ict_fastmutex;
@@ -784,14 +781,14 @@ osip_transaction_t *__osip_find_transaction(osip_t *osip, osip_event_t *evt, int
   }
 
   if (transactions == NULL)
-    return NULL;                /* not a message??? */
+    return NULL; /* not a message??? */
 
 #ifndef OSIP_MONOTHREAD
   osip_mutex_lock(mut);
 #endif
   transaction = osip_transaction_find(transactions, evt);
 
-  if (consume == 1) {           /* we add the event before releasing the mutex!! */
+  if (consume == 1) { /* we add the event before releasing the mutex!! */
     if (transaction != NULL) {
       osip_transaction_add_event(transaction, evt);
 #ifndef OSIP_MONOTHREAD
@@ -833,7 +830,7 @@ osip_transaction_t *osip_create_transaction(osip_t *osip, osip_event_t *evt) {
     }
   }
 
-  if (MSG_IS_ACK(evt->sip))     /* ACK never create transactions */
+  if (MSG_IS_ACK(evt->sip)) /* ACK never create transactions */
     return NULL;
 
   if (EVT_IS_INCOMINGREQ(evt)) {
@@ -965,7 +962,7 @@ osip_transaction_t *osip_transaction_find(osip_list_t *transactions, osip_event_
       transaction = (osip_transaction_t *) osip_list_get_next(&iterator);
     }
 
-  } else {                      /* handle OUTGOING message */
+  } else { /* handle OUTGOING message */
     /* THE TRANSACTION ID MUST BE SET */
     transaction = (osip_transaction_t *) osip_list_get_first(transactions, &iterator);
 
@@ -992,7 +989,7 @@ int osip_init(osip_t **osip) {
   *osip = (osip_t *) osip_malloc(sizeof(osip_t));
 
   if (*osip == NULL)
-    return OSIP_NOMEM;          /* allocation failed */
+    return OSIP_NOMEM; /* allocation failed */
 
   memset(*osip, 0, sizeof(osip_t));
 
@@ -1077,7 +1074,7 @@ int osip_ict_execute(osip_t *osip) {
 #ifndef OSIP_MONOTHREAD
     osip_mutex_unlock(osip->ict_fastmutex);
 #endif
-    return OSIP_NOMEM;          /* OSIP_SUCCESS; */
+    return OSIP_NOMEM; /* OSIP_SUCCESS; */
   }
 
   transaction = (osip_transaction_t *) osip_list_get_first(&osip->osip_ict_transactions, &iterator);
@@ -1098,7 +1095,7 @@ int osip_ict_execute(osip_t *osip) {
     do {
       se = (osip_event_t *) osip_fifo_tryget(transaction->transactionff);
 
-      if (se == NULL)           /* no more event for this transaction */
+      if (se == NULL) /* no more event for this transaction */
         more_event = 0;
 
       else
@@ -1139,7 +1136,7 @@ int osip_ist_execute(osip_t *osip) {
 #ifndef OSIP_MONOTHREAD
     osip_mutex_unlock(osip->ist_fastmutex);
 #endif
-    return OSIP_NOMEM;          /* OSIP_SUCCESS; */
+    return OSIP_NOMEM; /* OSIP_SUCCESS; */
   }
 
   transaction = (osip_transaction_t *) osip_list_get_first(&osip->osip_ist_transactions, &iterator);
@@ -1160,13 +1157,12 @@ int osip_ist_execute(osip_t *osip) {
     do {
       se = (osip_event_t *) osip_fifo_tryget(transaction->transactionff);
 
-      if (se == NULL)           /* no more event for this transaction */
+      if (se == NULL) /* no more event for this transaction */
         more_event = 0;
 
       else
         osip_transaction_execute(transaction, se);
     } while (more_event == 1);
-
   }
 
   osip_free(array);
@@ -1202,7 +1198,7 @@ int osip_nict_execute(osip_t *osip) {
 #ifndef OSIP_MONOTHREAD
     osip_mutex_unlock(osip->nict_fastmutex);
 #endif
-    return OSIP_NOMEM;          /* OSIP_SUCCESS; */
+    return OSIP_NOMEM; /* OSIP_SUCCESS; */
   }
 
   transaction = (osip_transaction_t *) osip_list_get_first(&osip->osip_nict_transactions, &iterator);
@@ -1223,7 +1219,7 @@ int osip_nict_execute(osip_t *osip) {
     do {
       se = (osip_event_t *) osip_fifo_tryget(transaction->transactionff);
 
-      if (se == NULL)           /* no more event for this transaction */
+      if (se == NULL) /* no more event for this transaction */
         more_event = 0;
 
       else
@@ -1264,7 +1260,7 @@ int osip_nist_execute(osip_t *osip) {
 #ifndef OSIP_MONOTHREAD
     osip_mutex_unlock(osip->nist_fastmutex);
 #endif
-    return OSIP_NOMEM;          /* OSIP_SUCCESS; */
+    return OSIP_NOMEM; /* OSIP_SUCCESS; */
   }
 
   transaction = (osip_transaction_t *) osip_list_get_first(&osip->osip_nist_transactions, &iterator);
@@ -1285,7 +1281,7 @@ int osip_nist_execute(osip_t *osip) {
     do {
       se = (osip_event_t *) osip_fifo_tryget(transaction->transactionff);
 
-      if (se == NULL)           /* no more event for this transaction */
+      if (se == NULL) /* no more event for this transaction */
         more_event = 0;
 
       else
@@ -1304,7 +1300,7 @@ void osip_timers_gettimeout(osip_t *osip, struct timeval *lower_tv) {
   osip_list_iterator_t iterator;
 
   osip_gettimeofday(&now, NULL);
-  lower_tv->tv_sec = now.tv_sec + 3600 * 24 * 365;      /* wake up evry year :-) */
+  lower_tv->tv_sec = now.tv_sec + 3600 * 24 * 365; /* wake up evry year :-) */
   lower_tv->tv_usec = now.tv_usec;
 
 #ifndef OSIP_MONOTHREAD
@@ -1614,7 +1610,6 @@ void osip_timers_nict_execute(osip_t *osip) {
 #endif
 }
 
-
 void osip_timers_nist_execute(osip_t *osip) {
   osip_transaction_t *tr;
   osip_list_iterator_t iterator;
@@ -1688,7 +1683,6 @@ void __osip_transport_error_callback(int type, osip_transaction_t *tr, int error
 
   config->tp_error_callbacks[type](type, tr, error);
 }
-
 
 int osip_set_message_callback(osip_t *config, int type, osip_message_cb_t cb) {
   if (type >= OSIP_MESSAGE_CALLBACK_COUNT) {

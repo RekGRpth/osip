@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CALL_ID_H_
 #define _OSIP_CALL_ID_H_
 
@@ -43,13 +42,12 @@ typedef struct osip_call_id osip_call_id_t;
  * @struct osip_call_id
  */
 struct osip_call_id {
-  char *number;    /**< Call-ID number */
-  char *host;      /**< Call-ID host information */
+  char *number; /**< Call-ID number */
+  char *host;   /**< Call-ID host information */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**

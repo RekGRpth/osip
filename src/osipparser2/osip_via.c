@@ -163,21 +163,21 @@ int osip_via_parse(osip_via_t *via, const char *hvalue) {
   host = strchr(protocol + 1, ' ');
 
   if (host == NULL)
-    return OSIP_SYNTAXERROR;    /* fixed in 0.8.4 */
+    return OSIP_SYNTAXERROR; /* fixed in 0.8.4 */
 
-  if (host == protocol + 1) {   /* there are extra SPACE characters */
+  if (host == protocol + 1) { /* there are extra SPACE characters */
     while (0 == strncmp(host, " ", 1)) {
       host++;
 
       if (strlen(host) == 1)
-        return OSIP_SYNTAXERROR;        /* via is malformed */
+        return OSIP_SYNTAXERROR; /* via is malformed */
     }
 
     /* here, we match the real space located after the protocol name */
     host = strchr(host + 1, ' ');
 
     if (host == NULL)
-      return OSIP_SYNTAXERROR;  /* fixed in 0.8.4 */
+      return OSIP_SYNTAXERROR; /* fixed in 0.8.4 */
   }
 
   /* set the protocol */
@@ -200,7 +200,7 @@ int osip_via_parse(osip_via_t *via, const char *hvalue) {
     end_comment = strchr(host, ')');
 
     if (end_comment == NULL)
-      return OSIP_SYNTAXERROR;  /* if '(' exist ')' MUST exist */
+      return OSIP_SYNTAXERROR; /* if '(' exist ')' MUST exist */
 
     if (end_comment - comment < 2)
       return OSIP_SYNTAXERROR;
@@ -219,7 +219,7 @@ int osip_via_parse(osip_via_t *via, const char *hvalue) {
   via_params = strchr(host, ';');
 
   if ((via_params != NULL) && (via_params < comment))
-    /* via params exist */
+  /* via params exist */
   {
     char *tmp;
 
@@ -306,7 +306,6 @@ int osip_via_parse(osip_via_t *via, const char *hvalue) {
   return OSIP_SUCCESS;
 }
 
-
 /* returns the via header as a string. */
 /* INPUT : osip_via_t via* | via header.    */
 /* returns null on error. */
@@ -318,11 +317,10 @@ int osip_via_to_str(const osip_via_t *via, char **dest) {
 
   *dest = NULL;
 
-  if ((via == NULL) || (via->host == NULL)
-      || (via->version == NULL) || (via->protocol == NULL))
+  if ((via == NULL) || (via->host == NULL) || (via->version == NULL) || (via->protocol == NULL))
     return OSIP_BADPARAMETER;
 
-  len = strlen(via->version) + 1 + strlen(via->protocol) + 1 + 3 + 2;   /* sip/xxx/xxx */
+  len = strlen(via->version) + 1 + strlen(via->protocol) + 1 + 3 + 2; /* sip/xxx/xxx */
   len = len + strlen(via->host) + 3 + 1;
 
   if (via->port != NULL)
@@ -347,8 +345,6 @@ int osip_via_to_str(const osip_via_t *via, char **dest) {
     else
       sprintf(buf, "SIP/%s/%s %s:%s", via->version, via->protocol, via->host, via->port);
   }
-
-
 
   {
     osip_list_iterator_t it;
@@ -505,7 +501,7 @@ int osip_via_clone(const osip_via_t *via, osip_via_t **dest) {
     }
   }
 
-  i = osip_list_clone(&via->via_params, &vi->via_params, (int (*)(void *, void **)) &osip_generic_param_clone);
+  i = osip_list_clone(&via->via_params, &vi->via_params, (int (*)(void *, void **)) & osip_generic_param_clone);
 
   if (i != 0) {
     osip_via_free(vi);

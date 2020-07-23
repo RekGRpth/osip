@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_BODY_H_
 #define _OSIP_BODY_H_
 
@@ -46,13 +45,12 @@ typedef struct osip_body osip_body_t;
  * @struct osip_body
  */
 struct osip_body {
-  char *body;                                                    /**< buffer containing data */
-  size_t length;                                         /**< length of data */
-  osip_list_t *headers;                          /**< List of headers (when mime is used) */
+  char *body;           /**< buffer containing data */
+  size_t length;        /**< length of data */
+  osip_list_t *headers; /**< List of headers (when mime is used) */
   osip_content_type_t *content_type;
   /**< Content-Type (when mime is used) */
 };
-
 
 #ifdef __cplusplus
 extern "C" {

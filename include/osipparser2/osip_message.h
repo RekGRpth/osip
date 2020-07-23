@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_MESSAGE_H_
 #define _OSIP_MESSAGE_H_
 
@@ -53,60 +52,60 @@ typedef struct osip_message osip_message_t;
  * @struct osip_message
  */
 struct osip_message {
-  char *sip_version;                            /**< SIP version (SIP request only) */
-  osip_uri_t *req_uri;                          /**< Request-Uri (SIP request only) */
-  char *sip_method;                             /**< METHOD (SIP request only) */
+  char *sip_version;   /**< SIP version (SIP request only) */
+  osip_uri_t *req_uri; /**< Request-Uri (SIP request only) */
+  char *sip_method;    /**< METHOD (SIP request only) */
 
-  int status_code;                              /**< Status Code (SIP answer only) */
-  char *reason_phrase;                          /**< Reason Phrase (SIP answer only) */
+  int status_code;     /**< Status Code (SIP answer only) */
+  char *reason_phrase; /**< Reason Phrase (SIP answer only) */
 
 #ifndef MINISIZE
-  osip_list_t accepts;                          /**< Accept headers */
-  osip_list_t accept_encodings;                 /**< Accept-Encoding headers */
-  osip_list_t accept_languages;                 /**< Accept-Language headers */
-  osip_list_t alert_infos;                      /**< Alert-Info headers */
-  osip_list_t allows;                           /**< Allows headers */
-  osip_list_t authentication_infos;             /**< authentication_info headers */
+  osip_list_t accepts;              /**< Accept headers */
+  osip_list_t accept_encodings;     /**< Accept-Encoding headers */
+  osip_list_t accept_languages;     /**< Accept-Language headers */
+  osip_list_t alert_infos;          /**< Alert-Info headers */
+  osip_list_t allows;               /**< Allows headers */
+  osip_list_t authentication_infos; /**< authentication_info headers */
 #endif
-  osip_list_t authorizations;                   /**< Authorizations headers */
-  osip_call_id_t *call_id;                      /**< Call-ID header */
-  osip_list_t call_infos;                       /**< Call-Infos header */
-  osip_list_t contacts;                         /**< Contacts headers */
+  osip_list_t authorizations; /**< Authorizations headers */
+  osip_call_id_t *call_id;    /**< Call-ID header */
+  osip_list_t call_infos;     /**< Call-Infos header */
+  osip_list_t contacts;       /**< Contacts headers */
 #ifndef MINISIZE
-  osip_list_t content_encodings;                /**< Content-Encodings headers */
+  osip_list_t content_encodings; /**< Content-Encodings headers */
 #endif
-  osip_content_length_t *content_length;        /**< Content-Length header */
-  osip_content_type_t *content_type;            /**< Content-Type header */
-  osip_cseq_t *cseq;                            /**< CSeq header */
+  osip_content_length_t *content_length; /**< Content-Length header */
+  osip_content_type_t *content_type;     /**< Content-Type header */
+  osip_cseq_t *cseq;                     /**< CSeq header */
 #ifndef MINISIZE
-  osip_list_t error_infos;                      /**< Error-Info headers */
+  osip_list_t error_infos; /**< Error-Info headers */
 #endif
-  osip_from_t *from;                            /**< From header */
-  osip_mime_version_t *mime_version;            /**< Mime-Version header */
-  osip_list_t proxy_authenticates;              /**< Proxy-Authenticate headers */
+  osip_from_t *from;                 /**< From header */
+  osip_mime_version_t *mime_version; /**< Mime-Version header */
+  osip_list_t proxy_authenticates;   /**< Proxy-Authenticate headers */
 #ifndef MINISIZE
-  osip_list_t proxy_authentication_infos;       /**< P-Authentication-Info headers */
+  osip_list_t proxy_authentication_infos; /**< P-Authentication-Info headers */
 #endif
-  osip_list_t proxy_authorizations;             /**< Proxy-authorization headers */
-  osip_list_t record_routes;                    /**< Record-Route headers */
-  osip_list_t routes;                           /**< Route headers */
-  osip_to_t *to;                                /**< To header */
-  osip_list_t vias;                             /**< Vias headers */
-  osip_list_t www_authenticates;                /**< WWW-Authenticate headers */
+  osip_list_t proxy_authorizations; /**< Proxy-authorization headers */
+  osip_list_t record_routes;        /**< Record-Route headers */
+  osip_list_t routes;               /**< Route headers */
+  osip_to_t *to;                    /**< To header */
+  osip_list_t vias;                 /**< Vias headers */
+  osip_list_t www_authenticates;    /**< WWW-Authenticate headers */
 
-  osip_list_t headers;                          /**< Other headers */
+  osip_list_t headers; /**< Other headers */
 
-  osip_list_t bodies;                           /**< List of attachements */
+  osip_list_t bodies; /**< List of attachements */
 
   /*
      1: structure and buffer "message" are identical.
      2: buffer "message" is not up to date with the structure info (call osip_message_to_str to update it).
    */
-  int message_property;                         /**< internal value */
-  char *message;                                /**< internal value */
-  size_t message_length;                        /**< internal value */
+  int message_property;  /**< internal value */
+  char *message;         /**< internal value */
+  size_t message_length; /**< internal value */
 
-  void *application_data;                       /**< can be used by upper layer*/
+  void *application_data; /**< can be used by upper layer*/
 };
 
 #ifndef SIP_MESSAGE_MAX_LENGTH
@@ -120,7 +119,7 @@ struct osip_message {
 /**
  * You can define the maximum length for a body inside a SIP message.
  */
-#define BODY_MESSAGE_MAX_SIZE  4000
+#define BODY_MESSAGE_MAX_SIZE 4000
 #endif
 
 /**
@@ -229,7 +228,6 @@ void osip_message_set_uri(osip_message_t *sip, osip_uri_t *uri);
  */
 osip_uri_t *osip_message_get_uri(const osip_message_t *sip);
 
-
 /*
  *  These are helpfull MACROs to test messages type.
  */
@@ -237,88 +235,86 @@ osip_uri_t *osip_message_get_uri(const osip_message_t *sip);
  * Test if the message is a SIP RESPONSE
  * @param msg the SIP message.
  */
-#define MSG_IS_RESPONSE(msg) ((msg)->status_code!=0)
+#define MSG_IS_RESPONSE(msg) ((msg)->status_code != 0)
 /**
  * Test if the message is a SIP REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_REQUEST(msg)  ((msg)->status_code==0)
+#define MSG_IS_REQUEST(msg) ((msg)->status_code == 0)
 
 /**
  * Test if the message is an INVITE REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_INVITE(msg)   (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"INVITE"))
+#define MSG_IS_INVITE(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "INVITE"))
 /**
  * Test if the message is an ACK REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_ACK(msg)      (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"ACK"))
+#define MSG_IS_ACK(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "ACK"))
 /**
  * Test if the message is a REGISTER REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_REGISTER(msg) (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"REGISTER"))
+#define MSG_IS_REGISTER(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "REGISTER"))
 /**
  * Test if the message is a BYE REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_BYE(msg)      (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"BYE"))
+#define MSG_IS_BYE(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "BYE"))
 /**
  * Test if the message is an OPTIONS REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_OPTIONS(msg)  (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"OPTIONS"))
+#define MSG_IS_OPTIONS(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "OPTIONS"))
 /**
  * Test if the message is an INFO REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_INFO(msg)     (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"INFO"))
+#define MSG_IS_INFO(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "INFO"))
 /**
  * Test if the message is a CANCEL REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_CANCEL(msg)   (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"CANCEL"))
+#define MSG_IS_CANCEL(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "CANCEL"))
 /**
  * Test if the message is a REFER REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_REFER(msg)   (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"REFER"))
+#define MSG_IS_REFER(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "REFER"))
 /**
  * Test if the message is a NOTIFY REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_NOTIFY(msg)  (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"NOTIFY"))
+#define MSG_IS_NOTIFY(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "NOTIFY"))
 /**
  * Test if the message is a SUBSCRIBE REQUEST
  * @def MSG_IS_SUBSCRIBE
  * @param msg the SIP message.
  */
-#define MSG_IS_SUBSCRIBE(msg)  (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"SUBSCRIBE"))
+#define MSG_IS_SUBSCRIBE(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "SUBSCRIBE"))
 /**
  * Test if the message is a MESSAGE REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_MESSAGE(msg)  (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"MESSAGE"))
+#define MSG_IS_MESSAGE(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "MESSAGE"))
 /**
  * Test if the message is a PRACK REQUEST  (!! PRACK IS NOT SUPPORTED by the fsm!!)
  * @param msg the SIP message.
  */
-#define MSG_IS_PRACK(msg)    (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"PRACK"))
-
-
-/**
- * Test if the message is an UPDATE REQUEST
- * @param msg the SIP message.
- */
-#define MSG_IS_UPDATE(msg)    (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"UPDATE"))
+#define MSG_IS_PRACK(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "PRACK"))
 
 /**
  * Test if the message is an UPDATE REQUEST
  * @param msg the SIP message.
  */
-#define MSG_IS_PUBLISH(msg)    (MSG_IS_REQUEST(msg) && 0==strcmp((msg)->sip_method,"PUBLISH"))
+#define MSG_IS_UPDATE(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "UPDATE"))
 
+/**
+ * Test if the message is an UPDATE REQUEST
+ * @param msg the SIP message.
+ */
+#define MSG_IS_PUBLISH(msg) (MSG_IS_REQUEST(msg) && 0 == strcmp((msg)->sip_method, "PUBLISH"))
 
 /**
  * Test if the message is a response with status between 100 and 199
@@ -355,14 +351,13 @@ osip_uri_t *osip_message_get_uri(const osip_message_t *sip);
  * @param msg the SIP message.
  * @param code the status code.
  */
-#define MSG_TEST_CODE(msg,code) (MSG_IS_RESPONSE(msg) && (code)==(msg)->status_code)
+#define MSG_TEST_CODE(msg, code) (MSG_IS_RESPONSE(msg) && (code) == (msg)->status_code)
 /**
  * Test if the message is a response for a REQUEST of certain type
  * @param msg the SIP message.
  * @param requestname the method name to match.
  */
-#define MSG_IS_RESPONSE_FOR(msg,requestname)  (MSG_IS_RESPONSE(msg) && 0==strcmp((msg)->cseq->method,(requestname)))
-
+#define MSG_IS_RESPONSE_FOR(msg, requestname) (MSG_IS_RESPONSE(msg) && 0 == strcmp((msg)->cseq->method, (requestname)))
 
 /**
  * Allocate a generic parameter element.
@@ -380,19 +375,19 @@ osip_uri_t *osip_message_get_uri(const osip_message_t *sip);
  * @param NAME The token name.
  * @param VALUE The token value.
  */
-#define osip_generic_param_set(GP, NAME, VALUE)  osip_uri_param_set(GP, NAME, VALUE)
+#define osip_generic_param_set(GP, NAME, VALUE) osip_uri_param_set(GP, NAME, VALUE)
 /**
  * Clone a generic parameter element.
  * @param GP The element to work on.
  * @param DEST The resulting new allocated buffer.
  */
-#define osip_generic_param_clone      osip_uri_param_clone
+#define osip_generic_param_clone osip_uri_param_clone
 #ifndef DOXYGEN
 /*
  * Free a list of a generic parameter element.
  * @param LIST The list of generic parameter element to free.
  */
-#define osip_generic_param_freelist(LIST)       osip_uri_param_freelist(LIST)
+#define osip_generic_param_freelist(LIST) osip_uri_param_freelist(LIST)
 #endif
 /**
  * Allocate and add a generic parameter element in a list.
@@ -400,14 +395,14 @@ osip_uri_t *osip_message_get_uri(const osip_message_t *sip);
  * @param NAME The token name.
  * @param VALUE The token value.
  */
-#define osip_generic_param_add(LIST,NAME,VALUE)        osip_uri_param_add(LIST,NAME,VALUE)
+#define osip_generic_param_add(LIST, NAME, VALUE) osip_uri_param_add(LIST, NAME, VALUE)
 /**
  * Find in a generic parameter element in a list.
  * @param LIST The list of generic parameter element to work on.
  * @param NAME The name of the parameter element to find.
  * @param DEST A pointer on the element found.
  */
-#define osip_generic_param_get_byname(LIST,NAME,DEST) osip_uri_param_get_byname(LIST,NAME,DEST)
+#define osip_generic_param_get_byname(LIST, NAME, DEST) osip_uri_param_get_byname(LIST, NAME, DEST)
 
 /**
  * Set the name of a generic parameter element.
@@ -432,7 +427,6 @@ void osip_generic_param_set_value(osip_generic_param_t *generic_param, char *val
  */
 char *osip_generic_param_get_value(const osip_generic_param_t *generic_param);
 
-
 /**
  * Get the a known header from a list of known header.
  * @param header_list The element to work on.
@@ -442,7 +436,6 @@ char *osip_generic_param_get_value(const osip_generic_param_t *generic_param);
 int osip_message_get_knownheaderlist(osip_list_t *header_list, int pos, void **dest);
 
 /** @} */
-
 
 #ifdef __cplusplus
 }

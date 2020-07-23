@@ -23,86 +23,19 @@
 #include "fsm.h"
 #include "xixt.h"
 
-transition_t ict_transition[11] = {
-  {
-    ICT_PRE_CALLING,
-    SND_REQINVITE,
-    (void (*)(void *, void *)) &ict_snd_invite,
-    &ict_transition[1], NULL
-  }
-  ,
-  {
-    ICT_CALLING,
-    TIMEOUT_A,
-    (void (*)(void *, void *)) &osip_ict_timeout_a_event,
-    &ict_transition[2], NULL
-  }
-  ,
-  {
-    ICT_CALLING,
-    TIMEOUT_B,
-    (void (*)(void *, void *)) &osip_ict_timeout_b_event,
-    &ict_transition[3], NULL
-  }
-  ,
-  {
-    ICT_CALLING,
-    RCV_STATUS_1XX,
-    (void (*)(void *, void *)) &ict_rcv_1xx,
-    &ict_transition[4], NULL
-  }
-  ,
-  {
-    ICT_CALLING,
-    RCV_STATUS_2XX,
-    (void (*)(void *, void *)) &ict_rcv_2xx,
-    &ict_transition[5], NULL
-  }
-  ,
-  {
-    ICT_CALLING,
-    RCV_STATUS_3456XX,
-    (void (*)(void *, void *)) &ict_rcv_3456xx,
-    &ict_transition[6], NULL
-  }
-  ,
-  {
-    ICT_PROCEEDING,
-    RCV_STATUS_1XX,
-    (void (*)(void *, void *)) &ict_rcv_1xx,
-    &ict_transition[7], NULL
-  }
-  ,
-  {
-    ICT_PROCEEDING,
-    RCV_STATUS_2XX,
-    (void (*)(void *, void *)) &ict_rcv_2xx,
-    &ict_transition[8], NULL
-  }
-  ,
-  {
-    ICT_PROCEEDING,
-    RCV_STATUS_3456XX,
-    (void (*)(void *, void *)) &ict_rcv_3456xx,
-    &ict_transition[9], NULL
-  }
-  ,
-  {
-    ICT_COMPLETED,
-    RCV_STATUS_3456XX,
-    (void (*)(void *, void *)) &ict_retransmit_ack,
-    &ict_transition[10], NULL
-  }
-  ,
-  {
-    ICT_COMPLETED,
-    TIMEOUT_D,
-    (void (*)(void *, void *)) &osip_ict_timeout_d_event,
-    NULL, NULL
-  }
-};
+transition_t ict_transition[11] = {{ICT_PRE_CALLING, SND_REQINVITE, (void (*)(void *, void *)) & ict_snd_invite, &ict_transition[1], NULL},
+                                   {ICT_CALLING, TIMEOUT_A, (void (*)(void *, void *)) & osip_ict_timeout_a_event, &ict_transition[2], NULL},
+                                   {ICT_CALLING, TIMEOUT_B, (void (*)(void *, void *)) & osip_ict_timeout_b_event, &ict_transition[3], NULL},
+                                   {ICT_CALLING, RCV_STATUS_1XX, (void (*)(void *, void *)) & ict_rcv_1xx, &ict_transition[4], NULL},
+                                   {ICT_CALLING, RCV_STATUS_2XX, (void (*)(void *, void *)) & ict_rcv_2xx, &ict_transition[5], NULL},
+                                   {ICT_CALLING, RCV_STATUS_3456XX, (void (*)(void *, void *)) & ict_rcv_3456xx, &ict_transition[6], NULL},
+                                   {ICT_PROCEEDING, RCV_STATUS_1XX, (void (*)(void *, void *)) & ict_rcv_1xx, &ict_transition[7], NULL},
+                                   {ICT_PROCEEDING, RCV_STATUS_2XX, (void (*)(void *, void *)) & ict_rcv_2xx, &ict_transition[8], NULL},
+                                   {ICT_PROCEEDING, RCV_STATUS_3456XX, (void (*)(void *, void *)) & ict_rcv_3456xx, &ict_transition[9], NULL},
+                                   {ICT_COMPLETED, RCV_STATUS_3456XX, (void (*)(void *, void *)) & ict_retransmit_ack, &ict_transition[10], NULL},
+                                   {ICT_COMPLETED, TIMEOUT_D, (void (*)(void *, void *)) & osip_ict_timeout_d_event, NULL, NULL}};
 
-osip_statemachine_t ict_fsm = { ict_transition };
+osip_statemachine_t ict_fsm = {ict_transition};
 
 static void ict_handle_transport_error(osip_transaction_t *ict, int err) {
   __osip_transport_error_callback(OSIP_ICT_TRANSPORT_ERROR, ict, err);
@@ -131,11 +64,11 @@ void ict_snd_invite(osip_transaction_t *ict, osip_event_t *evt) {
      stop timer E in reliable transport - non blocking socket:
      the message was just sent
    */
-  if (i == 0) {                 /* but message was really sent */
+  if (i == 0) { /* but message was really sent */
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(ict->orig_request, 0, &via);       /* get top via */
+    i = osip_message_get_via(ict->orig_request, 0, &via); /* get top via */
 
     if (i < 0) {
       ict_handle_transport_error(ict, i);
@@ -150,8 +83,8 @@ void ict_snd_invite(osip_transaction_t *ict, osip_event_t *evt) {
     }
 
     if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
-    } else {                    /* reliable protocol is used: */
-      ict->ict_context->timer_a_length = -1;    /* A is not ACTIVE */
+    } else {                                 /* reliable protocol is used: */
+      ict->ict_context->timer_a_length = -1; /* A is not ACTIVE */
       ict->ict_context->timer_a_start.tv_sec = -1;
     }
   }
@@ -185,11 +118,11 @@ void osip_ict_timeout_a_event(osip_transaction_t *ict, osip_event_t *evt) {
      stop timer E in reliable transport - non blocking socket:
      the message was just sent
    */
-  if (i == 0) {                 /* but message was really sent */
+  if (i == 0) { /* but message was really sent */
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(ict->orig_request, 0, &via);       /* get top via */
+    i = osip_message_get_via(ict->orig_request, 0, &via); /* get top via */
 
     if (i < 0) {
       ict_handle_transport_error(ict, i);
@@ -204,8 +137,8 @@ void osip_ict_timeout_a_event(osip_transaction_t *ict, osip_event_t *evt) {
     }
 
     if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
-    } else {                    /* reliable protocol is used: */
-      ict->ict_context->timer_a_length = -1;    /* A is not ACTIVE */
+    } else {                                 /* reliable protocol is used: */
+      ict->ict_context->timer_a_length = -1; /* A is not ACTIVE */
       ict->ict_context->timer_a_start.tv_sec = -1;
     }
   }
@@ -269,7 +202,7 @@ osip_message_t *ict_create_ack(osip_transaction_t *ict, osip_message_t *response
     return NULL;
   }
 
-  i = osip_to_clone(response->to, &(ack->to));  /* include the tag! */
+  i = osip_to_clone(response->to, &(ack->to)); /* include the tag! */
 
   if (i != 0) {
     osip_message_free(ack);
@@ -372,7 +305,7 @@ osip_message_t *ict_create_ack(osip_transaction_t *ict, osip_message_t *response
   if (response->status_code != 401 && response->status_code != 407) {
     /* ack MUST contains the Authorization headers field from the original request */
     if (osip_list_size(&ict->orig_request->authorizations) > 0) {
-      i = osip_list_clone(&ict->orig_request->authorizations, &ack->authorizations, (int (*)(void *, void **)) &osip_authorization_clone);
+      i = osip_list_clone(&ict->orig_request->authorizations, &ack->authorizations, (int (*)(void *, void **)) & osip_authorization_clone);
 
       if (i != 0) {
         osip_message_free(ack);
@@ -382,7 +315,7 @@ osip_message_t *ict_create_ack(osip_transaction_t *ict, osip_message_t *response
 
     /* ack MUST contains the Proxy-Authorization headers field from the original request */
     if (osip_list_size(&ict->orig_request->proxy_authorizations) > 0) {
-      i = osip_list_clone(&ict->orig_request->proxy_authorizations, &ack->proxy_authorizations, (int (*)(void *, void **)) &osip_proxy_authorization_clone);
+      i = osip_list_clone(&ict->orig_request->proxy_authorizations, &ack->proxy_authorizations, (int (*)(void *, void **)) & osip_proxy_authorization_clone);
 
       if (i != 0) {
         osip_message_free(ack);
@@ -409,7 +342,7 @@ void ict_rcv_3456xx(osip_transaction_t *ict, osip_event_t *evt) {
 
   ict->last_response = evt->sip;
 
-  if (ict->state != ICT_COMPLETED) {    /* not a retransmission */
+  if (ict->state != ICT_COMPLETED) { /* not a retransmission */
     /* automatic handling of ack! */
     osip_message_t *ack = ict_create_ack(ict, evt->sip);
 

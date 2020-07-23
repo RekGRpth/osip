@@ -51,14 +51,13 @@ int osip_message_set_accept(osip_message_t *sip, const char *hvalue) {
   return OSIP_SUCCESS;
 }
 
-
 int osip_message_get_accept(const osip_message_t *sip, int pos, osip_accept_t **dest) {
   osip_accept_t *accept;
 
   *dest = NULL;
 
   if (osip_list_size(&sip->accepts) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   accept = (osip_accept_t *) osip_list_get(&sip->accepts, pos);
   *dest = accept;
@@ -98,7 +97,7 @@ int osip_accept_to_str(const osip_accept_t *accept, char **dest) {
   }
 
   /* try to guess a long enough length */
-  len += 4                      /* for '/', ' ', ';' and '\0' */
+  len += 4 /* for '/', ' ', ';' and '\0' */
          + 10 * osip_list_size(&accept->gen_params);
 
   buf = (char *) osip_malloc(len);
@@ -123,8 +122,7 @@ int osip_accept_to_str(const osip_accept_t *accept, char **dest) {
         return OSIP_SYNTAXERROR;
       }
 
-      tmp_len = strlen(buf) + 4 + strlen(u_param->gname)
-                + strlen(u_param->gvalue) + 1;
+      tmp_len = strlen(buf) + 4 + strlen(u_param->gname) + strlen(u_param->gvalue) + 1;
 
       if (len < tmp_len) {
         buf = osip_realloc(buf, tmp_len);

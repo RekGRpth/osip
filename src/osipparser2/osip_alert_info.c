@@ -56,7 +56,7 @@ int osip_message_get_alert_info(const osip_message_t *sip, int pos, osip_alert_i
   *dest = NULL;
 
   if (osip_list_size(&sip->alert_infos) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   alert_info = (osip_alert_info_t *) osip_list_get(&sip->alert_infos, pos);
   *dest = alert_info;

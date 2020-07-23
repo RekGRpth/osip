@@ -59,7 +59,7 @@ int osip_message_get_content_encoding(const osip_message_t *sip, int pos, osip_c
   *dest = NULL;
 
   if (osip_list_size(&sip->content_encodings) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   ce = (osip_content_encoding_t *) osip_list_get(&sip->content_encodings, pos);
   *dest = ce;

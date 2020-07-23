@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_ACCEPT_LANGUAGE_H_
 #define _OSIP_ACCEPT_LANGUAGE_H_
 
@@ -41,32 +40,31 @@
 typedef osip_accept_encoding_t osip_accept_language_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate an Accept-Language element.
  * @param header The element to work on.
  */
-#define osip_accept_language_init(header)      osip_accept_encoding_init(header)
+#define osip_accept_language_init(header) osip_accept_encoding_init(header)
 /**
  * Parse an Accept-Language element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-#define osip_accept_language_parse(header, hvalue)  osip_accept_encoding_parse(header, hvalue)
+#define osip_accept_language_parse(header, hvalue) osip_accept_encoding_parse(header, hvalue)
 /**
  * Get a string representation of an Accept-Language element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define osip_accept_language_to_str  osip_accept_encoding_to_str
+#define osip_accept_language_to_str osip_accept_encoding_to_str
 /**
  * Free an Accept-Language element.
  * @param header The element to work on.
  */
-#define osip_accept_language_free      osip_accept_encoding_free
+#define osip_accept_language_free osip_accept_encoding_free
 /**
  * Clone an Accept-Language element.
  * @param header The element to work on.
@@ -78,28 +76,27 @@ extern "C"
  * Get the value of an Accept-Language element.
  * @param header The element to work on.
  */
-#define osip_accept_language_get_element(header)     osip_accept_encoding_get_element(header)
+#define osip_accept_language_get_element(header) osip_accept_encoding_get_element(header)
 /**
  * Set the value of an Accept-Language element.
  * @param header The element to work on.
  * @param value The value to set.
  */
-#define osip_accept_language_set_element(header, value)  osip_accept_encoding_set_element(header, value)
+#define osip_accept_language_set_element(header, value) osip_accept_encoding_set_element(header, value)
 /**
  * Allocate and add a generic parameter element in an Accept-Language element.
  * @param header The element to work on.
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_accept_language_param_add(header,name,value)  osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_accept_language_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in a Accept-Language element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_accept_language_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
-
+#define osip_accept_language_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

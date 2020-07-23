@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_TO_H_
 #define _OSIP_TO_H_
 
@@ -41,8 +40,7 @@
 typedef osip_from_t osip_to_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifndef MINISIZE
@@ -82,11 +80,11 @@ int osip_to_clone(const osip_to_t *header, osip_to_t **dest);
  */
 int osip_to_tag_match(osip_to_t *to1, osip_to_t *to2);
 #else
-#define osip_to_init   osip_from_init
-#define osip_to_free   osip_from_free
-#define osip_to_parse  osip_from_parse
+#define osip_to_init osip_from_init
+#define osip_to_free osip_from_free
+#define osip_to_parse osip_from_parse
 #define osip_to_to_str osip_from_to_str
-#define osip_to_clone  osip_from_clone
+#define osip_to_clone osip_from_clone
 #define osip_to_tag_match osip_from_tag_match
 #endif
 /**
@@ -94,61 +92,61 @@ int osip_to_tag_match(osip_to_t *to1, osip_to_t *to2);
  * @param header The element to work on.
  * @param value The value of the element.
  */
-#define osip_to_set_displayname(header,value) osip_from_set_displayname((osip_from_t*)header,value)
+#define osip_to_set_displayname(header, value) osip_from_set_displayname((osip_from_t *) header, value)
 /**
  * Get the displayname from a To header.
  * @param header The element to work on.
  */
-#define osip_to_get_displayname(header)       osip_from_get_displayname((osip_from_t*)header)
+#define osip_to_get_displayname(header) osip_from_get_displayname((osip_from_t *) header)
 /**
  * Set the url in the To element.
  * @param header The element to work on.
  * @param url The value of the element.
  */
-#define osip_to_set_url(header,url)         osip_from_set_url((osip_from_t*)header,url)
+#define osip_to_set_url(header, url) osip_from_set_url((osip_from_t *) header, url)
 /**
  * Get the url from a To header.
  * @param header The element to work on.
  */
-#define osip_to_get_url(header)               osip_from_get_url((osip_from_t*)header)
+#define osip_to_get_url(header) osip_from_get_url((osip_from_t *) header)
 /**
  * Get a header parameter from a To element.
  * @param header The element to work on.
  * @param pos The index of the element to get.
  * @param dest A pointer on the element found.
  */
-#define osip_to_param_get(header,pos,dest) osip_from_param_get((osip_from_t*)header,pos,dest)
+#define osip_to_param_get(header, pos, dest) osip_from_param_get((osip_from_t *) header, pos, dest)
 /**
  * Find a header parameter in a To element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_to_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
+#define osip_to_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 /**
  * Allocate and add a generic parameter element in a list.
  * @param header The element to work on.
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_to_param_add(header,name,value) osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_to_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 
 /**
  * Allocate and add a tag parameter element in a list.
  * @param header The element to work on.
  * @param value The token value.
  */
-#define osip_to_set_tag(header,value) osip_generic_param_add((&(header)->gen_params), osip_strdup("tag"),value)
+#define osip_to_set_tag(header, value) osip_generic_param_add((&(header)->gen_params), osip_strdup("tag"), value)
 /**
  * Find a tag parameter in a To element.
  * @param header The element to work on.
  * @param dest A pointer on the element found.
  */
-#define osip_to_get_tag(header,dest) osip_generic_param_get_byname((&(header)->gen_params), "tag",dest)
+#define osip_to_get_tag(header, dest) osip_generic_param_get_byname((&(header)->gen_params), "tag", dest)
 
-#ifndef DOXYGEN     /* avoid DOXYGEN warning */
+#ifndef DOXYGEN /* avoid DOXYGEN warning */
 /* Compare the username, host and tag part of the two froms */
-#define osip_to_compare(header1, header2) osip_from_compare((osip_from_t *)header1, (osip_from_t *)header2)
+#define osip_to_compare(header1, header2) osip_from_compare((osip_from_t *) header1, (osip_from_t *) header2)
 #endif
 
 #ifdef __cplusplus

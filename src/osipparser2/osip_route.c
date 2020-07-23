@@ -71,7 +71,7 @@ int osip_message_get_route(const osip_message_t *sip, int pos, osip_route_t **de
   *dest = NULL;
 
   if (osip_list_size(&sip->routes) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   route = (osip_route_t *) osip_list_get(&sip->routes, pos);
   *dest = route;

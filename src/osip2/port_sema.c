@@ -28,16 +28,13 @@
 #include <rtems.h>
 #endif
 
-#if !defined(__VXWORKS_OS__) && !defined(__PSOS__) && \
-  !defined(WIN32) && !defined(_WIN32_WCE) && !defined(HAVE_PTHREAD_WIN32) && \
-    !defined(HAVE_PTHREAD) && !defined(HAVE_PTH_PTHREAD_H) && !defined(__rtems__)
+#if !defined(__VXWORKS_OS__) && !defined(__PSOS__) && !defined(WIN32) && !defined(_WIN32_WCE) && !defined(HAVE_PTHREAD_WIN32) && !defined(HAVE_PTHREAD) && !defined(HAVE_PTH_PTHREAD_H) && !defined(__rtems__)
 #error No thread implementation found!
 #endif
 
 #if defined(HAVE_PTHREAD) || defined(HAVE_PTH_PTHREAD_H) || defined(HAVE_PTHREAD_WIN32)
 
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   osip_mutex_t *mut = (osip_mutex_t *) osip_malloc(sizeof(osip_mutex_t));
 
   if (mut == NULL)
@@ -80,8 +77,7 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
 #if defined(__arc__)
 
 /* Counting Semaphore is initialized to value */
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
 
   if (sem == NULL)
@@ -164,8 +160,7 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 #elif (defined(HAVE_SEMAPHORE_H) && !defined(__APPLE_CC__)) || defined(HAVE_PTHREAD_WIN32)
 
 /* Counting Semaphore is initialized to value */
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
 
   if (sem == NULL)
@@ -216,9 +211,8 @@ int osip_sem_trywait(struct osip_sem *_sem) {
   return sem_trywait(sem);
 }
 
-#elif defined (__APPLE_CC__)
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+#elif defined(__APPLE_CC__)
+struct osip_sem *osip_sem_init(unsigned int value) {
   task_t task = mach_task_self();
   int policy = SYNC_POLICY_FIFO;
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
@@ -279,7 +273,7 @@ int osip_sem_trywait(struct osip_sem *_sem) {
   if (sem == NULL)
     return OSIP_BADPARAMETER;
 
-  mach_timespec_t wait_time = { 0, 0 };
+  mach_timespec_t wait_time = {0, 0};
 
   if (semaphore_timedwait(sem->semid, wait_time) == KERN_SUCCESS)
     return OSIP_SUCCESS;
@@ -287,13 +281,12 @@ int osip_sem_trywait(struct osip_sem *_sem) {
   return OSIP_UNDEFINED_ERROR;
 }
 
-#elif defined (HAVE_SYS_SEM_H)
+#elif defined(HAVE_SYS_SEM_H)
 /* support for semctl, semop, semget */
 
 #define SEM_PERM 0600
 
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   union semun val;
   int i;
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
@@ -375,12 +368,10 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 
 #endif
 
-
 /* use VxWorks implementation */
 #ifdef __VXWORKS_OS__
 
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   return (struct osip_mutex *) semMCreate(SEM_Q_FIFO | SEM_DELETE_SAFE);
 }
 
@@ -411,8 +402,7 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
   return semGive(mut);
 }
 
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   SEM_ID initsem;
   osip_sem_t *x;
 
@@ -468,13 +458,11 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 
 #endif
 
-
 #if (defined(WIN32) || defined(_WIN32_WCE)) && !defined(HAVE_PTHREAD_WIN32)
 #include <limits.h>
 
 #if (_WIN32_WINNT >= 0x0403) && !defined(_WIN32_WCE)
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   osip_mutex_t *mut = (osip_mutex_t *) osip_malloc(sizeof(osip_mutex_t));
 
   if (mut == NULL)
@@ -483,13 +471,13 @@ osip_mutex_init() {
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 
   if (InitializeCriticalSectionEx(&mut->h, OSIP_CRITICALSECTION_SPIN, CRITICAL_SECTION_NO_DEBUG_INFO) != 0) {
-    return (struct osip_mutex *)(mut);
+    return (struct osip_mutex *) (mut);
   }
 
 #else
 
   if (InitializeCriticalSectionAndSpinCount(&mut->h, OSIP_CRITICALSECTION_SPIN) != 0)
-    return (struct osip_mutex *)(mut);
+    return (struct osip_mutex *) (mut);
 
 #endif
   osip_free(mut);
@@ -528,15 +516,14 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
 }
 #else
 
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   osip_mutex_t *mut = (osip_mutex_t *) osip_malloc(sizeof(osip_mutex_t));
 
   if (mut == NULL)
     return NULL;
 
   if ((mut->h = CreateMutex(NULL, FALSE, NULL)) != NULL)
-    return (struct osip_mutex *)(mut);
+    return (struct osip_mutex *) (mut);
 
   osip_free(mut);
   return (NULL);
@@ -576,8 +563,7 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
 }
 #endif
 
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
 
   if (sem == NULL)
@@ -586,12 +572,12 @@ osip_sem_init(unsigned int value) {
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
 
   if ((sem->h = CreateSemaphoreExW(NULL, value, LONG_MAX, NULL, 0, (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | SEMAPHORE_MODIFY_STATE))) != NULL)
-    return (struct osip_sem *)(sem);
+    return (struct osip_sem *) (sem);
 
 #else
 
   if ((sem->h = CreateSemaphore(NULL, value, LONG_MAX, NULL)) != NULL)
-    return (struct osip_sem *)(sem);
+    return (struct osip_sem *) (sem);
 
 #endif
   osip_free(sem);
@@ -650,12 +636,11 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 #endif
 
 #ifdef __PSOS__
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   osip_mutex_t *mut = (osip_mutex_t *) osip_malloc(sizeof(osip_mutex_t));
 
   if (sm_create("mut", 1, 0, &mut->id) == 0)
-    return (struct osip_mutex *)(mut);
+    return (struct osip_mutex *) (mut);
 
   osip_free(mut);
   return (NULL);
@@ -691,12 +676,11 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
   return (0);
 }
 
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
 
   if (sm_create("sem", value, 0, &sem->id) == 0)
-    return (struct osip_sem *)(sem);
+    return (struct osip_sem *) (sem);
 
   osip_free(sem);
   return (NULL);
@@ -748,20 +732,17 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 
 #endif
 
-
-
 #if defined(__rtems__)
 
-struct osip_mutex *
-osip_mutex_init() {
+struct osip_mutex *osip_mutex_init() {
   rtems_status_code status;
   osip_mutex_t *mut = (osip_mutex_t *) osip_malloc(sizeof(osip_mutex_t));
 
-  status = rtems_semaphore_create(rtems_build_name('s', 'i', 'p', 'M'), 1,      /* Count */
+  status = rtems_semaphore_create(rtems_build_name('s', 'i', 'p', 'M'), 1, /* Count */
                                   RTEMS_SIMPLE_BINARY_SEMAPHORE, 0, &mut->id);
 
   if (status == RTEMS_SUCCESSFUL) {
-    return (struct osip_mutex *)(mut);
+    return (struct osip_mutex *) (mut);
   }
 
   osip_free(mut);
@@ -802,8 +783,7 @@ int osip_mutex_unlock(struct osip_mutex *_mut) {
   return (0);
 }
 
-struct osip_sem *
-osip_sem_init(unsigned int value) {
+struct osip_sem *osip_sem_init(unsigned int value) {
   rtems_status_code status;
 
   osip_sem_t *sem = (osip_sem_t *) osip_malloc(sizeof(osip_sem_t));
@@ -811,7 +791,7 @@ osip_sem_init(unsigned int value) {
   status = rtems_semaphore_create(rtems_build_name('s', 'i', 'p', 'S'), value, RTEMS_COUNTING_SEMAPHORE, 0, &sem->id);
 
   if (status == RTEMS_SUCCESSFUL) {
-    return (struct osip_sem *)(sem);
+    return (struct osip_sem *) (sem);
   }
 
   osip_free(sem);
@@ -867,7 +847,6 @@ int osip_sem_trywait(struct osip_sem *_sem) {
 
   return (0);
 }
-
 
 #endif
 #endif /* #ifndef OSIP_MONOTHREAD */

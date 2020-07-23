@@ -54,7 +54,6 @@ int osip_message_set_from(osip_message_t *sip, const char *hvalue) {
   return OSIP_SUCCESS;
 }
 
-
 #ifndef MINISIZE
 /* returns the from header.            */
 /* INPUT : osip_message_t *sip | sip message.   */
@@ -144,7 +143,7 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
   }
 
   if (ptr[0] == '\0')
-    return OSIP_SUCCESS;        /* empty header allowed? */
+    return OSIP_SUCCESS; /* empty header allowed? */
 
   if (displayname != NULL) {
     /* displayname IS A quoted-string (not a '*token') */
@@ -154,7 +153,7 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
     second = __osip_quote_find(displayname + 1);
 
     if (second == NULL)
-      return OSIP_SYNTAXERROR;  /* missing quote */
+      return OSIP_SYNTAXERROR; /* missing quote */
 
     if (second - displayname + 2 >= 2) {
       from->displayname = (char *) osip_malloc(second - displayname + 2);
@@ -163,10 +162,10 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
         return OSIP_NOMEM;
 
       osip_strncpy(from->displayname, displayname, second - displayname + 1);
-      /* osip_clrspace(from->displayname); *//*should we do that? */
+      /* osip_clrspace(from->displayname); */ /*should we do that? */
 
       /* special case: "<sip:joe@big.org>" <sip:joe@really.big.com> */
-    }                           /* else displayname is empty? */
+    } /* else displayname is empty? */
 
     ptr = second + 1;
 
@@ -185,10 +184,10 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
     }
 
     if (url == NULL)
-      return OSIP_SYNTAXERROR;  /* '<' MUST exist */
+      return OSIP_SYNTAXERROR; /* '<' MUST exist */
 
     if (ptr[1] == '\0')
-      return OSIP_SYNTAXERROR;  /* '<' MUST contain something */
+      return OSIP_SYNTAXERROR; /* '<' MUST contain something */
 
   } else {
     /* 1*(alphanum / "-" / "." / "!" / "%" / "*" / "_" / "+" / "`" / "'" / "~" ) */
@@ -226,12 +225,12 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
     }
 
     if (ptr[0] == '\0' || url == NULL)
-      return OSIP_SYNTAXERROR;  /* not special char found? broken header? */
+      return OSIP_SYNTAXERROR; /* not special char found? broken header? */
 
     if (ptr[0] == '<') {
       /* "<" found for URI */
       if (ptr[1] == '\0')
-        return OSIP_SYNTAXERROR;        /* '<' MUST contain something */
+        return OSIP_SYNTAXERROR; /* '<' MUST contain something */
 
       if (url - beg > 0) {
         from->displayname = (char *) osip_malloc(url - beg + 1);
@@ -283,7 +282,7 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
       url_end = url + strlen(url);
   }
 
-  if (gen_params != NULL) {     /* now we are sure a param exist */
+  if (gen_params != NULL) { /* now we are sure a param exist */
     i = __osip_generic_param_parseall(&from->gen_params, gen_params);
 
     if (i != 0) {
@@ -317,7 +316,6 @@ int osip_from_parse(osip_from_t *from, const char *hvalue) {
   }
   return OSIP_SUCCESS;
 }
-
 
 /* returns the from header as a string.  */
 /* INPUT : osip_from_t *from | from header.   */
@@ -422,7 +420,7 @@ int osip_from_param_get(osip_from_t *from, int pos, osip_generic_param_t **fpara
     return OSIP_BADPARAMETER;
 
   if (osip_list_size(&from->gen_params) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   *fparam = (osip_generic_param_t *) osip_list_get(&from->gen_params, pos);
   return pos;
@@ -439,7 +437,7 @@ int osip_from_clone(const osip_from_t *from, osip_from_t **dest) {
 
   i = osip_from_init(&fr);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   if (from->displayname != NULL) {
@@ -460,7 +458,7 @@ int osip_from_clone(const osip_from_t *from, osip_from_t **dest) {
     }
   }
 
-  i = osip_list_clone(&from->gen_params, &fr->gen_params, (int (*)(void *, void **)) &osip_generic_param_clone);
+  i = osip_list_clone(&from->gen_params, &fr->gen_params, (int (*)(void *, void **)) & osip_generic_param_clone);
 
   if (i != 0) {
     osip_from_free(fr);
@@ -546,7 +544,7 @@ int osip_from_compare(osip_from_t *from1, osip_from_t *from2) {
   /* We could return a special case, when */
   /* only one tag exists?? */
 
-  return OSIP_SUCCESS;          /* return code changed to 0 from release 0.6.1 */
+  return OSIP_SUCCESS; /* return code changed to 0 from release 0.6.1 */
 }
 
 int __osip_generic_param_parseall(osip_list_t *gen_params, const char *params) {
@@ -587,7 +585,6 @@ int __osip_generic_param_parseall(osip_list_t *gen_params, const char *params) {
   }
 
   while (comma != NULL) {
-
     if (equal == NULL) {
       equal = comma;
       pvalue = NULL;
@@ -665,12 +662,12 @@ int __osip_generic_param_parseall(osip_list_t *gen_params, const char *params) {
   comma = params + strlen(params);
 
   if (equal == NULL) {
-    equal = comma;              /* at the end */
+    equal = comma; /* at the end */
     pvalue = NULL;
 
     if (equal - params < 2) {
       osip_free(pvalue);
-      return OSIP_SUCCESS;      /* empty comma? */
+      return OSIP_SUCCESS; /* empty comma? */
     }
 
   } else {
@@ -719,7 +716,6 @@ int __osip_generic_param_parseall(osip_list_t *gen_params, const char *params) {
   return OSIP_SUCCESS;
 }
 
-
 void osip_generic_param_set_value(osip_generic_param_t *fparam, char *value) {
   fparam->gvalue = value;
 }
@@ -740,7 +736,7 @@ char *osip_generic_param_get_value(const osip_generic_param_t *fparam) {
     return NULL;
 
   if (fparam->gname == NULL)
-    return NULL;                /* name is mandatory */
+    return NULL; /* name is mandatory */
 
   return fparam->gvalue;
 }
@@ -758,8 +754,7 @@ int osip_from_tag_match(osip_from_t *from1, osip_from_t *from2) {
   if (tag_from1 == NULL && tag_from2 == NULL)
     return OSIP_SUCCESS;
 
-  if ((tag_from1 != NULL && tag_from2 == NULL)
-      || (tag_from1 == NULL && tag_from2 != NULL))
+  if ((tag_from1 != NULL && tag_from2 == NULL) || (tag_from1 == NULL && tag_from2 != NULL))
     return OSIP_UNDEFINED_ERROR;
 
   if (tag_from1->gvalue == NULL || tag_from2->gvalue == NULL)

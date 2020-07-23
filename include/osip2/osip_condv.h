@@ -48,7 +48,6 @@ extern "C" {
 
 #else
 
-
 /* condv implementation */
 #if defined(WIN32) || defined(_WIN32_WCE)
 /* Prevent struct redefinition if Pthreads for Win32 is used */
@@ -98,11 +97,10 @@ int osip_cond_wait(struct osip_cond *cond, struct osip_mutex *mut);
  */
 int osip_cond_timedwait(struct osip_cond *cond, struct osip_mutex *mut, const struct timespec *abstime);
 
-
 #ifdef __cplusplus
 }
 #endif
 #endif
-  /** @} */
+/** @} */
 #endif
 #endif

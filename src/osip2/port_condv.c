@@ -25,10 +25,7 @@
 #include <osip2/osip_mt.h>
 #include <osip2/osip_condv.h>
 
-
-#if !defined(__rtems__) && !defined(__VXWORKS_OS__) && !defined(__PSOS__) && \
-  !defined(WIN32) && !defined(_WIN32_WCE) && !defined(HAVE_PTHREAD_WIN32) && \
-    !defined(HAVE_PTHREAD) && !defined(HAVE_PTH_PTHREAD_H)
+#if !defined(__rtems__) && !defined(__VXWORKS_OS__) && !defined(__PSOS__) && !defined(WIN32) && !defined(_WIN32_WCE) && !defined(HAVE_PTHREAD_WIN32) && !defined(HAVE_PTHREAD) && !defined(HAVE_PTH_PTHREAD_H)
 #error No thread implementation found!
 #endif
 
@@ -39,12 +36,11 @@
 */
 #include <pthread.h>
 
-struct osip_cond *
-osip_cond_init() {
+struct osip_cond *osip_cond_init() {
   osip_cond_t *cond = (osip_cond_t *) osip_malloc(sizeof(osip_cond_t));
 
   if (cond && (pthread_cond_init(&cond->cv, NULL) == 0)) {
-    return (struct osip_cond *)(cond);
+    return (struct osip_cond *) (cond);
   }
 
   osip_free(cond);
@@ -70,14 +66,12 @@ int osip_cond_signal(struct osip_cond *_cond) {
   return pthread_cond_signal(&_cond->cv);
 }
 
-
 int osip_cond_wait(struct osip_cond *_cond, struct osip_mutex *_mut) {
   if (!_cond)
     return OSIP_BADPARAMETER;
 
   return pthread_cond_wait(&_cond->cv, (pthread_mutex_t *) _mut);
 }
-
 
 int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const struct timespec *abstime) {
   if (!_cond)
@@ -88,7 +82,6 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
 
 #endif
 
-
 #if defined(_WIN32_WCE)
 
 #endif
@@ -98,13 +91,12 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
 #include <sys/types.h>
 #include <sys/timeb.h>
 
-struct osip_cond *
-osip_cond_init() {
+struct osip_cond *osip_cond_init() {
   osip_cond_t *cond = (osip_cond_t *) osip_malloc(sizeof(osip_cond_t));
 
   if (cond && (cond->mut = osip_mutex_init()) != NULL) {
-    cond->sem = osip_sem_init(0);       /* initially locked */
-    return (struct osip_cond *)(cond);
+    cond->sem = osip_sem_init(0); /* initially locked */
+    return (struct osip_cond *) (cond);
   }
 
   osip_free(cond);
@@ -135,7 +127,6 @@ int osip_cond_signal(struct osip_cond *_cond) {
 
   return osip_sem_post(_cond->sem);
 }
-
 
 int osip_cond_wait(struct osip_cond *_cond, struct osip_mutex *_mut) {
   int ret1 = 0, ret2 = 0, ret3 = 0;
@@ -200,7 +191,6 @@ static int _delta_time(const struct timespec *start, const struct timespec *end)
   return difx;
 }
 
-
 int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const struct timespec *abstime) {
   DWORD dwRet;
   struct timespec now;
@@ -224,7 +214,7 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
   timeout_ms = _delta_time(&now, abstime);
 
   if (timeout_ms <= 0)
-    return 1;                   /* ETIMEDOUT; */
+    return 1; /* ETIMEDOUT; */
 
   i = osip_mutex_unlock(_mut);
 
@@ -244,7 +234,7 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
     break;
 
   case WAIT_TIMEOUT:
-    return 1;                   /* ETIMEDOUT; */
+    return 1; /* ETIMEDOUT; */
     break;
 
   default:
@@ -259,12 +249,11 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
 #endif
 /* use VxWorks implementation */
 #ifdef __VXWORKS_OS__
-struct osip_cond *
-osip_cond_init() {
+struct osip_cond *osip_cond_init() {
   osip_cond_t *cond = (osip_cond_t *) osip_malloc(sizeof(osip_cond_t));
 
   if ((cond->sem = osip_sem_init(0)) != NULL) {
-    return (struct osip_cond *)(cond);
+    return (struct osip_cond *) (cond);
   }
 
   osip_free(cond);
@@ -285,8 +274,7 @@ int osip_cond_signal(struct osip_cond *_cond) {
   return osip_sem_post(_cond->sem);
 }
 
-+static int
-  _cond_wait(struct osip_cond *_cond, struct osip_mutex *_mut, int ticks) {
++ static int _cond_wait(struct osip_cond *_cond, struct osip_mutex *_mut, int ticks) {
   int ret;
 
   if (_cond == NULL)
@@ -317,7 +305,7 @@ int osip_cond_signal(struct osip_cond *_cond) {
       ret = 1;
       break;
 
-    default:                   /* vxworks has bugs */
+    default: /* vxworks has bugs */
       ret = 1;
       break;
     }
@@ -365,7 +353,7 @@ int osip_cond_timedwait(struct osip_cond *_cond, struct osip_mutex *_mut, const 
   }
 
   if (nsec < 0)
-    return 1;                   /*ETIMEDOUT; */
+    return 1; /*ETIMEDOUT; */
 
   ticks = (sec * rate) + (nsec / 1000 * rate / 1000000);
 

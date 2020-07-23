@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _LIST_H_
 #define _LIST_H_
 
@@ -53,8 +52,8 @@ typedef struct __node __node_t;
  * @struct __node
  */
 struct __node {
-  __node_t *next;         /**< next __node_t containing element */
-  void *element;          /**< element in Current node */
+  __node_t *next; /**< next __node_t containing element */
+  void *element;  /**< element in Current node */
 };
 #endif
 
@@ -65,15 +64,15 @@ struct __node {
 typedef struct osip_list osip_list_t;
 
 /**
-  * Structure used to iterate list.
-  * @var osip_list_iterator_t
-  */
+ * Structure used to iterate list.
+ * @var osip_list_iterator_t
+ */
 typedef struct osip_list_iterator osip_list_iterator_t;
 
 /**
-  * Structure used to iterate list.
-  * @struct osip_list_iterator
-  */
+ * Structure used to iterate list.
+ * @struct osip_list_iterator
+ */
 struct osip_list_iterator {
   __node_t *actual; /**< actual */
   __node_t **prev;  /**< prev */
@@ -86,10 +85,8 @@ struct osip_list_iterator {
  * @struct osip_list
  */
 struct osip_list {
-
-  int nb_elt;                 /**< Number of element in the list */
-  __node_t *node;             /**< Next node containing element  */
-
+  int nb_elt;     /**< Number of element in the list */
+  __node_t *node; /**< Next node containing element  */
 };
 
 /**
@@ -157,7 +154,7 @@ int osip_list_remove(osip_list_t *li, int pos);
  * Check current iterator state.
  * @param it The element to work on.
  */
-#define osip_list_iterator_has_elem( it ) ( 0 != (it).actual && (it).pos < (it).li->nb_elt )
+#define osip_list_iterator_has_elem(it) (0 != (it).actual && (it).pos < (it).li->nb_elt)
 /**
  * Get first iterator from list.
  * @param li The element to work on.

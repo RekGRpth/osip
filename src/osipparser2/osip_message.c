@@ -26,7 +26,6 @@
 
 const char *osip_protocol_version = "SIP/2.0";
 
-
 int osip_message_init(osip_message_t **sip) {
   *sip = (osip_message_t *) osip_malloc(sizeof(osip_message_t));
 
@@ -76,13 +75,12 @@ int osip_message_init(osip_message_t **sip) {
   osip_list_init(&(*sip)->headers);
 
   (*sip)->message_property = 3;
-  (*sip)->message = NULL;       /* buffer to avoid calling osip_message_to_str many times (for retransmission) */
+  (*sip)->message = NULL; /* buffer to avoid calling osip_message_to_str many times (for retransmission) */
   (*sip)->message_length = 0;
 
   (*sip)->application_data = NULL;
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
-
 
 void osip_message_set_reason_phrase(osip_message_t *sip, char *reason) {
   sip->reason_phrase = reason;
@@ -117,26 +115,25 @@ void osip_message_free(osip_message_t *sip) {
   osip_free(sip->reason_phrase);
 
 #ifndef MINISIZE
-  osip_list_special_free(&sip->accepts, (void (*)(void *)) &osip_accept_free);
+  osip_list_special_free(&sip->accepts, (void (*)(void *)) & osip_accept_free);
 #endif
-  osip_list_special_free(&sip->authorizations, (void (*)(void *)) &osip_authorization_free);
+  osip_list_special_free(&sip->authorizations, (void (*)(void *)) & osip_authorization_free);
 
   if (sip->call_id != NULL)
     osip_call_id_free(sip->call_id);
 
 #ifndef MINISIZE
-  osip_list_special_free(&sip->accept_encodings, (void (*)(void *)) &osip_accept_encoding_free);
-  osip_list_special_free(&sip->accept_languages, (void (*)(void *)) &osip_accept_language_free);
-  osip_list_special_free(&sip->alert_infos, (void (*)(void *)) &osip_alert_info_free);
-  osip_list_special_free(&sip->allows, (void (*)(void *)) &osip_allow_free);
-  osip_list_special_free(&sip->authentication_infos, (void (*)(void *)) &osip_authentication_info_free);
-  osip_list_special_free(&sip->content_encodings, (void (*)(void *)) &osip_content_encoding_free);
-  osip_list_special_free(&sip->error_infos, (void (*)(void *)) &osip_error_info_free);
-  osip_list_special_free(&sip->proxy_authentication_infos, (void (*)(void *))
-                         &osip_proxy_authentication_info_free);
+  osip_list_special_free(&sip->accept_encodings, (void (*)(void *)) & osip_accept_encoding_free);
+  osip_list_special_free(&sip->accept_languages, (void (*)(void *)) & osip_accept_language_free);
+  osip_list_special_free(&sip->alert_infos, (void (*)(void *)) & osip_alert_info_free);
+  osip_list_special_free(&sip->allows, (void (*)(void *)) & osip_allow_free);
+  osip_list_special_free(&sip->authentication_infos, (void (*)(void *)) & osip_authentication_info_free);
+  osip_list_special_free(&sip->content_encodings, (void (*)(void *)) & osip_content_encoding_free);
+  osip_list_special_free(&sip->error_infos, (void (*)(void *)) & osip_error_info_free);
+  osip_list_special_free(&sip->proxy_authentication_infos, (void (*)(void *)) & osip_proxy_authentication_info_free);
 #endif
-  osip_list_special_free(&sip->call_infos, (void (*)(void *)) &osip_call_info_free);
-  osip_list_special_free(&sip->contacts, (void (*)(void *)) &osip_contact_free);
+  osip_list_special_free(&sip->call_infos, (void (*)(void *)) & osip_call_info_free);
+  osip_list_special_free(&sip->contacts, (void (*)(void *)) & osip_contact_free);
 
   if (sip->content_length != NULL)
     osip_content_length_free(sip->content_length);
@@ -153,18 +150,18 @@ void osip_message_free(osip_message_t *sip) {
   if (sip->mime_version != NULL)
     osip_mime_version_free(sip->mime_version);
 
-  osip_list_special_free(&sip->proxy_authenticates, (void (*)(void *)) &osip_proxy_authenticate_free);
-  osip_list_special_free(&sip->proxy_authorizations, (void (*)(void *)) &osip_proxy_authorization_free);
-  osip_list_special_free(&sip->record_routes, (void (*)(void *)) &osip_record_route_free);
-  osip_list_special_free(&sip->routes, (void (*)(void *)) &osip_route_free);
+  osip_list_special_free(&sip->proxy_authenticates, (void (*)(void *)) & osip_proxy_authenticate_free);
+  osip_list_special_free(&sip->proxy_authorizations, (void (*)(void *)) & osip_proxy_authorization_free);
+  osip_list_special_free(&sip->record_routes, (void (*)(void *)) & osip_record_route_free);
+  osip_list_special_free(&sip->routes, (void (*)(void *)) & osip_route_free);
 
   if (sip->to != NULL)
     osip_to_free(sip->to);
 
-  osip_list_special_free(&sip->vias, (void (*)(void *)) &osip_via_free);
-  osip_list_special_free(&sip->www_authenticates, (void (*)(void *)) &osip_www_authenticate_free);
-  osip_list_special_free(&sip->headers, (void (*)(void *)) &osip_header_free);
-  osip_list_special_free(&sip->bodies, (void (*)(void *)) &osip_body_free);
+  osip_list_special_free(&sip->vias, (void (*)(void *)) & osip_via_free);
+  osip_list_special_free(&sip->www_authenticates, (void (*)(void *)) & osip_www_authenticate_free);
+  osip_list_special_free(&sip->headers, (void (*)(void *)) & osip_header_free);
+  osip_list_special_free(&sip->bodies, (void (*)(void *)) & osip_body_free);
   osip_free(sip->message);
   osip_free(sip);
 }
@@ -215,63 +212,63 @@ int osip_message_clone(const osip_message_t *sip, osip_message_t **dest) {
   }
 
 #ifndef MINISIZE
-  i = osip_list_clone(&sip->accepts, &copy->accepts, (int (*)(void *, void **)) &osip_accept_clone);
+  i = osip_list_clone(&sip->accepts, &copy->accepts, (int (*)(void *, void **)) & osip_accept_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->accept_encodings, &copy->accept_encodings, (int (*)(void *, void **)) &osip_accept_encoding_clone);
+  i = osip_list_clone(&sip->accept_encodings, &copy->accept_encodings, (int (*)(void *, void **)) & osip_accept_encoding_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->accept_languages, &copy->accept_languages, (int (*)(void *, void **)) &osip_accept_language_clone);
+  i = osip_list_clone(&sip->accept_languages, &copy->accept_languages, (int (*)(void *, void **)) & osip_accept_language_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->alert_infos, &copy->alert_infos, (int (*)(void *, void **)) &osip_alert_info_clone);
+  i = osip_list_clone(&sip->alert_infos, &copy->alert_infos, (int (*)(void *, void **)) & osip_alert_info_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->allows, &copy->allows, (int (*)(void *, void **)) &osip_allow_clone);
+  i = osip_list_clone(&sip->allows, &copy->allows, (int (*)(void *, void **)) & osip_allow_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->authentication_infos, &copy->authentication_infos, (int (*)(void *, void **)) &osip_authentication_info_clone);
+  i = osip_list_clone(&sip->authentication_infos, &copy->authentication_infos, (int (*)(void *, void **)) & osip_authentication_info_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->content_encodings, &copy->content_encodings, (int (*)(void *, void **)) &osip_content_encoding_clone);
+  i = osip_list_clone(&sip->content_encodings, &copy->content_encodings, (int (*)(void *, void **)) & osip_content_encoding_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->error_infos, &copy->error_infos, (int (*)(void *, void **)) &osip_error_info_clone);
+  i = osip_list_clone(&sip->error_infos, &copy->error_infos, (int (*)(void *, void **)) & osip_error_info_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->proxy_authentication_infos, &copy->proxy_authentication_infos, (int (*)(void *, void **)) &osip_proxy_authentication_info_clone);
+  i = osip_list_clone(&sip->proxy_authentication_infos, &copy->proxy_authentication_infos, (int (*)(void *, void **)) & osip_proxy_authentication_info_clone);
 
   if (i != 0) {
     osip_message_free(copy);
@@ -279,14 +276,14 @@ int osip_message_clone(const osip_message_t *sip, osip_message_t **dest) {
   }
 
 #endif
-  i = osip_list_clone(&sip->call_infos, &copy->call_infos, (int (*)(void *, void **)) &osip_call_info_clone);
+  i = osip_list_clone(&sip->call_infos, &copy->call_infos, (int (*)(void *, void **)) & osip_call_info_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->authorizations, &copy->authorizations, (int (*)(void *, void **)) &osip_authorization_clone);
+  i = osip_list_clone(&sip->authorizations, &copy->authorizations, (int (*)(void *, void **)) & osip_authorization_clone);
 
   if (i != 0) {
     osip_message_free(copy);
@@ -302,7 +299,7 @@ int osip_message_clone(const osip_message_t *sip, osip_message_t **dest) {
     }
   }
 
-  i = osip_list_clone(&sip->contacts, &copy->contacts, (int (*)(void *, void **)) &osip_contact_clone);
+  i = osip_list_clone(&sip->contacts, &copy->contacts, (int (*)(void *, void **)) & osip_contact_clone);
 
   if (i != 0) {
     osip_message_free(copy);
@@ -354,29 +351,28 @@ int osip_message_clone(const osip_message_t *sip, osip_message_t **dest) {
     }
   }
 
-  i = osip_list_clone(&sip->proxy_authenticates, &copy->proxy_authenticates, (int (*)(void *, void **)) &osip_proxy_authenticate_clone);
+  i = osip_list_clone(&sip->proxy_authenticates, &copy->proxy_authenticates, (int (*)(void *, void **)) & osip_proxy_authenticate_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->proxy_authorizations, &copy->proxy_authorizations, (int (*)(void *, void **))
-                      &osip_proxy_authorization_clone);
+  i = osip_list_clone(&sip->proxy_authorizations, &copy->proxy_authorizations, (int (*)(void *, void **)) & osip_proxy_authorization_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->record_routes, &copy->record_routes, (int (*)(void *, void **)) &osip_record_route_clone);
+  i = osip_list_clone(&sip->record_routes, &copy->record_routes, (int (*)(void *, void **)) & osip_record_route_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->routes, &copy->routes, (int (*)(void *, void **)) &osip_route_clone);
+  i = osip_list_clone(&sip->routes, &copy->routes, (int (*)(void *, void **)) & osip_route_clone);
 
   if (i != 0) {
     osip_message_free(copy);
@@ -392,28 +388,28 @@ int osip_message_clone(const osip_message_t *sip, osip_message_t **dest) {
     }
   }
 
-  i = osip_list_clone(&sip->vias, &copy->vias, (int (*)(void *, void **)) &osip_via_clone);
+  i = osip_list_clone(&sip->vias, &copy->vias, (int (*)(void *, void **)) & osip_via_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->www_authenticates, &copy->www_authenticates, (int (*)(void *, void **)) &osip_www_authenticate_clone);
+  i = osip_list_clone(&sip->www_authenticates, &copy->www_authenticates, (int (*)(void *, void **)) & osip_www_authenticate_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->headers, &copy->headers, (int (*)(void *, void **)) &osip_header_clone);
+  i = osip_list_clone(&sip->headers, &copy->headers, (int (*)(void *, void **)) & osip_header_clone);
 
   if (i != 0) {
     osip_message_free(copy);
     return i;
   }
 
-  i = osip_list_clone(&sip->bodies, &copy->bodies, (int (*)(void *, void **)) &osip_body_clone);
+  i = osip_list_clone(&sip->bodies, &copy->bodies, (int (*)(void *, void **)) & osip_body_clone);
 
   if (i != 0) {
     osip_message_free(copy);
@@ -439,7 +435,7 @@ int osip_message_get_knownheaderlist(osip_list_t *header_list, int pos, void **d
   *dest = NULL;
 
   if (osip_list_size(header_list) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   *dest = (void *) osip_list_get(header_list, pos);
   return pos;

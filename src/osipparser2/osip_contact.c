@@ -48,7 +48,7 @@ int osip_message_set_contact(osip_message_t *sip, const char *hvalue) {
 
   sip->message_property = 2;
   osip_list_add(&sip->contacts, contact, -1);
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 /* parses a contact header.                                 */
@@ -91,7 +91,7 @@ int osip_message_get_contact(const osip_message_t *sip, int pos, osip_contact_t 
     return OSIP_BADPARAMETER;
 
   if (osip_list_size(&sip->contacts) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   *dest = (osip_contact_t *) osip_list_get(&sip->contacts, pos);
   return pos;

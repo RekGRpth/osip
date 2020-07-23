@@ -23,92 +23,14 @@
 #include "fsm.h"
 
 transition_t nict_transition[12] = {
-  {
-    NICT_PRE_TRYING,
-    SND_REQUEST,
-    (void (*)(void *, void *)) &nict_snd_request,
-    &nict_transition[1], NULL
-  }
-  ,
-  {
-    NICT_TRYING,
-    TIMEOUT_F,
-    (void (*)(void *, void *)) &osip_nict_timeout_f_event,
-    &nict_transition[2], NULL
-  }
-  ,
-  {
-    NICT_TRYING,
-    TIMEOUT_E,
-    (void (*)(void *, void *)) &osip_nict_timeout_e_event,
-    &nict_transition[3], NULL
-  }
-  ,
-  {
-    NICT_TRYING,
-    RCV_STATUS_1XX,
-    (void (*)(void *, void *)) &nict_rcv_1xx,
-    &nict_transition[4], NULL
-  }
-  ,
-  {
-    NICT_TRYING,
-    RCV_STATUS_2XX,
-    (void (*)(void *, void *)) &nict_rcv_23456xx,
-    &nict_transition[5], NULL
-  }
-  ,
-  {
-    NICT_TRYING,
-    RCV_STATUS_3456XX,
-    (void (*)(void *, void *)) &nict_rcv_23456xx,
-    &nict_transition[6], NULL
-  }
-  ,
-  {
-    NICT_PROCEEDING,
-    TIMEOUT_F,
-    (void (*)(void *, void *)) &osip_nict_timeout_f_event,
-    &nict_transition[7], NULL
-  }
-  ,
-  {
-    NICT_PROCEEDING,
-    TIMEOUT_E,
-    (void (*)(void *, void *)) &osip_nict_timeout_e_event,
-    &nict_transition[8], NULL
-  }
-  ,
-  {
-    NICT_PROCEEDING,
-    RCV_STATUS_1XX,
-    (void (*)(void *, void *)) &nict_rcv_1xx,
-    &nict_transition[9], NULL
-  }
-  ,
-  {
-    NICT_PROCEEDING,
-    RCV_STATUS_2XX,
-    (void (*)(void *, void *)) &nict_rcv_23456xx,
-    &nict_transition[10], NULL
-  }
-  ,
-  {
-    NICT_PROCEEDING,
-    RCV_STATUS_3456XX,
-    (void (*)(void *, void *)) &nict_rcv_23456xx,
-    &nict_transition[11], NULL
-  }
-  ,
-  {
-    NICT_COMPLETED,
-    TIMEOUT_K,
-    (void (*)(void *, void *)) &osip_nict_timeout_k_event,
-    NULL, NULL
-  }
-};
+    {NICT_PRE_TRYING, SND_REQUEST, (void (*)(void *, void *)) & nict_snd_request, &nict_transition[1], NULL},        {NICT_TRYING, TIMEOUT_F, (void (*)(void *, void *)) & osip_nict_timeout_f_event, &nict_transition[2], NULL},
+    {NICT_TRYING, TIMEOUT_E, (void (*)(void *, void *)) & osip_nict_timeout_e_event, &nict_transition[3], NULL},     {NICT_TRYING, RCV_STATUS_1XX, (void (*)(void *, void *)) & nict_rcv_1xx, &nict_transition[4], NULL},
+    {NICT_TRYING, RCV_STATUS_2XX, (void (*)(void *, void *)) & nict_rcv_23456xx, &nict_transition[5], NULL},         {NICT_TRYING, RCV_STATUS_3456XX, (void (*)(void *, void *)) & nict_rcv_23456xx, &nict_transition[6], NULL},
+    {NICT_PROCEEDING, TIMEOUT_F, (void (*)(void *, void *)) & osip_nict_timeout_f_event, &nict_transition[7], NULL}, {NICT_PROCEEDING, TIMEOUT_E, (void (*)(void *, void *)) & osip_nict_timeout_e_event, &nict_transition[8], NULL},
+    {NICT_PROCEEDING, RCV_STATUS_1XX, (void (*)(void *, void *)) & nict_rcv_1xx, &nict_transition[9], NULL},         {NICT_PROCEEDING, RCV_STATUS_2XX, (void (*)(void *, void *)) & nict_rcv_23456xx, &nict_transition[10], NULL},
+    {NICT_PROCEEDING, RCV_STATUS_3456XX, (void (*)(void *, void *)) & nict_rcv_23456xx, &nict_transition[11], NULL}, {NICT_COMPLETED, TIMEOUT_K, (void (*)(void *, void *)) & osip_nict_timeout_k_event, NULL, NULL}};
 
-osip_statemachine_t nict_fsm = { nict_transition };
+osip_statemachine_t nict_fsm = {nict_transition};
 
 static void nict_handle_transport_error(osip_transaction_t *nict, int err) {
   __osip_transport_error_callback(OSIP_NICT_TRANSPORT_ERROR, nict, err);
@@ -162,7 +84,7 @@ void nict_snd_request(osip_transaction_t *nict, osip_event_t *evt) {
       char *proto;
       int k;
 
-      k = osip_message_get_via(nict->orig_request, 0, &via);    /* get top via */
+      k = osip_message_get_via(nict->orig_request, 0, &via); /* get top via */
 
       if (k < 0) {
         nict_handle_transport_error(nict, -1);
@@ -176,16 +98,16 @@ void nict_snd_request(osip_transaction_t *nict, osip_event_t *evt) {
         return;
       }
 
-      if (i == 0) {             /* but message was really sent */
+      if (i == 0) { /* but message was really sent */
         if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
-        } else {                /* reliable protocol is used: */
-          nict->nict_context->timer_e_length = -1;      /* E is not ACTIVE */
+        } else {                                   /* reliable protocol is used: */
+          nict->nict_context->timer_e_length = -1; /* E is not ACTIVE */
           nict->nict_context->timer_e_start.tv_sec = -1;
         }
 
       } else {
         if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
-        } else {                /* reliable protocol is used: */
+        } else { /* reliable protocol is used: */
           nict->nict_context->timer_e_length = DEFAULT_T1_TCP_PROGRESS;
         }
       }
@@ -219,7 +141,7 @@ void osip_nict_timeout_e_event(osip_transaction_t *nict, osip_event_t *evt) {
     if (nict->nict_context->timer_e_length > DEFAULT_T2)
       nict->nict_context->timer_e_length = DEFAULT_T2;
 
-  } else                        /* in PROCEEDING STATE, TIMER is always DEFAULT_T2 */
+  } else /* in PROCEEDING STATE, TIMER is always DEFAULT_T2 */
     nict->nict_context->timer_e_length = DEFAULT_T2;
 
   osip_gettimeofday(&nict->nict_context->timer_e_start, NULL);
@@ -239,11 +161,11 @@ void osip_nict_timeout_e_event(osip_transaction_t *nict, osip_event_t *evt) {
      stop timer E in reliable transport - non blocking socket:
      the message was just sent
    */
-  if (i == 0) {                 /* but message was really sent */
+  if (i == 0) { /* but message was really sent */
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(nict->orig_request, 0, &via);      /* get top via */
+    i = osip_message_get_via(nict->orig_request, 0, &via); /* get top via */
 
     if (i < 0) {
       nict_handle_transport_error(nict, -1);
@@ -258,15 +180,15 @@ void osip_nict_timeout_e_event(osip_transaction_t *nict, osip_event_t *evt) {
     }
 
     if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
-    } else {                    /* reliable protocol is used: */
-      nict->nict_context->timer_e_length = -1;  /* E is not ACTIVE */
+    } else {                                   /* reliable protocol is used: */
+      nict->nict_context->timer_e_length = -1; /* E is not ACTIVE */
       nict->nict_context->timer_e_start.tv_sec = -1;
     }
   }
 
 #endif
 
-  if (i == 0)                   /* but message was really sent */
+  if (i == 0) /* but message was really sent */
     __osip_message_callback(OSIP_NICT_REQUEST_SENT_AGAIN, nict, nict->orig_request);
 }
 
@@ -331,7 +253,7 @@ void nict_rcv_23456xx(osip_transaction_t *nict, osip_event_t *evt) {
   else
     __osip_message_callback(OSIP_NICT_STATUS_6XX_RECEIVED, nict, nict->last_response);
 
-  if (nict->state != NICT_COMPLETED) {  /* reset timer K */
+  if (nict->state != NICT_COMPLETED) { /* reset timer K */
     osip_gettimeofday(&nict->nict_context->timer_k_start, NULL);
     add_gettimeofday(&nict->nict_context->timer_k_start, nict->nict_context->timer_k_length);
   }

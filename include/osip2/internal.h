@@ -20,16 +20,16 @@
 #ifndef _INTERNAL_H_
 #define _INTERNAL_H_
 
-#if defined (HAVE_CONFIG_H)
+#if defined(HAVE_CONFIG_H)
 #include <osip-config.h>
 #endif
 
 #if defined(__PALMOS__) && (__PALMOS__ >= 0x06000000)
-# define HAVE_CTYPE_H 1
-# define HAVE_STRING_H 1
-# define HAVE_SYS_TYPES_H 1
-# define HAVE_TIME_H 1
-# define HAVE_STDARG_H 1
+#define HAVE_CTYPE_H 1
+#define HAVE_STRING_H 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_TIME_H 1
+#define HAVE_STDARG_H 1
 
 #elif defined(__VXWORKS_OS__) || defined(__rtems__)
 #define HAVE_STRING_H 1
@@ -45,7 +45,7 @@
 #define HAVE_TIME_H 1
 #define HAVE_STDARG_H 1
 
-#define snprintf  _snprintf
+#define snprintf _snprintf
 
 #elif defined(WIN32)
 
@@ -67,9 +67,9 @@
 
 #endif
 
-#if defined (HAVE_STRING_H)
+#if defined(HAVE_STRING_H)
 #include <string.h>
-#elif defined (HAVE_STRINGS_H)
+#elif defined(HAVE_STRINGS_H)
 #include <strings.h>
 #else
 #include <string.h>
@@ -78,7 +78,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined (HAVE_SYS_TYPES_H)
+#if defined(HAVE_SYS_TYPES_H)
 #include <sys/types.h>
 #endif
 
@@ -86,7 +86,7 @@
 #include <time.h>
 #endif
 
-#if defined (HAVE_SYS_TIME_H)
+#if defined(HAVE_SYS_TIME_H)
 #include <sys/time.h>
 #endif
 
@@ -97,14 +97,12 @@
 #endif
 
 #ifdef __PSOS__
-#define VA_START(a, f)  va_start(a, f)
+#define VA_START(a, f) va_start(a, f)
 #include "pna.h"
 #include "stdlib.h"
 #include "time.h"
-#define timercmp(tvp, uvp, cmp) \
-((tvp)->tv_sec cmp (uvp)->tv_sec || \
-(tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp (uvp)->tv_usec)
-#define snprintf  osip_snprintf
+#define timercmp(tvp, uvp, cmp) ((tvp)->tv_sec cmp(uvp)->tv_sec || (tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp(uvp)->tv_usec)
+#define snprintf osip_snprintf
 #ifndef INT_MAX
 #define INT_MAX 0x7FFFFFFF
 #endif
@@ -117,11 +115,11 @@
 
 #ifndef DOXYGEN
 
-#if !( defined(__rtems__) || defined(__PALMOS__) || defined(HAVE_STRUCT_TIMEVAL) )
+#if !(defined(__rtems__) || defined(__PALMOS__) || defined(HAVE_STRUCT_TIMEVAL))
 /* Struct timeval */
 struct timeval {
-  long tv_sec;                  /* seconds */
-  long tv_usec;                 /* and microseconds */
+  long tv_sec;  /* seconds */
+  long tv_usec; /* and microseconds */
 };
 #endif
 
@@ -145,7 +143,6 @@ struct timeval {
 #if defined(__arc__)
 #include <ucos_ii_api.h>
 #endif
-
 
 #include <pthread.h>
 typedef pthread_t osip_thread_t;
@@ -197,7 +194,6 @@ typedef struct {
 } osip_thread_t;
 #endif
 
-
 /* Semaphore and Mutex abstraction layer definition */
 
 /* Is there any semaphore implementation available? */
@@ -237,7 +233,7 @@ typedef sem_t osip_sem_t;
  */
 typedef sem_t osip_sem_t;
 
-#elif defined (__APPLE_CC__)
+#elif defined(__APPLE_CC__)
 #include <mach/task.h>
 #include <mach/semaphore.h>
 #include <mach/mach_init.h>
@@ -262,7 +258,7 @@ typedef struct {
 
 #if (_WIN32_WINNT >= 0x0403) && (!defined(_WIN32_WCE))
 
-#define OSIP_CRITICALSECTION_SPIN  4000
+#define OSIP_CRITICALSECTION_SPIN 4000
 typedef struct {
   CRITICAL_SECTION h;
 } osip_mutex_t;
@@ -295,7 +291,6 @@ typedef struct {
   UInt32 id;
 } osip_sem_t;
 #endif
-
 
 /* Condition variable abstraction layer definition */
 
@@ -337,7 +332,6 @@ typedef struct {
   rtems_id id;
 } osip_mutex_t;
 #endif
-
 
 #endif /* #ifndef OSIP_MONOTHREAD */
 

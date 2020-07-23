@@ -22,9 +22,7 @@
 #include <osipparser2/osip_port.h>
 #include <osipparser2/osip_message.h>
 
-#define osip_is_alpha(in) (  \
-       (in >= 'a' && in <= 'z') || \
-       (in >= 'A' && in <= 'Z'))
+#define osip_is_alpha(in) ((in >= 'a' && in <= 'z') || (in >= 'A' && in <= 'Z'))
 
 /* allocate a new url structure */
 /* OUTPUT: osip_uri_t *url | structure to save results.   */
@@ -140,8 +138,7 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
     return OSIP_SYNTAXERROR;
   }
 
-  if (strlen(url->scheme) < 3 || (0 != osip_strncasecmp(url->scheme, "sip", 3)
-                                  && 0 != osip_strncasecmp(url->scheme, "sips", 4))) {         /* Is not a sipurl ! */
+  if (strlen(url->scheme) < 3 || (0 != osip_strncasecmp(url->scheme, "sip", 3) && 0 != osip_strncasecmp(url->scheme, "sips", 4))) { /* Is not a sipurl ! */
     size_t i = strlen(tmp + 1);
 
     if (i < 2)
@@ -176,11 +173,11 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
   if (host == NULL)
     host = username;
 
-  else if (username[1] == '@')  /* username is empty */
+  else if (username[1] == '@') /* username is empty */
     host = username + 1;
 
   else
-    /* username exists */
+  /* username exists */
   {
     password = next_separator(username + 1, ':', '@');
 
@@ -188,7 +185,7 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
       password = host;
 
     else
-      /* password exists */
+    /* password exists */
     {
       if (host - password < 2)
         return OSIP_SYNTAXERROR;
@@ -216,7 +213,6 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
     }
   }
 
-
   /* search for header after host */
   headers = strchr(host, '?');
 
@@ -227,15 +223,14 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
     /* headers exist */
     osip_uri_parse_headers(url, headers);
 
-
   /* search for params after host */
-  params = strchr(host, ';');   /* search for params after host */
+  params = strchr(host, ';'); /* search for params after host */
 
   if (params == NULL)
     params = headers;
 
   else
-    /* params exist */
+  /* params exist */
   {
     char *tmpbuf;
 
@@ -263,7 +258,7 @@ int osip_uri_parse(osip_uri_t *url, const char *buf) {
 
     else {
       if ((params - port < 2) || (params - port > 8))
-        return OSIP_SYNTAXERROR;        /* error cases */
+        return OSIP_SYNTAXERROR; /* error cases */
 
       url->port = (char *) osip_malloc(params - port);
 
@@ -375,7 +370,6 @@ char *osip_uri_get_port(osip_uri_t *url) {
   return url->port;
 }
 
-
 int osip_uri_parse_headers(osip_uri_t *url, const char *headers) {
   int i;
   const char *_and;
@@ -387,7 +381,7 @@ int osip_uri_parse_headers(osip_uri_t *url, const char *headers) {
   equal = strchr(headers, '=');
   _and = strchr(headers + 1, '&');
 
-  if (equal == NULL)            /* each header MUST have a value */
+  if (equal == NULL) /* each header MUST have a value */
     return OSIP_SYNTAXERROR;
 
   do {
@@ -418,7 +412,7 @@ int osip_uri_parse_headers(osip_uri_t *url, const char *headers) {
       osip_strncpy(hvalue, equal + 1, _and - equal - 1);
       __osip_uri_unescape(hvalue);
 
-    } else {                    /* this is for the last header (no _and...) */
+    } else { /* this is for the last header (no _and...) */
       if (headers + strlen(headers) - equal + 1 < 2) {
         osip_free(hname);
         return OSIP_SYNTAXERROR;
@@ -443,16 +437,16 @@ int osip_uri_parse_headers(osip_uri_t *url, const char *headers) {
       return i;
     }
 
-    if (_and == NULL)           /* we just set the last header */
+    if (_and == NULL) /* we just set the last header */
       equal = NULL;
 
-    else {                      /* continue on next header */
+    else { /* continue on next header */
 
       headers = _and;
       equal = strchr(headers, '=');
       _and = strchr(headers + 1, '&');
 
-      if (equal == NULL)        /* each header MUST have a value */
+      if (equal == NULL) /* each header MUST have a value */
         return OSIP_SYNTAXERROR;
     }
   } while (equal != NULL);
@@ -524,7 +518,7 @@ int osip_uri_parse_params(osip_uri_t *url, const char *params) {
   comma = params + strlen(params);
 
   if (equal == NULL) {
-    equal = comma;              /* at the end */
+    equal = comma; /* at the end */
     pvalue = NULL;
 
   } else {
@@ -585,7 +579,7 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
     return OSIP_BADPARAMETER;
 
   if (url->string == NULL && url->scheme == NULL)
-    scheme = "sip";             /* default is sipurl */
+    scheme = "sip"; /* default is sipurl */
   else
     scheme = url->scheme;
 
@@ -605,7 +599,7 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
   len = strlen(scheme) + 1 + strlen(url->host) + 5;
 
   if (url->username != NULL)
-    len = len + (strlen(url->username) * 3) + 1;        /* count escaped char */
+    len = len + (strlen(url->username) * 3) + 1; /* count escaped char */
 
   if (url->password != NULL)
     len = len + (strlen(url->password) * 3) + 1;
@@ -636,7 +630,7 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
     tmp = tmp + strlen(tmp);
   }
 
-  if ((url->password != NULL) && (url->username != NULL)) {     /* be sure that when a password is given, a username is also given */
+  if ((url->password != NULL) && (url->username != NULL)) { /* be sure that when a password is given, a username is also given */
     char *tmp2 = __osip_uri_escape_password(url->password);
 
     if (tmp2 == NULL) {
@@ -649,7 +643,7 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
     tmp = tmp + strlen(tmp);
   }
 
-  if (url->username != NULL) {  /* we add a '@' only when username is present... */
+  if (url->username != NULL) { /* we add a '@' only when username is present... */
     sprintf(tmp, "@");
     tmp++;
   }
@@ -673,7 +667,6 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
     osip_uri_param_t *u_param = (osip_uri_param_t *) osip_list_get_first(&url->url_params, &it);
 
     while (u_param != OSIP_SUCCESS) {
-
       char *tmp1;
       char *tmp2 = NULL;
       char *previous_buf;
@@ -789,7 +782,6 @@ int osip_uri_to_str(const osip_uri_t *url, char **dest) {
   return OSIP_SUCCESS;
 }
 
-
 void osip_uri_free(osip_uri_t *url) {
   if (url == NULL)
     return;
@@ -831,7 +823,7 @@ int osip_uri_clone(const osip_uri_t *url, osip_uri_t **dest) {
 
   i = osip_uri_init(&ur);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   if (url->scheme != NULL)
@@ -852,14 +844,14 @@ int osip_uri_clone(const osip_uri_t *url, osip_uri_t **dest) {
   if (url->string != NULL)
     ur->string = osip_strdup(url->string);
 
-  i = osip_list_clone(&url->url_params, &ur->url_params, (int (*)(void *, void **)) &osip_uri_param_clone);
+  i = osip_list_clone(&url->url_params, &ur->url_params, (int (*)(void *, void **)) & osip_uri_param_clone);
 
   if (i != 0) {
     osip_uri_free(ur);
     return i;
   }
 
-  i = osip_list_clone(&url->url_headers, &ur->url_headers, (int (*)(void *, void **)) &osip_uri_param_clone);
+  i = osip_list_clone(&url->url_headers, &ur->url_headers, (int (*)(void *, void **)) & osip_uri_param_clone);
 
   if (i != 0) {
     osip_uri_free(ur);
@@ -972,11 +964,11 @@ int osip_uri_param_clone(const osip_uri_param_t *uparam, osip_uri_param_t **dest
     return OSIP_BADPARAMETER;
 
   if (uparam->gname == NULL)
-    return OSIP_BADPARAMETER;   /* name is mandatory */
+    return OSIP_BADPARAMETER; /* name is mandatory */
 
   i = osip_uri_param_init(&up);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   up->gname = osip_strdup(uparam->gname);
@@ -991,7 +983,6 @@ int osip_uri_param_clone(const osip_uri_param_t *uparam, osip_uri_param_t **dest
   return OSIP_SUCCESS;
 }
 
-
 #define _ALPHANUM_ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\0"
 #define _RESERVED_ ";/?:@&=+$\0"
 #define _MARK_ "-_.!~*'()\0"
@@ -1001,10 +992,7 @@ int osip_uri_param_clone(const osip_uri_param_t *uparam, osip_uri_param_t **dest
 #define _MARK__URI_PARAM_UNRESERVED_ "-_.!~*'()[]/:&+$\0"
 #define _MARK__HEADER_PARAM_UNRESERVED_ "-_.!~*'()[]/?:+$\0"
 
-#define osip_is_alphanum(in) (  \
-       (in >= 'a' && in <= 'z') || \
-       (in >= 'A' && in <= 'Z') || \
-       (in >= '0' && in <= '9'))
+#define osip_is_alphanum(in) ((in >= 'a' && in <= 'z') || (in >= 'A' && in <= 'Z') || (in >= '0' && in <= '9'))
 
 char *__osip_uri_escape_nonascii_and_nondef(const char *string, const char *def) {
   size_t alloc = strlen(string) + 1;
@@ -1040,7 +1028,7 @@ char *__osip_uri_escape_nonascii_and_nondef(const char *string, const char *def)
 
     if (tmp == NULL) {
       /* encode it */
-      newlen += 2;              /* the size grows with two, since this'll become a %XX */
+      newlen += 2; /* the size grows with two, since this'll become a %XX */
 
       if (newlen > alloc) {
         char *previous_ns;
@@ -1066,7 +1054,7 @@ char *__osip_uri_escape_nonascii_and_nondef(const char *string, const char *def)
     string++;
   }
 
-  ns[index] = 0;                /* terminate it */
+  ns[index] = 0; /* terminate it */
   return ns;
 }
 
@@ -1127,9 +1115,8 @@ void __osip_uri_unescape(char *string) {
     ptr++;
   }
 
-  string[index] = 0;            /* terminate it */
+  string[index] = 0; /* terminate it */
 }
-
 
 /* RFC3261 16.5
  */

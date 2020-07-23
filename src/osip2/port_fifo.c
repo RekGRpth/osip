@@ -22,9 +22,8 @@
 #include <osipparser2/osip_port.h>
 #include <osip2/osip_fifo.h>
 
-
 /* always use this method to initiate osip_fifo_t.
-*/
+ */
 void osip_fifo_init(osip_fifo_t *ff) {
 #ifndef OSIP_MONOTHREAD
   ff->qislocked = osip_mutex_init();
@@ -41,7 +40,7 @@ int osip_fifo_add(osip_fifo_t *ff, void *el) {
   osip_mutex_lock(ff->qislocked);
 #endif
 
-  osip_list_add(&ff->queue, el, -1);    /* insert at end of queue */
+  osip_list_add(&ff->queue, el, -1); /* insert at end of queue */
   ff->state = osip_ok;
 
 #ifndef OSIP_MONOTHREAD
@@ -50,14 +49,13 @@ int osip_fifo_add(osip_fifo_t *ff, void *el) {
 #endif
   return OSIP_SUCCESS;
 }
-
 
 int osip_fifo_insert(osip_fifo_t *ff, void *el) {
 #ifndef OSIP_MONOTHREAD
   osip_mutex_lock(ff->qislocked);
 #endif
 
-  osip_list_add(&ff->queue, el, 0);     /* insert at end of queue */
+  osip_list_add(&ff->queue, el, 0); /* insert at end of queue */
   ff->state = osip_ok;
 
 #ifndef OSIP_MONOTHREAD
@@ -66,7 +64,6 @@ int osip_fifo_insert(osip_fifo_t *ff, void *el) {
 #endif
   return OSIP_SUCCESS;
 }
-
 
 int osip_fifo_size(osip_fifo_t *ff) {
   int i;
@@ -81,7 +78,6 @@ int osip_fifo_size(osip_fifo_t *ff) {
 #endif
   return i;
 }
-
 
 void *osip_fifo_get(osip_fifo_t *ff) {
   void *el = NULL;
@@ -105,7 +101,7 @@ void *osip_fifo_get(osip_fifo_t *ff) {
 #ifndef OSIP_MONOTHREAD
     osip_mutex_unlock(ff->qislocked);
 #endif
-    return OSIP_SUCCESS;        /* pile vide */
+    return OSIP_SUCCESS; /* pile vide */
   }
 
   /* if (ff->nb_elt <= 0) */
@@ -126,7 +122,7 @@ void *osip_fifo_tryget(osip_fifo_t *ff) {
 
 #ifndef OSIP_MONOTHREAD
 
-  if (0 != osip_sem_trywait(ff->qisempty)) {    /* no elements... */
+  if (0 != osip_sem_trywait(ff->qisempty)) { /* no elements... */
     return NULL;
   }
 
@@ -146,7 +142,7 @@ void *osip_fifo_tryget(osip_fifo_t *ff) {
 
 #ifndef OSIP_MONOTHREAD
 
-  else {                        /* this case MUST never happen... */
+  else { /* this case MUST never happen... */
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_INFO4, NULL, "no element in fifo.\n"));
     osip_mutex_unlock(ff->qislocked);
     return OSIP_SUCCESS;

@@ -38,7 +38,7 @@ int osip_message_set_call_info(osip_message_t *sip, const char *hvalue) {
 
   i = osip_call_info_parse(call_info, hvalue);
 
-  if (i != 0) {                 /* allocation failed */
+  if (i != 0) { /* allocation failed */
     osip_call_info_free(call_info);
     return i;
   }
@@ -54,7 +54,7 @@ int osip_message_get_call_info(const osip_message_t *sip, int pos, osip_call_inf
   *dest = NULL;
 
   if (osip_list_size(&sip->call_infos) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   call_info = (osip_call_info_t *) osip_list_get(&sip->call_infos, pos);
   *dest = call_info;
@@ -165,7 +165,6 @@ int osip_call_info_to_str(const osip_call_info_t *call_info, char **dest) {
   return OSIP_SUCCESS;
 }
 
-
 /* deallocates a osip_call_info_t structure.  */
 /* INPUT : osip_call_info_t *call_info | call_info. */
 void osip_call_info_free(osip_call_info_t *call_info) {
@@ -195,7 +194,7 @@ int osip_call_info_clone(const osip_call_info_t *ctt, osip_call_info_t **dest) {
 
   i = osip_call_info_init(&ct);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   ct->element = osip_strdup(ctt->element);
@@ -205,7 +204,7 @@ int osip_call_info_clone(const osip_call_info_t *ctt, osip_call_info_t **dest) {
     return OSIP_NOMEM;
   }
 
-  i = osip_list_clone(&ctt->gen_params, &ct->gen_params, (int (*)(void *, void **)) &osip_generic_param_clone);
+  i = osip_list_clone(&ctt->gen_params, &ct->gen_params, (int (*)(void *, void **)) & osip_generic_param_clone);
 
   if (i != 0) {
     osip_call_info_free(ct);
@@ -215,7 +214,6 @@ int osip_call_info_clone(const osip_call_info_t *ctt, osip_call_info_t **dest) {
   *dest = ct;
   return OSIP_SUCCESS;
 }
-
 
 char *osip_call_info_get_uri(osip_call_info_t *ae) {
   return ae->element;

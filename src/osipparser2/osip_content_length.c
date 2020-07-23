@@ -132,7 +132,7 @@ int osip_content_length_clone(const osip_content_length_t *ctl, osip_content_len
    */
   i = osip_content_length_init(&cl);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   if (ctl->value != NULL) {

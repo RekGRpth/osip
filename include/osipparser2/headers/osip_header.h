@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_HEADER_H_
 #define _OSIP_HEADER_H_
 
@@ -50,8 +49,8 @@ typedef struct osip_header osip_header_t;
  * @struct osip_header
  */
 struct osip_header {
-  char *hname;     /**< Name of header */
-  char *hvalue;    /**< Value for header */
+  char *hname;  /**< Name of header */
+  char *hvalue; /**< Value for header */
 };
 
 /**
@@ -64,8 +63,7 @@ struct osip_header {
 typedef osip_uri_param_t osip_generic_param_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -112,7 +110,6 @@ void osip_header_set_value(osip_header_t *header, char *pvalue);
  * @param dest A pointer on the copy of the element.
  */
 int osip_header_clone(const osip_header_t *header, osip_header_t **dest);
-
 
 #ifdef __cplusplus
 }

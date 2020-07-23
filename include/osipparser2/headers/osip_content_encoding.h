@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CONTENT_ENCODING_H_
 #define _OSIP_CONTENT_ENCODING_H_
 
@@ -41,40 +40,37 @@
 typedef osip_content_length_t osip_content_encoding_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /**
  * Allocate a Content-Encoding element.
  * @param header The element to work on.
  */
-#define osip_content_encoding_init(header)      osip_content_length_init(header)
+#define osip_content_encoding_init(header) osip_content_length_init(header)
 /**
  * Parse a Content-Encoding element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-#define osip_content_encoding_parse(header, hvalue)  osip_content_length_parse(header, hvalue)
+#define osip_content_encoding_parse(header, hvalue) osip_content_length_parse(header, hvalue)
 /**
  * Get a string representation of a Content-Encoding element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define osip_content_encoding_to_str  osip_content_length_to_str
+#define osip_content_encoding_to_str osip_content_length_to_str
 /**
  * Free a Content-Encoding element.
  * @param header The element to work on.
  */
-#define osip_content_encoding_free      osip_content_length_free
+#define osip_content_encoding_free osip_content_length_free
 /**
  * Clone a Content-Encoding element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_content_encoding_clone  osip_content_length_clone
-
+#define osip_content_encoding_clone osip_content_length_clone
 
 #ifdef __cplusplus
 }

@@ -24,7 +24,6 @@
 #include <osipparser2/osip_parser.h>
 #include "parser.h"
 
-
 int osip_content_disposition_parse(osip_content_disposition_t *cd, const char *hvalue) {
   const char *cd_params;
   int i;

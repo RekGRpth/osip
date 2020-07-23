@@ -24,7 +24,6 @@
 #include <osipparser2/osip_parser.h>
 #include "parser.h"
 
-
 /* fills the proxy_authorization header of message.               */
 /* INPUT :  char *hvalue | value of header.   */
 /* OUTPUT: osip_message_t *sip | structure to save results. */
@@ -60,7 +59,7 @@ int osip_message_get_proxy_authorization(const osip_message_t *sip, int pos, osi
   *dest = NULL;
 
   if (osip_list_size(&sip->proxy_authorizations) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   proxy_authorization = (osip_proxy_authorization_t *) osip_list_get(&sip->proxy_authorizations, pos);
   *dest = proxy_authorization;

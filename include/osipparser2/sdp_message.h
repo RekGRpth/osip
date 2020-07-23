@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _SDP_H_
 #define _SDP_H_
 
@@ -26,7 +25,6 @@
 #endif
 
 #include <osipparser2/osip_list.h>
-
 
 /**
  * @file sdp_message.h
@@ -56,8 +54,8 @@ typedef struct sdp_bandwidth sdp_bandwidth_t;
  * @struct sdp_bandwidth
  */
 struct sdp_bandwidth {
-  char *b_bwtype;                             /**< bandwidth type */
-  char *b_bandwidth;                          /**< bandwidth value */
+  char *b_bwtype;    /**< bandwidth type */
+  char *b_bandwidth; /**< bandwidth value */
 };
 
 /**
@@ -82,9 +80,9 @@ typedef struct sdp_time_descr sdp_time_descr_t;
  * @struct sdp_time_descr
  */
 struct sdp_time_descr {
-  char *t_start_time;                            /**< start time */
-  char *t_stop_time;                             /**< stop time */
-  osip_list_t r_repeats;                /**< repeat headers */
+  char *t_start_time;    /**< start time */
+  char *t_stop_time;     /**< stop time */
+  osip_list_t r_repeats; /**< repeat headers */
 };
 
 /**
@@ -109,8 +107,8 @@ typedef struct sdp_key sdp_key_t;
  * @struct sdp_key
  */
 struct sdp_key {
-  char *k_keytype;            /**< Key Type (prompt, clear, base64, uri) */
-  char *k_keydata;            /**< key data */
+  char *k_keytype; /**< Key Type (prompt, clear, base64, uri) */
+  char *k_keydata; /**< key data */
 };
 
 /**
@@ -135,8 +133,8 @@ typedef struct sdp_attribute sdp_attribute_t;
  * @struct sdp_attribute
  */
 struct sdp_attribute {
-  char *a_att_field;                          /**< attribute field */
-  char *a_att_value;                          /**< attribute value (optional) */
+  char *a_att_field; /**< attribute field */
+  char *a_att_value; /**< attribute value (optional) */
 };
 
 /**
@@ -150,7 +148,6 @@ int sdp_attribute_init(sdp_attribute_t **elem);
  */
 void sdp_attribute_free(sdp_attribute_t *elem);
 
-
 /**
  * Structure for referencing a connection header.
  * @var sdp_connection_t
@@ -162,9 +159,9 @@ typedef struct sdp_connection sdp_connection_t;
  * @struct sdp_connection
  */
 struct sdp_connection {
-  char *c_nettype;                             /**< Network Type */
-  char *c_addrtype;                            /**< Network Address Type */
-  char *c_addr;                                /**< Address */
+  char *c_nettype;  /**< Network Type */
+  char *c_addrtype; /**< Network Address Type */
+  char *c_addr;     /**< Address */
   char *c_addr_multicast_ttl;
   /**< TTL value for multicast address */
   char *c_addr_multicast_int;
@@ -193,20 +190,20 @@ typedef struct sdp_media sdp_media_t;
  * @struct sdp_media
  */
 struct sdp_media {
-  char *m_media;                              /**< media type */
-  char *m_port;                               /**< port number */
-  char *m_number_of_port;             /**< number of port */
-  char *m_proto;                              /**< protocol to be used */
-  osip_list_t m_payloads;            /**< list of payloads (as strings) */
+  char *m_media;          /**< media type */
+  char *m_port;           /**< port number */
+  char *m_number_of_port; /**< number of port */
+  char *m_proto;          /**< protocol to be used */
+  osip_list_t m_payloads; /**< list of payloads (as strings) */
 
-  char *i_info;                               /**< information header */
+  char *i_info; /**< information header */
   osip_list_t c_connections;
   /**< list of sdp_connection_t * */
   osip_list_t b_bandwidths;
   /**< list of sdp_bandwidth_t * */
   osip_list_t a_attributes;
   /**< list of sdp_attribute_t * */
-  sdp_key_t *k_key;                           /**< key informations */
+  sdp_key_t *k_key; /**< key informations */
 };
 
 /**
@@ -231,31 +228,29 @@ typedef struct sdp_message sdp_message_t;
  * @struct sdp_message
  */
 struct sdp_message {
-  char *v_version;                            /**< version header */
-  char *o_username;                           /**< Username */
-  char *o_sess_id;                            /**< Identifier for session */
-  char *o_sess_version;               /**< Version of session */
-  char *o_nettype;                            /**< Network type */
-  char *o_addrtype;                           /**< Address type */
-  char *o_addr;                               /**< Address */
-  char *s_name;                               /**< Subject header */
-  char *i_info;                               /**< Information header */
-  char *u_uri;                                /**< Uri header */
-  osip_list_t e_emails;              /**< list of mail address */
-  osip_list_t p_phones;              /**< list of phone numbers * */
+  char *v_version;      /**< version header */
+  char *o_username;     /**< Username */
+  char *o_sess_id;      /**< Identifier for session */
+  char *o_sess_version; /**< Version of session */
+  char *o_nettype;      /**< Network type */
+  char *o_addrtype;     /**< Address type */
+  char *o_addr;         /**< Address */
+  char *s_name;         /**< Subject header */
+  char *i_info;         /**< Information header */
+  char *u_uri;          /**< Uri header */
+  osip_list_t e_emails; /**< list of mail address */
+  osip_list_t p_phones; /**< list of phone numbers * */
   sdp_connection_t *c_connection;
   /**< Connection information */
   osip_list_t b_bandwidths;
   /**< list of bandwidth info (sdp_bandwidth_t) */
-  osip_list_t t_descrs;              /**< list of time description (sdp_time_descr_t) */
-  char *z_adjustments;                /**< Time adjustment header */
-  sdp_key_t *k_key;                           /**< Key information header */
+  osip_list_t t_descrs; /**< list of time description (sdp_time_descr_t) */
+  char *z_adjustments;  /**< Time adjustment header */
+  sdp_key_t *k_key;     /**< Key information header */
   osip_list_t a_attributes;
   /**< list of global attributes (sdp_attribute_t) */
-  osip_list_t m_medias;              /**< list of supported media (sdp_media_t) */
+  osip_list_t m_medias; /**< list of supported media (sdp_media_t) */
 };
-
-
 
 /**
  * Allocate a SDP packet.
@@ -569,11 +564,11 @@ int sdp_message_a_attribute_del(sdp_message_t *sdp, int pos_media, char *att_fie
  */
 int sdp_message_a_attribute_del_at_index(sdp_message_t *sdp, int pos_media, char *att_field, int pos_attr);
 /**
-* Get one of the attribute ('a' field) of a SDP packet.
-* @param sdp The element to work on.
-* @param pos_media The media line number.
-* @param pos The attribute line number.
-*/
+ * Get one of the attribute ('a' field) of a SDP packet.
+ * @param sdp The element to work on.
+ * @param pos_media The media line number.
+ * @param pos The attribute line number.
+ */
 sdp_attribute_t *sdp_message_attribute_get(sdp_message_t *sdp, int pos_media, int pos);
 /**
  * Get the attribute name ('a' field) of a SDP packet.
@@ -624,10 +619,10 @@ char *sdp_message_m_port_get(sdp_message_t *sdp, int pos_media);
  */
 int sdp_message_m_port_set(sdp_message_t *sdp, int pos_media, char *port);
 /**
-* Get the number of port ('m' field) of a SDP packet.
-* @param sdp The element to work on.
-* @param pos_media The line number.
-*/
+ * Get the number of port ('m' field) of a SDP packet.
+ * @param sdp The element to work on.
+ * @param pos_media The line number.
+ */
 char *sdp_message_m_number_of_port_get(sdp_message_t *sdp, int pos_media);
 /**
  * Get the protocol ('m' field) of a SDP packet.
@@ -657,9 +652,7 @@ char *sdp_message_m_payload_get(sdp_message_t *sdp, int pos_media, int pos);
  */
 int sdp_message_m_payload_del(sdp_message_t *sdp, int pos_media, int pos);
 
-
 /** @} */
-
 
 #ifdef __cplusplus
 }

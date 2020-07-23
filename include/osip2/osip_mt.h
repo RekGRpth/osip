@@ -119,7 +119,6 @@ int osip_sem_wait(struct osip_sem *sem);
  */
 int osip_sem_trywait(struct osip_sem *sem);
 
-
 #ifdef __cplusplus
 }
 #endif
@@ -162,5 +161,5 @@ int osip_mutex_unlock(struct osip_mutex *mut);
 }
 #endif
 /** @} */
-#endif                          /* OSIP_MONOTHREAD */
-#endif                          /* end of _THREAD_H_ */
+#endif /* OSIP_MONOTHREAD */
+#endif /* end of _THREAD_H_ */

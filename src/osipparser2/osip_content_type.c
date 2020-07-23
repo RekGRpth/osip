@@ -24,7 +24,6 @@
 #include <osipparser2/osip_parser.h>
 #include "parser.h"
 
-
 int osip_content_type_init(osip_content_type_t **content_type) {
   *content_type = (osip_content_type_t *) osip_malloc(sizeof(osip_content_type_t));
 
@@ -99,13 +98,13 @@ int osip_content_type_parse(osip_content_type_t *content_type, const char *hvalu
      ^          ^
    */
   if (hvalue == NULL || hvalue[0] == '\0')
-    return OSIP_SUCCESS;        /* It's valid to add empty Accept header! */
+    return OSIP_SUCCESS; /* It's valid to add empty Accept header! */
 
   subtype = strchr(hvalue, '/');
   osip_content_type_params = strchr(hvalue, ';');
 
   if (subtype == NULL)
-    return OSIP_SYNTAXERROR;    /* do we really mind such an error */
+    return OSIP_SYNTAXERROR; /* do we really mind such an error */
 
   if (osip_content_type_params != NULL) {
     i = __osip_generic_param_parseall(&content_type->gen_params, osip_content_type_params);
@@ -139,7 +138,6 @@ int osip_content_type_parse(osip_content_type_t *content_type, const char *hvalu
   return OSIP_SUCCESS;
 }
 
-
 /* returns the content_type header as a string.  */
 /* INPUT : osip_content_type_t *content_type | content_type header.   */
 /* returns null on error. */
@@ -150,12 +148,11 @@ int osip_content_type_to_str(const osip_content_type_t *content_type, char **des
 
   *dest = NULL;
 
-  if ((content_type == NULL) || (content_type->type == NULL)
-      || (content_type->subtype == NULL))
+  if ((content_type == NULL) || (content_type->type == NULL) || (content_type->subtype == NULL))
     return OSIP_BADPARAMETER;
 
   /* try to guess a long enough length */
-  len = strlen(content_type->type) + strlen(content_type->subtype) + 4          /* for '/', ' ', ';' and '\0' */
+  len = strlen(content_type->type) + strlen(content_type->subtype) + 4 /* for '/', ' ', ';' and '\0' */
         + 10 * osip_list_size(&content_type->gen_params);
 
   buf = (char *) osip_malloc(len);
@@ -180,8 +177,7 @@ int osip_content_type_to_str(const osip_content_type_t *content_type, char **des
         return OSIP_SYNTAXERROR;
       }
 
-      tmp_len = strlen(buf) + 4 + strlen(u_param->gname)
-                + strlen(u_param->gvalue) + 1;
+      tmp_len = strlen(buf) + 4 + strlen(u_param->gname) + strlen(u_param->gvalue) + 1;
 
       if (len < tmp_len) {
         buf = osip_realloc(buf, tmp_len);
@@ -197,7 +193,6 @@ int osip_content_type_to_str(const osip_content_type_t *content_type, char **des
   *dest = buf;
   return OSIP_SUCCESS;
 }
-
 
 /* deallocates a osip_content_type_t structure.  */
 /* INPUT : osip_content_type_t *content_type | content_type. */
@@ -227,7 +222,7 @@ int osip_content_type_clone(const osip_content_type_t *ctt, osip_content_type_t 
 
   i = osip_content_type_init(&ct);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   if (ctt->type != NULL)

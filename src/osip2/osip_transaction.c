@@ -289,7 +289,7 @@ int osip_transaction_free(osip_transaction_t *transaction) {
 
   i = osip_remove_transaction(transaction->config, transaction);
 
-  if (i != 0) {                 /* yet removed ??? */
+  if (i != 0) { /* yet removed ??? */
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_INFO4, NULL, "transaction already removed from list %i!\n", transaction->transactionid));
   }
 
@@ -405,7 +405,7 @@ int osip_transaction_execute(osip_transaction_t *transaction, osip_event_t *evt)
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_INFO4, NULL, "sipevent evt: method called!\n"));
   }
 
-  osip_free(evt);               /* this is the ONLY place for freeing event!! */
+  osip_free(evt); /* this is the ONLY place for freeing event!! */
   return 1;
 }
 
@@ -502,7 +502,6 @@ int osip_transaction_set_reserved6(osip_transaction_t *transaction, void *ptr) {
   return OSIP_SUCCESS;
 }
 
-
 void *osip_transaction_get_your_instance(osip_transaction_t *transaction) {
   if (transaction == NULL)
     return NULL;
@@ -551,7 +550,6 @@ void *osip_transaction_get_reserved6(osip_transaction_t *transaction) {
 
   return transaction->reserved6;
 }
-
 
 int __osip_transaction_set_state(osip_transaction_t *transaction, state_t state) {
   if (transaction == NULL)
@@ -642,8 +640,7 @@ int __osip_transaction_matching_response_osip_to_xict_17_1_3(osip_transaction_t 
 #endif
   }
 
-  if ((b_request->gvalue == NULL)
-      || (b_response->gvalue == NULL)) {
+  if ((b_request->gvalue == NULL) || (b_response->gvalue == NULL)) {
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_BUG, NULL, "Remote UA is not compliant: missing a branch parameter in  Via header!\n"));
     return OSIP_SYNTAXERROR;
   }
@@ -668,7 +665,7 @@ int __osip_transaction_matching_response_osip_to_xict_17_1_3(osip_transaction_t 
      branch parameter.
      AMD NOTE: cseq->method is ALWAYS the same than the METHOD of the request.
    */
-  if (0 == strcmp(response->cseq->method, tr->cseq->method))    /* general case */
+  if (0 == strcmp(response->cseq->method, tr->cseq->method)) /* general case */
     return OSIP_SUCCESS;
 
   return OSIP_UNDEFINED_ERROR;
@@ -698,7 +695,7 @@ int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *
   osip_via_param_get_byname(tr->topvia, "branch", &b_origrequest);
 
   if ((b_origrequest == NULL && b_request != NULL) || (b_origrequest != NULL && b_request == NULL))
-    return OSIP_SYNTAXERROR;    /* one request is compliant, the other one is not... */
+    return OSIP_SYNTAXERROR; /* one request is compliant, the other one is not... */
 
   /* Section 17.2.3 Matching Requests to Server Transactions:
      "The branch parameter in the topmost Via header field of the request
@@ -708,7 +705,7 @@ int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *
    */
 
   if (b_origrequest != NULL && b_request != NULL)
-    /* case where both request contains a branch */
+  /* case where both request contains a branch */
   {
     if (!b_origrequest->gvalue)
       return OSIP_UNDEFINED_ERROR;
@@ -723,8 +720,7 @@ int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *
       return OSIP_UNDEFINED_ERROR;
 
     /* can't be the same */
-    if (0 == strncmp(b_origrequest->gvalue, "z9hG4bK", 7)
-        && 0 == strncmp(b_request->gvalue, "z9hG4bK", 7)) {
+    if (0 == strncmp(b_origrequest->gvalue, "z9hG4bK", 7) && 0 == strncmp(b_request->gvalue, "z9hG4bK", 7)) {
       /* both request comes from a compliant UA */
       /* The request matches a transaction if the branch parameter
          in the request is equal to the one in the top Via header
@@ -735,7 +731,7 @@ int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *
          that created the transaction was also CANCEL.
        */
       if (0 != strcmp(b_origrequest->gvalue, b_request->gvalue))
-        return OSIP_UNDEFINED_ERROR;    /* branch param does not match */
+        return OSIP_UNDEFINED_ERROR; /* branch param does not match */
 
       {
         /* check the sent-by values */
@@ -769,8 +765,7 @@ int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *
 
       if (/* MSG_IS_CANCEL(request)&& <<-- BUG from the spec?
                                    I always check the CSeq */
-        (!(0 == strcmp(tr->cseq->method, "INVITE") && 0 == strcmp(request->cseq->method, "ACK")))
-        && 0 != strcmp(tr->cseq->method, request->cseq->method))
+          (!(0 == strcmp(tr->cseq->method, "INVITE") && 0 == strcmp(request->cseq->method, "ACK"))) && 0 != strcmp(tr->cseq->method, request->cseq->method))
         return OSIP_UNDEFINED_ERROR;
 
       return OSIP_SUCCESS;
@@ -884,5 +879,4 @@ int __osip_transaction_snd_xxx(osip_transaction_t *ist, osip_message_t *msg) {
     port = osip_atoi(rport->gvalue);
 
   return osip->cb_send_message(ist, msg, host, port, ist->out_socket);
-
 }

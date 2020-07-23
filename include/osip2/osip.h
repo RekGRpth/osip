@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_H_
 #define _OSIP_H_
 
@@ -48,7 +47,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 /**
  * Enumeration for transaction state.
@@ -87,7 +85,7 @@ typedef enum _state_t {
 #ifndef DOXYGEN
   DIALOG_EARLY,
   DIALOG_CONFIRMED,
-  DIALOG_CLOSE                /* ?? */
+  DIALOG_CLOSE /* ?? */
 #endif
 } state_t;
 
@@ -110,41 +108,41 @@ typedef enum _state_t {
  */
 typedef enum type_t {
   /* TIMEOUT EVENTS for ICT */
-  TIMEOUT_A,                   /**< Timer A */
-  TIMEOUT_B,                   /**< Timer B */
-  TIMEOUT_D,                   /**< Timer D */
+  TIMEOUT_A, /**< Timer A */
+  TIMEOUT_B, /**< Timer B */
+  TIMEOUT_D, /**< Timer D */
 
   /* TIMEOUT EVENTS for NICT */
-  TIMEOUT_E,                   /**< Timer E */
-  TIMEOUT_F,                   /**< Timer F */
-  TIMEOUT_K,                   /**< Timer K */
+  TIMEOUT_E, /**< Timer E */
+  TIMEOUT_F, /**< Timer F */
+  TIMEOUT_K, /**< Timer K */
 
   /* TIMEOUT EVENTS for IST */
-  TIMEOUT_G,                   /**< Timer G */
-  TIMEOUT_H,                   /**< Timer H */
-  TIMEOUT_I,                   /**< Timer I */
+  TIMEOUT_G, /**< Timer G */
+  TIMEOUT_H, /**< Timer H */
+  TIMEOUT_I, /**< Timer I */
 
   /* TIMEOUT EVENTS for NIST */
-  TIMEOUT_J,                   /**< Timer J */
+  TIMEOUT_J, /**< Timer J */
 
   /* FOR INCOMING MESSAGE */
-  RCV_REQINVITE,               /**< Event is an incoming INVITE request */
-  RCV_REQACK,                  /**< Event is an incoming ACK request */
-  RCV_REQUEST,                 /**< Event is an incoming NON-INVITE and NON-ACK request */
-  RCV_STATUS_1XX,              /**< Event is an incoming informational response */
-  RCV_STATUS_2XX,              /**< Event is an incoming 2XX response */
-  RCV_STATUS_3456XX,           /**< Event is an incoming final response (not 2XX) */
+  RCV_REQINVITE,     /**< Event is an incoming INVITE request */
+  RCV_REQACK,        /**< Event is an incoming ACK request */
+  RCV_REQUEST,       /**< Event is an incoming NON-INVITE and NON-ACK request */
+  RCV_STATUS_1XX,    /**< Event is an incoming informational response */
+  RCV_STATUS_2XX,    /**< Event is an incoming 2XX response */
+  RCV_STATUS_3456XX, /**< Event is an incoming final response (not 2XX) */
 
   /* FOR OUTGOING MESSAGE */
-  SND_REQINVITE,               /**< Event is an outgoing INVITE request */
-  SND_REQACK,                  /**< Event is an outgoing ACK request */
-  SND_REQUEST,                 /**< Event is an outgoing NON-INVITE and NON-ACK request */
-  SND_STATUS_1XX,              /**< Event is an outgoing informational response */
-  SND_STATUS_2XX,              /**< Event is an outgoing 2XX response */
-  SND_STATUS_3456XX,           /**< Event is an outgoing final response (not 2XX) */
+  SND_REQINVITE,     /**< Event is an outgoing INVITE request */
+  SND_REQACK,        /**< Event is an outgoing ACK request */
+  SND_REQUEST,       /**< Event is an outgoing NON-INVITE and NON-ACK request */
+  SND_STATUS_1XX,    /**< Event is an outgoing informational response */
+  SND_STATUS_2XX,    /**< Event is an outgoing 2XX response */
+  SND_STATUS_3456XX, /**< Event is an outgoing final response (not 2XX) */
 
-  KILL_TRANSACTION,            /**< Event to 'kill' the transaction before termination */
-  UNKNOWN_EVT                  /**< Max event */
+  KILL_TRANSACTION, /**< Event to 'kill' the transaction before termination */
+  UNKNOWN_EVT       /**< Max event */
 } type_t;
 
 /**
@@ -156,10 +154,10 @@ typedef enum type_t {
  *  NIST,
  */
 typedef enum osip_fsm_type_t {
-  ICT,         /**< Invite Client (outgoing) Transaction */
-  IST,         /**< Invite Server (incoming) Transaction */
-  NICT,        /**< Non-Invite Client (outgoing) Transaction */
-  NIST         /**< Non-Invite Server (incoming) Transaction */
+  ICT,  /**< Invite Client (outgoing) Transaction */
+  IST,  /**< Invite Server (incoming) Transaction */
+  NICT, /**< Non-Invite Client (outgoing) Transaction */
+  NIST  /**< Non-Invite Server (incoming) Transaction */
 } osip_fsm_type_t;
 
 #ifndef DEFAULT_T1
@@ -167,7 +165,7 @@ typedef enum osip_fsm_type_t {
  * You can re-define the default value for T1. (T1 is defined in rfcxxxx)
  * The default value is 500ms.
  */
-#define DEFAULT_T1 500          /* 500 ms */
+#define DEFAULT_T1 500 /* 500 ms */
 #endif
 #ifndef DEFAULT_T1_TCP_PROGRESS
 /**
@@ -178,23 +176,22 @@ typedef enum osip_fsm_type_t {
  * in order to send the message.
  * The default value is 50ms.
  */
-#define DEFAULT_T1_TCP_PROGRESS 50      /* 50ms */
+#define DEFAULT_T1_TCP_PROGRESS 50 /* 50ms */
 #endif
 #ifndef DEFAULT_T2
 /**
  * You can re-define the default value for T2. (T2 is defined in rfcxxxx)
  * The default value is 4000ms.
  */
-#define DEFAULT_T2 4000         /* 4s */
+#define DEFAULT_T2 4000 /* 4s */
 #endif
 #ifndef DEFAULT_T4
 /**
  * You can re-define the default value for T4. (T1 is defined in rfcxxxx)
  * The default value is 5000ms.
  */
-#define DEFAULT_T4 5000         /* 5s */
+#define DEFAULT_T4 5000 /* 5s */
 #endif
-
 
 /**
  * Structure for INVITE CLIENT TRANSACTION (outgoing INVITE transaction).
@@ -207,14 +204,14 @@ typedef struct osip_ict osip_ict_t;
  * @struct osip_ict
  */
 struct osip_ict {
-  int timer_a_length;                           /**< Timer A A=T1, A=2xT1... (unreliable only) */
-  struct timeval timer_a_start;                 /**< Timer A (retransmission) */
-  int timer_b_length;                           /**< Timer B B = 64* T1 */
-  struct timeval timer_b_start;                 /**< Timer B (fire when transaction timeout) */
-  int timer_d_length;                           /**< Timer D D >= 32s for unreliable tr (or 0) */
-  struct timeval timer_d_start;                 /**< Timer D */
-  char *destination;                            /**< IP used to send requests */
-  int port;                                     /**< port of next hop */
+  int timer_a_length;           /**< Timer A A=T1, A=2xT1... (unreliable only) */
+  struct timeval timer_a_start; /**< Timer A (retransmission) */
+  int timer_b_length;           /**< Timer B B = 64* T1 */
+  struct timeval timer_b_start; /**< Timer B (fire when transaction timeout) */
+  int timer_d_length;           /**< Timer D D >= 32s for unreliable tr (or 0) */
+  struct timeval timer_d_start; /**< Timer D */
+  char *destination;            /**< IP used to send requests */
+  int port;                     /**< port of next hop */
 };
 
 /**
@@ -228,15 +225,14 @@ typedef struct osip_nict osip_nict_t;
  * @struct osip_nict
  */
 struct osip_nict {
-  int timer_e_length;                           /**< Timer E A=T1, A=2xT1... (unreliable only) */
-  struct timeval timer_e_start;                 /**< Timer E (retransmission) */
-  int timer_f_length;                           /**< Timer F B = 64* T1 */
-  struct timeval timer_f_start;                 /**< Timer F (fire when transaction timeout) */
-  int timer_k_length;                           /**< Timer K K = T4 (else = 0) */
-  struct timeval timer_k_start;                 /**< Timer K */
-  char *destination;                            /**< IP used to send requests */
-  int port;                                     /**< port of next hop */
-
+  int timer_e_length;           /**< Timer E A=T1, A=2xT1... (unreliable only) */
+  struct timeval timer_e_start; /**< Timer E (retransmission) */
+  int timer_f_length;           /**< Timer F B = 64* T1 */
+  struct timeval timer_f_start; /**< Timer F (fire when transaction timeout) */
+  int timer_k_length;           /**< Timer K K = T4 (else = 0) */
+  struct timeval timer_k_start; /**< Timer K */
+  char *destination;            /**< IP used to send requests */
+  int port;                     /**< port of next hop */
 };
 
 /**
@@ -250,12 +246,12 @@ typedef struct osip_ist osip_ist_t;
  * @struct osip_ist
  */
 struct osip_ist {
-  int timer_g_length;                           /**< Timer G G=MIN(T1*2,T2) for unreliable trans. */
-  struct timeval timer_g_start;                 /**< Timer G (0 when reliable transport is used) */
-  int timer_h_length;                           /**< Timer H H = 64* T1 */
-  struct timeval timer_h_start;                 /**< Timer H (fire if no ACK is received) */
-  int timer_i_length;                           /**< Timer I I = T4 for unreliable (or 0) */
-  struct timeval timer_i_start;                 /**< Timer I (absorb all ACK) */
+  int timer_g_length;           /**< Timer G G=MIN(T1*2,T2) for unreliable trans. */
+  struct timeval timer_g_start; /**< Timer G (0 when reliable transport is used) */
+  int timer_h_length;           /**< Timer H H = 64* T1 */
+  struct timeval timer_h_start; /**< Timer H (fire if no ACK is received) */
+  int timer_i_length;           /**< Timer I I = T4 for unreliable (or 0) */
+  struct timeval timer_i_start; /**< Timer I (absorb all ACK) */
 };
 
 /**
@@ -269,8 +265,8 @@ typedef struct osip_nist osip_nist_t;
  * @struct osip_nist
  */
 struct osip_nist {
-  int timer_j_length;                            /**< Timer J = 64*T1 (else 0) */
-  struct timeval timer_j_start;                  /**< Timer J */
+  int timer_j_length;           /**< Timer J = 64*T1 (else 0) */
+  struct timeval timer_j_start; /**< Timer J */
 };
 
 /**
@@ -285,19 +281,19 @@ typedef struct osip_srv_entry osip_srv_entry_t;
  */
 
 struct osip_srv_entry {
-  char srv[512];                   /**< srv */
-  int priority;                    /**< priority */
-  int weight;                      /**< weight  */
-  int rweight;                     /**< rweight  */
-  int port;                        /**< port  */
-  char ipaddress[512];             /**< ipaddress result  */
-  struct timeval srv_is_broken;    /**< time when we considered SRV entry broken */
+  char srv[512];                /**< srv */
+  int priority;                 /**< priority */
+  int weight;                   /**< weight  */
+  int rweight;                  /**< rweight  */
+  int port;                     /**< port  */
+  char ipaddress[512];          /**< ipaddress result  */
+  struct timeval srv_is_broken; /**< time when we considered SRV entry broken */
 };
 
-#define OSIP_SRV_STATE_UNKNOWN 0         /**< unknown */
-#define OSIP_SRV_STATE_RETRYLATER 2      /**< retry later */
-#define OSIP_SRV_STATE_COMPLETED 3       /**< completed */
-#define OSIP_SRV_STATE_NOTSUPPORTED 4    /**< not supported */
+#define OSIP_SRV_STATE_UNKNOWN 0      /**< unknown */
+#define OSIP_SRV_STATE_RETRYLATER 2   /**< retry later */
+#define OSIP_SRV_STATE_COMPLETED 3    /**< completed */
+#define OSIP_SRV_STATE_NOTSUPPORTED 4 /**< not supported */
 
 /**
  * Structure for SRV record.
@@ -310,25 +306,25 @@ typedef struct osip_srv_record osip_srv_record_t;
  * @struct osip_srv_record
  */
 struct osip_srv_record {
-  char name[1024];                 /**< name */
-  int srv_state;                   /**< srv state */
-  char flag[256];                  /**< flag:  "S" (SRV), "A" (A or AAAA), "U" (URI), and "P" (ignore), are defined. */
-  char protocol[1024];             /**< transport protocol*/
-  char regexp[1024];               /**< regexp */
-  char replacement[1024];          /**< replacement */
-  int order;                       /**< order */
-  int preference;                  /**< preference */
-  int index;                       /**< index */
-  osip_srv_entry_t srventry[10];   /**< result table */
+  char name[1024];               /**< name */
+  int srv_state;                 /**< srv state */
+  char flag[256];                /**< flag:  "S" (SRV), "A" (A or AAAA), "U" (URI), and "P" (ignore), are defined. */
+  char protocol[1024];           /**< transport protocol*/
+  char regexp[1024];             /**< regexp */
+  char replacement[1024];        /**< replacement */
+  int order;                     /**< order */
+  int preference;                /**< preference */
+  int index;                     /**< index */
+  osip_srv_entry_t srventry[10]; /**< result table */
 };
 
-#define OSIP_NAPTR_STATE_UNKNOWN 0         /**< unknown */
-#define OSIP_NAPTR_STATE_INPROGRESS 1      /**< in progress */
-#define OSIP_NAPTR_STATE_NAPTRDONE 2       /**< naptr done */
-#define OSIP_NAPTR_STATE_SRVINPROGRESS 3   /**< srv in progress */
-#define OSIP_NAPTR_STATE_SRVDONE 4         /**< srv done */
-#define OSIP_NAPTR_STATE_RETRYLATER 5      /**< retry later */
-#define OSIP_NAPTR_STATE_NOTSUPPORTED 6    /**< not supported */
+#define OSIP_NAPTR_STATE_UNKNOWN 0       /**< unknown */
+#define OSIP_NAPTR_STATE_INPROGRESS 1    /**< in progress */
+#define OSIP_NAPTR_STATE_NAPTRDONE 2     /**< naptr done */
+#define OSIP_NAPTR_STATE_SRVINPROGRESS 3 /**< srv in progress */
+#define OSIP_NAPTR_STATE_SRVDONE 4       /**< srv done */
+#define OSIP_NAPTR_STATE_RETRYLATER 5    /**< retry later */
+#define OSIP_NAPTR_STATE_NOTSUPPORTED 6  /**< not supported */
 
 /**
  * Structure for NAPTR record.
@@ -341,17 +337,17 @@ typedef struct osip_naptr osip_naptr_t;
  * @struct osip_naptr
  */
 struct osip_naptr {
-  char domain[512];                       /**< domain */
-  char AUS[64];                           /**< UAS (User Application String) used for Enum */
-  int naptr_state;                        /**< naptr state */
-  void *arg;                              /**< arg */
-  int keep_in_cache;                      /**< keep in cache value */
-  struct osip_srv_record sipudp_record;   /**< udp NAPTR result */
-  struct osip_srv_record siptcp_record;   /**< tcp NAPTR result */
-  struct osip_srv_record siptls_record;   /**< tls NAPTR result */
-  struct osip_srv_record sipdtls_record;  /**< dtls NAPTR result */
-  struct osip_srv_record sipsctp_record;  /**< sctp NAPTR result */
-  struct osip_srv_record sipenum_record;  /**< enum NAPTR result */
+  char domain[512];                      /**< domain */
+  char AUS[64];                          /**< UAS (User Application String) used for Enum */
+  int naptr_state;                       /**< naptr state */
+  void *arg;                             /**< arg */
+  int keep_in_cache;                     /**< keep in cache value */
+  struct osip_srv_record sipudp_record;  /**< udp NAPTR result */
+  struct osip_srv_record siptcp_record;  /**< tcp NAPTR result */
+  struct osip_srv_record siptls_record;  /**< tls NAPTR result */
+  struct osip_srv_record sipdtls_record; /**< dtls NAPTR result */
+  struct osip_srv_record sipsctp_record; /**< sctp NAPTR result */
+  struct osip_srv_record sipenum_record; /**< enum NAPTR result */
 };
 
 /**
@@ -365,143 +361,141 @@ typedef struct osip_transaction osip_transaction_t;
  * @struct osip_transaction
  */
 struct osip_transaction {
+  void *your_instance;        /**< User Defined Pointer. */
+  int transactionid;          /**< Internal Transaction Identifier. */
+  osip_fifo_t *transactionff; /**< events must be added in this fifo */
 
-  void *your_instance;                /**< User Defined Pointer. */
-  int transactionid;                  /**< Internal Transaction Identifier. */
-  osip_fifo_t *transactionff;         /**< events must be added in this fifo */
+  osip_via_t *topvia;     /**< CALL-LEG definition (Top Via) */
+  osip_from_t *from;      /**< CALL-LEG definition (From)    */
+  osip_to_t *to;          /**< CALL-LEG definition (To)      */
+  osip_call_id_t *callid; /**< CALL-LEG definition (Call-ID) */
+  osip_cseq_t *cseq;      /**< CALL-LEG definition (CSeq)    */
 
-  osip_via_t *topvia;                 /**< CALL-LEG definition (Top Via) */
-  osip_from_t *from;                  /**< CALL-LEG definition (From)    */
-  osip_to_t *to;                      /**< CALL-LEG definition (To)      */
-  osip_call_id_t *callid;             /**< CALL-LEG definition (Call-ID) */
-  osip_cseq_t *cseq;                  /**< CALL-LEG definition (CSeq)    */
+  osip_message_t *orig_request;  /**< Initial request            */
+  osip_message_t *last_response; /**< Last response              */
+  osip_message_t *ack;           /**< ack request sent           */
 
-  osip_message_t *orig_request;       /**< Initial request            */
-  osip_message_t *last_response;      /**< Last response              */
-  osip_message_t *ack;                /**< ack request sent           */
+  state_t state; /**< Current state of the transaction */
 
-  state_t state;                      /**< Current state of the transaction */
+  time_t birth_time;     /**< birth date of transaction        */
+  time_t completed_time; /**< end   date of transaction        */
 
-  time_t birth_time;                  /**< birth date of transaction        */
-  time_t completed_time;              /**< end   date of transaction        */
+  int in_socket;  /**< Optional socket for incoming message */
+  int out_socket; /**< Optional place for outgoing message */
 
-  int in_socket;                      /**< Optional socket for incoming message */
-  int out_socket;                     /**< Optional place for outgoing message */
+  void *config; /**< (internal) transaction is managed by osip_t  */
 
-  void *config;                       /**< (internal) transaction is managed by osip_t  */
+  osip_fsm_type_t ctx_type;  /**< Type of the transaction */
+  osip_ict_t *ict_context;   /**< internal ict context */
+  osip_ist_t *ist_context;   /**< internal ist context */
+  osip_nict_t *nict_context; /**< internal nict context */
+  osip_nist_t *nist_context; /**< internal nist context */
 
-  osip_fsm_type_t ctx_type;           /**< Type of the transaction */
-  osip_ict_t *ict_context;            /**< internal ict context */
-  osip_ist_t *ist_context;            /**< internal ist context */
-  osip_nict_t *nict_context;          /**< internal nict context */
-  osip_nist_t *nist_context;          /**< internal nist context */
-
-  osip_srv_record_t record;           /**< memory space for SRV record */
-  osip_naptr_t *naptr_record;         /**< memory space for NAPTR record */
-  void *reserved1;                    /**< User Defined Pointer. */
-  void *reserved2;                    /**< User Defined Pointer. */
-  void *reserved3;                    /**< User Defined Pointer. */
-  void *reserved4;                    /**< User Defined Pointer. */
-  void *reserved5;                    /**< User Defined Pointer. */
-  void *reserved6;                    /**< User Defined Pointer. */
+  osip_srv_record_t record;   /**< memory space for SRV record */
+  osip_naptr_t *naptr_record; /**< memory space for NAPTR record */
+  void *reserved1;            /**< User Defined Pointer. */
+  void *reserved2;            /**< User Defined Pointer. */
+  void *reserved3;            /**< User Defined Pointer. */
+  void *reserved4;            /**< User Defined Pointer. */
+  void *reserved5;            /**< User Defined Pointer. */
+  void *reserved6;            /**< User Defined Pointer. */
 };
-
 
 /**
  * Enumeration for callback type.
  */
 typedef enum osip_message_callback_type {
-  OSIP_ICT_INVITE_SENT = 0,                           /**< INVITE MESSAGE SENT */
-  OSIP_ICT_INVITE_SENT_AGAIN,                         /**< INVITE MESSAGE RETRANSMITTED */
-  OSIP_ICT_ACK_SENT,                                  /**< ACK MESSAGE SENT */
-  OSIP_ICT_ACK_SENT_AGAIN,                            /**< ACK MESSAGE RETRANSMITTED */
-  OSIP_ICT_STATUS_1XX_RECEIVED,                       /**< 1XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_2XX_RECEIVED,                       /**< 2XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_2XX_RECEIVED_AGAIN,                 /**< 2XX FOR INVITE RECEIVED AGAIN */
-  OSIP_ICT_STATUS_3XX_RECEIVED,                       /**< 3XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_4XX_RECEIVED,                       /**< 4XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_5XX_RECEIVED,                       /**< 5XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_6XX_RECEIVED,                       /**< 6XX FOR INVITE RECEIVED */
-  OSIP_ICT_STATUS_3456XX_RECEIVED_AGAIN,              /**< RESPONSE RECEIVED AGAIN */
+  OSIP_ICT_INVITE_SENT = 0,              /**< INVITE MESSAGE SENT */
+  OSIP_ICT_INVITE_SENT_AGAIN,            /**< INVITE MESSAGE RETRANSMITTED */
+  OSIP_ICT_ACK_SENT,                     /**< ACK MESSAGE SENT */
+  OSIP_ICT_ACK_SENT_AGAIN,               /**< ACK MESSAGE RETRANSMITTED */
+  OSIP_ICT_STATUS_1XX_RECEIVED,          /**< 1XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_2XX_RECEIVED,          /**< 2XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_2XX_RECEIVED_AGAIN,    /**< 2XX FOR INVITE RECEIVED AGAIN */
+  OSIP_ICT_STATUS_3XX_RECEIVED,          /**< 3XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_4XX_RECEIVED,          /**< 4XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_5XX_RECEIVED,          /**< 5XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_6XX_RECEIVED,          /**< 6XX FOR INVITE RECEIVED */
+  OSIP_ICT_STATUS_3456XX_RECEIVED_AGAIN, /**< RESPONSE RECEIVED AGAIN */
 
-  OSIP_IST_INVITE_RECEIVED,                           /**< INVITE MESSAGE RECEIVED */
-  OSIP_IST_INVITE_RECEIVED_AGAIN,                     /**< INVITE MESSAGE RECEIVED AGAN */
-  OSIP_IST_ACK_RECEIVED,                              /**< ACK MESSAGE RECEIVED */
-  OSIP_IST_ACK_RECEIVED_AGAIN,                        /**< ACK MESSAGE RECEIVED AGAIN */
-  OSIP_IST_STATUS_1XX_SENT,                           /**< 1XX FOR INVITE SENT */
-  OSIP_IST_STATUS_2XX_SENT,                           /**< 2XX FOR INVITE SENT */
-  OSIP_IST_STATUS_2XX_SENT_AGAIN,                     /**< 2XX FOR INVITE RETRANSMITTED */
-  OSIP_IST_STATUS_3XX_SENT,                           /**< 3XX FOR INVITE SENT */
-  OSIP_IST_STATUS_4XX_SENT,                           /**< 4XX FOR INVITE SENT */
-  OSIP_IST_STATUS_5XX_SENT,                           /**< 5XX FOR INVITE SENT */
-  OSIP_IST_STATUS_6XX_SENT,                           /**< 6XX FOR INVITE SENT */
-  OSIP_IST_STATUS_3456XX_SENT_AGAIN,                  /**< RESPONSE RETRANSMITTED */
+  OSIP_IST_INVITE_RECEIVED,          /**< INVITE MESSAGE RECEIVED */
+  OSIP_IST_INVITE_RECEIVED_AGAIN,    /**< INVITE MESSAGE RECEIVED AGAN */
+  OSIP_IST_ACK_RECEIVED,             /**< ACK MESSAGE RECEIVED */
+  OSIP_IST_ACK_RECEIVED_AGAIN,       /**< ACK MESSAGE RECEIVED AGAIN */
+  OSIP_IST_STATUS_1XX_SENT,          /**< 1XX FOR INVITE SENT */
+  OSIP_IST_STATUS_2XX_SENT,          /**< 2XX FOR INVITE SENT */
+  OSIP_IST_STATUS_2XX_SENT_AGAIN,    /**< 2XX FOR INVITE RETRANSMITTED */
+  OSIP_IST_STATUS_3XX_SENT,          /**< 3XX FOR INVITE SENT */
+  OSIP_IST_STATUS_4XX_SENT,          /**< 4XX FOR INVITE SENT */
+  OSIP_IST_STATUS_5XX_SENT,          /**< 5XX FOR INVITE SENT */
+  OSIP_IST_STATUS_6XX_SENT,          /**< 6XX FOR INVITE SENT */
+  OSIP_IST_STATUS_3456XX_SENT_AGAIN, /**< RESPONSE RETRANSMITTED */
 
-  OSIP_NICT_REGISTER_SENT,                            /**< REGISTER MESSAGE SENT */
-  OSIP_NICT_BYE_SENT,                                 /**< BYE MESSAGE SENT */
-  OSIP_NICT_OPTIONS_SENT,                             /**< OPTIONS MESSAGE SENT */
-  OSIP_NICT_INFO_SENT,                                /**< INFO MESSAGE SENT */
-  OSIP_NICT_CANCEL_SENT,                              /**< CANCEL MESSAGE SENT */
-  OSIP_NICT_NOTIFY_SENT,                              /**< NOTIFY MESSAGE SENT */
-  OSIP_NICT_SUBSCRIBE_SENT,                           /**< SUBSCRIBE MESSAGE SENT */
-  OSIP_NICT_UNKNOWN_REQUEST_SENT,                     /**< UNKNOWN REQUEST MESSAGE SENT */
-  OSIP_NICT_REQUEST_SENT_AGAIN,                       /**< REQUEST MESSAGE RETRANMITTED */
-  OSIP_NICT_STATUS_1XX_RECEIVED,                      /**< 1XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_2XX_RECEIVED,                      /**< 2XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_2XX_RECEIVED_AGAIN,                /**< 2XX FOR MESSAGE RECEIVED AGAIN */
-  OSIP_NICT_STATUS_3XX_RECEIVED,                      /**< 3XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_4XX_RECEIVED,                      /**< 4XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_5XX_RECEIVED,                      /**< 5XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_6XX_RECEIVED,                      /**< 6XX FOR MESSAGE RECEIVED */
-  OSIP_NICT_STATUS_3456XX_RECEIVED_AGAIN,             /**< RESPONSE RECEIVED AGAIN */
+  OSIP_NICT_REGISTER_SENT,                /**< REGISTER MESSAGE SENT */
+  OSIP_NICT_BYE_SENT,                     /**< BYE MESSAGE SENT */
+  OSIP_NICT_OPTIONS_SENT,                 /**< OPTIONS MESSAGE SENT */
+  OSIP_NICT_INFO_SENT,                    /**< INFO MESSAGE SENT */
+  OSIP_NICT_CANCEL_SENT,                  /**< CANCEL MESSAGE SENT */
+  OSIP_NICT_NOTIFY_SENT,                  /**< NOTIFY MESSAGE SENT */
+  OSIP_NICT_SUBSCRIBE_SENT,               /**< SUBSCRIBE MESSAGE SENT */
+  OSIP_NICT_UNKNOWN_REQUEST_SENT,         /**< UNKNOWN REQUEST MESSAGE SENT */
+  OSIP_NICT_REQUEST_SENT_AGAIN,           /**< REQUEST MESSAGE RETRANMITTED */
+  OSIP_NICT_STATUS_1XX_RECEIVED,          /**< 1XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_2XX_RECEIVED,          /**< 2XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_2XX_RECEIVED_AGAIN,    /**< 2XX FOR MESSAGE RECEIVED AGAIN */
+  OSIP_NICT_STATUS_3XX_RECEIVED,          /**< 3XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_4XX_RECEIVED,          /**< 4XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_5XX_RECEIVED,          /**< 5XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_6XX_RECEIVED,          /**< 6XX FOR MESSAGE RECEIVED */
+  OSIP_NICT_STATUS_3456XX_RECEIVED_AGAIN, /**< RESPONSE RECEIVED AGAIN */
 
-  OSIP_NIST_REGISTER_RECEIVED,                        /**< REGISTER RECEIVED */
-  OSIP_NIST_BYE_RECEIVED,                             /**< BYE RECEIVED */
-  OSIP_NIST_OPTIONS_RECEIVED,                         /**< OPTIONS RECEIVED */
-  OSIP_NIST_INFO_RECEIVED,                            /**< INFO RECEIVED */
-  OSIP_NIST_CANCEL_RECEIVED,                          /**< CANCEL RECEIVED */
-  OSIP_NIST_NOTIFY_RECEIVED,                          /**< NOTIFY RECEIVED */
-  OSIP_NIST_SUBSCRIBE_RECEIVED,                       /**< SUBSCRIBE RECEIVED */
+  OSIP_NIST_REGISTER_RECEIVED,  /**< REGISTER RECEIVED */
+  OSIP_NIST_BYE_RECEIVED,       /**< BYE RECEIVED */
+  OSIP_NIST_OPTIONS_RECEIVED,   /**< OPTIONS RECEIVED */
+  OSIP_NIST_INFO_RECEIVED,      /**< INFO RECEIVED */
+  OSIP_NIST_CANCEL_RECEIVED,    /**< CANCEL RECEIVED */
+  OSIP_NIST_NOTIFY_RECEIVED,    /**< NOTIFY RECEIVED */
+  OSIP_NIST_SUBSCRIBE_RECEIVED, /**< SUBSCRIBE RECEIVED */
 
-  OSIP_NIST_UNKNOWN_REQUEST_RECEIVED,                 /**< UNKNWON REQUEST RECEIVED */
-  OSIP_NIST_REQUEST_RECEIVED_AGAIN,                   /**< UNKNWON REQUEST RECEIVED AGAIN */
-  OSIP_NIST_STATUS_1XX_SENT,                          /**< 1XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_2XX_SENT,                          /**< 2XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_2XX_SENT_AGAIN,                    /**< 2XX FOR MESSAGE RETRANSMITTED */
-  OSIP_NIST_STATUS_3XX_SENT,                          /**< 3XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_4XX_SENT,                          /**< 4XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_5XX_SENT,                          /**< 5XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_6XX_SENT,                          /**< 6XX FOR MESSAGE SENT */
-  OSIP_NIST_STATUS_3456XX_SENT_AGAIN,                 /**< RESPONSE RETRANSMITTED */
+  OSIP_NIST_UNKNOWN_REQUEST_RECEIVED, /**< UNKNWON REQUEST RECEIVED */
+  OSIP_NIST_REQUEST_RECEIVED_AGAIN,   /**< UNKNWON REQUEST RECEIVED AGAIN */
+  OSIP_NIST_STATUS_1XX_SENT,          /**< 1XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_2XX_SENT,          /**< 2XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_2XX_SENT_AGAIN,    /**< 2XX FOR MESSAGE RETRANSMITTED */
+  OSIP_NIST_STATUS_3XX_SENT,          /**< 3XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_4XX_SENT,          /**< 4XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_5XX_SENT,          /**< 5XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_6XX_SENT,          /**< 6XX FOR MESSAGE SENT */
+  OSIP_NIST_STATUS_3456XX_SENT_AGAIN, /**< RESPONSE RETRANSMITTED */
 
-  OSIP_ICT_STATUS_TIMEOUT,                            /**< TIMER B EXPIRATION: NO REMOTE ANSWER  */
-  OSIP_NICT_STATUS_TIMEOUT,                           /**< TIMER F EXPIRATION: NO REMOTE ANSWER  */
+  OSIP_ICT_STATUS_TIMEOUT,  /**< TIMER B EXPIRATION: NO REMOTE ANSWER  */
+  OSIP_NICT_STATUS_TIMEOUT, /**< TIMER F EXPIRATION: NO REMOTE ANSWER  */
 
-  OSIP_MESSAGE_CALLBACK_COUNT                         /**< END OF ENUM */
+  OSIP_MESSAGE_CALLBACK_COUNT /**< END OF ENUM */
 } osip_message_callback_type_t;
 
 /**
  * Enumeration for callback type used when transaction is over.
  */
 typedef enum osip_kill_callback_type {
-  OSIP_ICT_KILL_TRANSACTION,                  /**< end of Client INVITE transaction */
-  OSIP_IST_KILL_TRANSACTION,                  /**< end of Server INVITE transaction */
-  OSIP_NICT_KILL_TRANSACTION,                 /**< end of Client Non-INVITE transaction */
-  OSIP_NIST_KILL_TRANSACTION,                 /**< end of Server Non-INVITE transaction */
+  OSIP_ICT_KILL_TRANSACTION,  /**< end of Client INVITE transaction */
+  OSIP_IST_KILL_TRANSACTION,  /**< end of Server INVITE transaction */
+  OSIP_NICT_KILL_TRANSACTION, /**< end of Client Non-INVITE transaction */
+  OSIP_NIST_KILL_TRANSACTION, /**< end of Server Non-INVITE transaction */
 
-  OSIP_KILL_CALLBACK_COUNT                    /**< END OF ENUM */
+  OSIP_KILL_CALLBACK_COUNT /**< END OF ENUM */
 } osip_kill_callback_type_t;
 
 /**
  * Enumeration for callback type used when a transport error is detected.
  */
 typedef enum osip_transport_error_callback_type {
-  OSIP_ICT_TRANSPORT_ERROR,                             /**< transport error for ICT */
-  OSIP_IST_TRANSPORT_ERROR,                             /**< transport error for IST */
-  OSIP_NICT_TRANSPORT_ERROR,                            /**< transport error for NICT */
-  OSIP_NIST_TRANSPORT_ERROR,                            /**< transport error for NIST */
+  OSIP_ICT_TRANSPORT_ERROR,  /**< transport error for ICT */
+  OSIP_IST_TRANSPORT_ERROR,  /**< transport error for IST */
+  OSIP_NICT_TRANSPORT_ERROR, /**< transport error for NICT */
+  OSIP_NIST_TRANSPORT_ERROR, /**< transport error for NIST */
 
-  OSIP_TRANSPORT_ERROR_CALLBACK_COUNT                   /**< END OF ENUM */
+  OSIP_TRANSPORT_ERROR_CALLBACK_COUNT /**< END OF ENUM */
 } osip_transport_error_callback_type_t;
 
 /**
@@ -520,7 +514,6 @@ typedef void (*osip_kill_transaction_cb_t)(int type, osip_transaction_t *);
  */
 typedef void (*osip_transport_error_cb_t)(int type, osip_transaction_t *, int error);
 
-
 struct osip_dialog;
 
 /**
@@ -535,17 +528,16 @@ typedef struct ixt ixt_t;
  */
 struct ixt {
   /* any ACK received that match this context will set counter to -1 */
-  struct osip_dialog *dialog;         /**< related dialog */
-  osip_message_t *msg2xx;             /**< buffer to retransmit */
-  osip_message_t *ack;                /**< ack message if needed */
-  struct timeval start;               /**< Time of first retransmission */
-  int interval;                       /**< delay between retransmission, in ms */
-  char *dest;                         /**< destination host */
-  int port;                           /**< destination port */
-  int sock;                           /**< socket to use */
-  int counter;                        /**< start at 7 */
+  struct osip_dialog *dialog; /**< related dialog */
+  osip_message_t *msg2xx;     /**< buffer to retransmit */
+  osip_message_t *ack;        /**< ack message if needed */
+  struct timeval start;       /**< Time of first retransmission */
+  int interval;               /**< delay between retransmission, in ms */
+  char *dest;                 /**< destination host */
+  int port;                   /**< destination port */
+  int sock;                   /**< socket to use */
+  int counter;                /**< start at 7 */
 };
-
 
 /**
  * Structure for osip handling.
@@ -561,36 +553,34 @@ typedef struct osip osip_t;
  * @struct osip
  */
 struct osip {
+  void *application_context; /**< User defined Pointer */
 
-  void *application_context;     /**< User defined Pointer */
-
-  void *ict_fastmutex;           /**< mutex for ICT transaction */
-  void *ist_fastmutex;           /**< mutex for IST transaction */
-  void *nict_fastmutex;          /**< mutex for NICT transaction */
-  void *nist_fastmutex;          /**< mutex for NIST transaction */
-  void *ixt_fastmutex;           /**< mutex for IXT transaction */
-  void *id_mutex;                /**< mutex for unique transaction id generation */
-  int transactionid;             /**< previous unique transaction id generation */
+  void *ict_fastmutex;  /**< mutex for ICT transaction */
+  void *ist_fastmutex;  /**< mutex for IST transaction */
+  void *nict_fastmutex; /**< mutex for NICT transaction */
+  void *nist_fastmutex; /**< mutex for NIST transaction */
+  void *ixt_fastmutex;  /**< mutex for IXT transaction */
+  void *id_mutex;       /**< mutex for unique transaction id generation */
+  int transactionid;    /**< previous unique transaction id generation */
 
   /* list of transactions for ict, ist, nict, nist */
-  osip_list_t osip_ict_transactions;          /**< list of ict transactions */
-  osip_list_t osip_ist_transactions;          /**< list of ist transactions */
-  osip_list_t osip_nict_transactions;         /**< list of nict transactions */
-  osip_list_t osip_nist_transactions;         /**< list of nist transactions */
+  osip_list_t osip_ict_transactions;  /**< list of ict transactions */
+  osip_list_t osip_ist_transactions;  /**< list of ist transactions */
+  osip_list_t osip_nict_transactions; /**< list of nict transactions */
+  osip_list_t osip_nist_transactions; /**< list of nist transactions */
 
-  osip_list_t ixt_retransmissions;            /**< list of ixt elements */
+  osip_list_t ixt_retransmissions; /**< list of ixt elements */
 
-  osip_message_cb_t msg_callbacks[OSIP_MESSAGE_CALLBACK_COUNT];                /**< message callbacks */
-  osip_kill_transaction_cb_t kill_callbacks[OSIP_KILL_CALLBACK_COUNT];         /**< kill callbacks */
-  osip_transport_error_cb_t tp_error_callbacks[OSIP_TRANSPORT_ERROR_CALLBACK_COUNT];     /**< transport error callback */
+  osip_message_cb_t msg_callbacks[OSIP_MESSAGE_CALLBACK_COUNT];                      /**< message callbacks */
+  osip_kill_transaction_cb_t kill_callbacks[OSIP_KILL_CALLBACK_COUNT];               /**< kill callbacks */
+  osip_transport_error_cb_t tp_error_callbacks[OSIP_TRANSPORT_ERROR_CALLBACK_COUNT]; /**< transport error callback */
 
-  int (*cb_send_message)(osip_transaction_t *, osip_message_t *, char *, int, int);      /**< callback to send message */
+  int (*cb_send_message)(osip_transaction_t *, osip_message_t *, char *, int, int); /**< callback to send message */
 
-  void *osip_ict_hastable;                              /**< htable of ict transactions */
-  void *osip_ist_hastable;                              /**< htable of ist transactions */
-  void *osip_nict_hastable;                             /**< htable of nict transactions */
-  void *osip_nist_hastable;                             /**< htable of nist transactions */
-
+  void *osip_ict_hastable;  /**< htable of ict transactions */
+  void *osip_ist_hastable;  /**< htable of ist transactions */
+  void *osip_nict_hastable; /**< htable of nict transactions */
+  void *osip_nist_hastable; /**< htable of nist transactions */
 };
 
 /**
@@ -632,12 +622,10 @@ typedef struct osip_event osip_event_t;
  * @struct osip_event
  */
 struct osip_event {
-  type_t type;                     /**< Event Type */
-  int transactionid;               /**< identifier of the related osip transaction */
-  osip_message_t *sip;             /**< SIP message (optional) */
+  type_t type;         /**< Event Type */
+  int transactionid;   /**< identifier of the related osip transaction */
+  osip_message_t *sip; /**< SIP message (optional) */
 };
-
-
 
 /**
  * Allocate an osip_transaction_t element.
@@ -824,7 +812,6 @@ void *osip_transaction_get_reserved6(osip_transaction_t *transaction);
  */
 int osip_transaction_get_destination(osip_transaction_t *transaction, char **ip, int *port);
 
-
 /**
  * Set SRV lookup information to be used by state machine.
  *
@@ -856,8 +843,6 @@ int osip_transaction_set_in_socket(osip_transaction_t *transaction, int sock);
  */
 int osip_transaction_set_out_socket(osip_transaction_t *transaction, int sock);
 
-
-
 /**
  * Allocate an osip_t element.
  * @param osip the element to allocate.
@@ -884,14 +869,12 @@ void osip_set_application_context(osip_t *osip, void *pointer);
  */
 void *osip_get_application_context(osip_t *osip);
 
-
 /**
  * Remove a transaction from the osip stack.
  * @param osip The element to work on.
  * @param ict The transaction to add.
  */
 int osip_remove_transaction(osip_t *osip, osip_transaction_t *ict);
-
 
 /**
  * Consume ALL pending osip_event_t previously added in the fifos of ict transactions.
@@ -953,7 +936,6 @@ void osip_timers_nist_execute(osip_t *osip);
  */
 osip_transaction_t *osip_transaction_find(osip_list_t *transactions, osip_event_t *evt);
 
-
 #ifndef DOXYGEN
 /**
  * Some race conditions can happen in multi threaded applications.
@@ -990,7 +972,6 @@ osip_transaction_t *osip_create_transaction(osip_t *osip, osip_event_t *evt);
  * @param length The length of the buffer to parse.
  */
 osip_event_t *osip_parse(const char *buf, size_t length);
-
 
 /**
  * Send required retransmissions
@@ -1034,7 +1015,6 @@ struct osip_dialog *osip_stop_200ok_retransmissions(osip_t *osip, osip_message_t
  */
 void osip_stop_retransmissions_from_dialog(osip_t *osip, struct osip_dialog *dialog);
 
-
 /**
  * Allocate a sipevent (we know this message is an OUTGOING SIP message).
  * @param sip The SIP message we want to send.
@@ -1059,107 +1039,106 @@ void osip_set_cb_send_message(osip_t *cf, int (*cb)(osip_transaction_t *, osip_m
  * Check if the sipevent is of type RCV_REQINVITE.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_INVITE(event)       (event->type==RCV_REQINVITE)
+#define EVT_IS_RCV_INVITE(event) (event->type == RCV_REQINVITE)
 /**
  * Check if the sipevent is of type RCV_REQACK.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_ACK(event)          (event->type==RCV_REQACK)
+#define EVT_IS_RCV_ACK(event) (event->type == RCV_REQACK)
 /**
  * Check if the sipevent is of type RCV_REQUEST.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_REQUEST(event)      (event->type==RCV_REQUEST)
+#define EVT_IS_RCV_REQUEST(event) (event->type == RCV_REQUEST)
 /**
  * Check if the sipevent is of type RCV_STATUS_1XX.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_STATUS_1XX(event)   (event->type==RCV_STATUS_1XX)
+#define EVT_IS_RCV_STATUS_1XX(event) (event->type == RCV_STATUS_1XX)
 /**
  * Check if the sipevent is of type RCV_STATUS_2XX.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_STATUS_2XX(event)   (event->type==RCV_STATUS_2XX)
+#define EVT_IS_RCV_STATUS_2XX(event) (event->type == RCV_STATUS_2XX)
 /**
  * Check if the sipevent is of type RCV_STATUS_3456XX.
  * @param event the event to check.
  */
-#define EVT_IS_RCV_STATUS_3456XX(event)   (event->type==RCV_STATUS_3456XX)
-
+#define EVT_IS_RCV_STATUS_3456XX(event) (event->type == RCV_STATUS_3456XX)
 
 /* FOR OUTGOING TRANSACTION */
 /**
  * Check if the sipevent is of type SND_REQINVITE.
  * @param event the event to check.
  */
-#define EVT_IS_SND_INVITE(event)       (event->type==SND_REQINVITE)
+#define EVT_IS_SND_INVITE(event) (event->type == SND_REQINVITE)
 /**
  * Check if the sipevent is of type SND_REQACK.
  * @param event the event to check.
  */
-#define EVT_IS_SND_ACK(event)          (event->type==SND_REQACK)
+#define EVT_IS_SND_ACK(event) (event->type == SND_REQACK)
 /**
  * Check if the sipevent is of type SND_REQUEST.
  * @param event the event to check.
  */
-#define EVT_IS_SND_REQUEST(event)      (event->type==SND_REQUEST)
+#define EVT_IS_SND_REQUEST(event) (event->type == SND_REQUEST)
 /**
  * Check if the sipevent is of type SND_STATUS_1XX.
  * @param event the event to check.
  */
-#define EVT_IS_SND_STATUS_1XX(event)   (event->type==SND_STATUS_1XX)
+#define EVT_IS_SND_STATUS_1XX(event) (event->type == SND_STATUS_1XX)
 /**
  * Check if the sipevent is of type SND_STATUS_2XX.
  * @param event the event to check.
  */
-#define EVT_IS_SND_STATUS_2XX(event)   (event->type==SND_STATUS_2XX)
+#define EVT_IS_SND_STATUS_2XX(event) (event->type == SND_STATUS_2XX)
 /**
  * Check if the sipevent is of type SND_STATUS_3456XX.
  * @param event the event to check.
  */
-#define EVT_IS_SND_STATUS_3456XX(event)   (event->type==SND_STATUS_3456XX)
+#define EVT_IS_SND_STATUS_3456XX(event) (event->type == SND_STATUS_3456XX)
 /**
  * Check if the sipevent is of an incoming SIP MESSAGE.
  * @param event the event to check.
  */
-#define EVT_IS_INCOMINGMSG(event)   (event->type>=RCV_REQINVITE && event->type<=RCV_STATUS_3456XX)
+#define EVT_IS_INCOMINGMSG(event) (event->type >= RCV_REQINVITE && event->type <= RCV_STATUS_3456XX)
 /**
  * Check if the sipevent is of an incoming SIP REQUEST.
  * @param event the event to check.
  */
-#define EVT_IS_INCOMINGREQ(event)   (EVT_IS_RCV_INVITE(event) || EVT_IS_RCV_ACK(event) || EVT_IS_RCV_REQUEST(event))
+#define EVT_IS_INCOMINGREQ(event) (EVT_IS_RCV_INVITE(event) || EVT_IS_RCV_ACK(event) || EVT_IS_RCV_REQUEST(event))
 /**
  * Check if the sipevent is of an incoming SIP RESPONSE.
  * @param event the event to check.
  */
-#define EVT_IS_INCOMINGRESP(event)  (EVT_IS_RCV_STATUS_1XX(event) || EVT_IS_RCV_STATUS_2XX(event) || EVT_IS_RCV_STATUS_3456XX(event))
+#define EVT_IS_INCOMINGRESP(event) (EVT_IS_RCV_STATUS_1XX(event) || EVT_IS_RCV_STATUS_2XX(event) || EVT_IS_RCV_STATUS_3456XX(event))
 /**
  * Check if the sipevent is of an outgoing SIP MESSAGE.
  * @param event the event to check.
  */
-#define EVT_IS_OUTGOINGMSG(event)   (event->type>=SND_REQINVITE && event->type<=SND_STATUS_3456XX)
+#define EVT_IS_OUTGOINGMSG(event) (event->type >= SND_REQINVITE && event->type <= SND_STATUS_3456XX)
 /**
  * Check if the sipevent is of an outgoing SIP REQUEST.
  * @param event the event to check.
  */
-#define EVT_IS_OUTGOINGREQ(event)   (EVT_IS_SND_INVITE(event) || EVT_IS_SND_ACK(event) || EVT_IS_SND_REQUEST(event))
+#define EVT_IS_OUTGOINGREQ(event) (EVT_IS_SND_INVITE(event) || EVT_IS_SND_ACK(event) || EVT_IS_SND_REQUEST(event))
 /**
  * Check if the sipevent is of an outgoing SIP RESPONSE.
  * @param event the event to check.
  */
-#define EVT_IS_OUTGOINGRESP(event)  (EVT_IS_SND_STATUS_1XX(event) || EVT_IS_SND_STATUS_2XX(event) || EVT_IS_SND_STATUS_3456XX(event))
+#define EVT_IS_OUTGOINGRESP(event) (EVT_IS_SND_STATUS_1XX(event) || EVT_IS_SND_STATUS_2XX(event) || EVT_IS_SND_STATUS_3456XX(event))
 
 /**
  * Check if the sipevent is a SIP MESSAGE.
  * @param event the event to check.
  */
-#define EVT_IS_MSG(event)           (event->type>=RCV_REQINVITE && event->type<=SND_STATUS_3456XX)
+#define EVT_IS_MSG(event) (event->type >= RCV_REQINVITE && event->type <= SND_STATUS_3456XX)
 /**
  * Check if the sipevent is of type KILL_TRANSACTION.
  * NOTE: THIS IS AN INTERNAL METHOD ONLY
  * @param event the event to check.
  */
-#define EVT_IS_KILL_TRANSACTION(event) (event->type==KILL_TRANSACTION)
+#define EVT_IS_KILL_TRANSACTION(event) (event->type == KILL_TRANSACTION)
 
 #ifdef __cplusplus
 }

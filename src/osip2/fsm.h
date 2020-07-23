@@ -41,7 +41,6 @@ struct osip_statemachine {
  */
 osip_event_t *__osip_event_new(type_t type, int transactionid);
 
-
 /* This is for internal use only.                      */
 type_t evt_set_type_incoming_sipmessage(osip_message_t *sip);
 type_t evt_set_type_outgoing_sipmessage(osip_message_t *sip);
@@ -57,7 +56,6 @@ struct _transition_t {
 };
 
 int fsm_callmethod(type_t type, state_t state, osip_statemachine_t *statemachine, void *sipevent, void *transaction);
-
 
 /*!! THESE ARE FOR INTERNAL USE ONLY!! */
 /* These methods are the "exection method" for the finite */
@@ -115,7 +113,6 @@ void osip_nist_timeout_j_event(osip_transaction_t *nist, osip_event_t *evt);
 /************************/
 /* Internal Methods     */
 /************************/
-
 
 void __osip_message_callback(int type, osip_transaction_t *, osip_message_t *);
 void __osip_kill_transaction_callback(int type, osip_transaction_t *);

@@ -17,10 +17,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_AUTHENTICATION_INFO_H_
 #define _OSIP_AUTHENTICATION_INFO_H_
-
 
 /**
  * @file osip_authentication_info.h
@@ -44,23 +42,21 @@ typedef struct osip_authentication_info osip_authentication_info_t;
  * @struct osip_authentication_info
  */
 struct osip_authentication_info {
-  char *auth_type;  /**< Authentication Type (Basic or Digest) */
-  char *nextnonce;    /**< nextnonce value */
-  char *qop_options;  /**< qop options value */
-  char *rspauth;      /**< rspauth value */
-  char *cnonce;       /**< cnonce value */
-  char *nonce_count;  /**< noncecount value */
-  char *snum;         /**< snum value */
-  char *srand;        /**< srand value */
-  char *realm;        /**< realm value */
-  char *targetname;   /**< targetname value */
-  char *opaque;       /**< opaque value */
+  char *auth_type;   /**< Authentication Type (Basic or Digest) */
+  char *nextnonce;   /**< nextnonce value */
+  char *qop_options; /**< qop options value */
+  char *rspauth;     /**< rspauth value */
+  char *cnonce;      /**< cnonce value */
+  char *nonce_count; /**< noncecount value */
+  char *snum;        /**< snum value */
+  char *srand;       /**< srand value */
+  char *realm;       /**< realm value */
+  char *targetname;  /**< targetname value */
+  char *opaque;      /**< opaque value */
 };
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -90,9 +86,7 @@ void osip_authentication_info_free(osip_authentication_info_t *header);
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-int osip_authentication_info_clone(const osip_authentication_info_t *header,
-                                   osip_authentication_info_t **dest);
-
+int osip_authentication_info_clone(const osip_authentication_info_t *header, osip_authentication_info_t **dest);
 
 /**
  * Get value of the auth_type parameter from a Authenication-Info element.
@@ -137,8 +131,7 @@ char *osip_authentication_info_get_qop_options(osip_authentication_info_t *heade
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-void osip_authentication_info_set_qop_options(osip_authentication_info_t *header,
-    char *value);
+void osip_authentication_info_set_qop_options(osip_authentication_info_t *header, char *value);
 /**
  * Get value of the rspauth parameter from a Authenication-Info element.
  * @param header The element to work on.

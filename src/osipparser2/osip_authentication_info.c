@@ -27,8 +27,7 @@
 #ifndef MINISIZE
 
 int osip_authentication_info_init(osip_authentication_info_t **dest) {
-  *dest = (osip_authentication_info_t *)
-          osip_malloc(sizeof(osip_authentication_info_t));
+  *dest = (osip_authentication_info_t *) osip_malloc(sizeof(osip_authentication_info_t));
 
   if (*dest == NULL)
     return OSIP_NOMEM;
@@ -105,7 +104,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -117,7 +116,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -129,7 +128,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -141,7 +140,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -153,7 +152,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -165,7 +164,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -177,7 +176,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -189,7 +188,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -201,7 +200,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -213,7 +212,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -230,7 +229,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
 
       tmp = strchr(space + 1, ',');
 
-      if (tmp == NULL)          /* it was the last header */
+      if (tmp == NULL) /* it was the last header */
         return OSIP_SUCCESS;
 
       quote1 = __osip_quote_find(space);
@@ -239,15 +238,15 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
         quote2 = __osip_quote_find(quote1 + 1);
 
         if (quote2 == NULL)
-          return OSIP_SYNTAXERROR;      /* bad header format... */
+          return OSIP_SYNTAXERROR; /* bad header format... */
 
-        if (tmp < quote2)       /* the comma is inside the quotes! */
+        if (tmp < quote2) /* the comma is inside the quotes! */
           space = strchr(quote2, ',');
 
         else
           space = tmp;
 
-        if (space == NULL)      /* it was the last header */
+        if (space == NULL) /* it was the last header */
           return OSIP_SUCCESS;
 
       } else
@@ -257,7 +256,7 @@ int osip_authentication_info_parse(osip_authentication_info_t *ainfo, const char
     }
   }
 
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 /* returns the authentication_info header.            */
@@ -269,7 +268,7 @@ int osip_message_get_authentication_info(const osip_message_t *sip, int pos, osi
   *dest = NULL;
 
   if (osip_list_size(&sip->authentication_infos) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   authentication_info = (osip_authentication_info_t *) osip_list_get(&sip->authentication_infos, pos);
 
@@ -365,7 +364,6 @@ void osip_authentication_info_set_opaque(osip_authentication_info_t *authenticat
   authentication_info->opaque = (char *) opaque;
 }
 
-
 /* returns the authentication_info header as a string.          */
 /* INPUT : osip_authentication_info_t *authentication_info | authentication_info header.  */
 /* returns null on error. */
@@ -384,7 +382,7 @@ int osip_authentication_info_to_str(const osip_authentication_info_t *ainfo, cha
     len = len + strlen(ainfo->auth_type) + 1;
 
   if (ainfo->nextnonce != NULL)
-    len = len + strlen(ainfo->nextnonce) + 12;  /* fixed Jan 10,2020: missing one byte */
+    len = len + strlen(ainfo->nextnonce) + 12; /* fixed Jan 10,2020: missing one byte */
 
   if (ainfo->rspauth != NULL)
     len = len + strlen(ainfo->rspauth) + 10;
@@ -411,7 +409,7 @@ int osip_authentication_info_to_str(const osip_authentication_info_t *ainfo, cha
     len = len + strlen(ainfo->realm) + 8;
 
   if (ainfo->opaque != NULL)
-    len = len + strlen(ainfo->opaque) + 9;  /* fixed Jan 10,2020: missing one byte */
+    len = len + strlen(ainfo->opaque) + 9; /* fixed Jan 10,2020: missing one byte */
 
   if (len == 0)
     return OSIP_BADPARAMETER;
@@ -476,7 +474,6 @@ int osip_authentication_info_to_str(const osip_authentication_info_t *ainfo, cha
     tmp = osip_strn_append(tmp, "nc=", 3);
     tmp = osip_str_append(tmp, ainfo->nonce_count);
   }
-
 
   if (ainfo->snum != NULL) {
     if (tmp != start) {
@@ -557,7 +554,7 @@ int osip_authentication_info_clone(const osip_authentication_info_t *ainfo, osip
 
   i = osip_authentication_info_init(&wa);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   if (ainfo->auth_type != NULL)

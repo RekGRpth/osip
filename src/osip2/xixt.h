@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _XIXT_H_
 #define _XIXT_H_
 
@@ -27,7 +26,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 void __osip_message_callback(int type, osip_transaction_t *, osip_message_t *);
 void __osip_kill_transaction_callback(int type, osip_transaction_t *);
@@ -47,7 +45,6 @@ int __osip_ict_init(osip_ict_t **ict, osip_t *osip, osip_message_t *invite);
  * @param ict The element to free.
  */
 int __osip_ict_free(osip_ict_t *ict);
-
 
 /**
  * Check if this transaction needs a TIMEOUT_A event
@@ -88,7 +85,6 @@ int __osip_nict_init(osip_nict_t **nict, osip_t *osip, osip_message_t *request);
  * @param nict The element to free.
  */
 int __osip_nict_free(osip_nict_t *nict);
-
 
 /**
  * Check if this transaction needs a TIMEOUT_E event
@@ -171,7 +167,6 @@ int __osip_nist_init(osip_nist_t **nist, osip_t *osip, osip_message_t *request);
  */
 int __osip_nist_free(osip_nist_t *nist);
 
-
 /**
  * Check if this transaction needs a TIMEOUT_J event
  * @param nist The element to work on.
@@ -186,8 +181,7 @@ osip_event_t *__osip_nist_need_timer_j_event(osip_nist_t *nist, state_t state, i
  * @param tr The transaction.
  * @param resp The SIP response received.
  */
-int
-__osip_transaction_matching_response_osip_to_xict_17_1_3(osip_transaction_t *tr, osip_message_t *resp);
+int __osip_transaction_matching_response_osip_to_xict_17_1_3(osip_transaction_t *tr, osip_message_t *resp);
 
 /**
  * Check if the request match a client transaction.
@@ -195,10 +189,7 @@ __osip_transaction_matching_response_osip_to_xict_17_1_3(osip_transaction_t *tr,
  * @param tr The transaction.
  * @param request The SIP request received.
  */
-int
-__osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *tr, osip_message_t *request);
-
-
+int __osip_transaction_matching_request_osip_to_xist_17_2_3(osip_transaction_t *tr, osip_message_t *request);
 
 /**
  * Lock access to the list of ict transactions.
@@ -310,7 +301,6 @@ int __osip_remove_nist_transaction(osip_t *osip, osip_transaction_t *nist);
  * @param transactionid The transaction id for this event.
  */
 osip_event_t *__osip_event_new(type_t type, int transactionid);
-
 
 /**
  * Allocate a sipevent (we know this message is an OUTGOING SIP message).

@@ -56,7 +56,7 @@ int osip_message_get_allow(const osip_message_t *sip, int pos, osip_allow_t **de
   *dest = NULL;
 
   if (osip_list_size(&sip->allows) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   allow = (osip_allow_t *) osip_list_get(&sip->allows, pos);
   *dest = allow;

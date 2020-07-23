@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CALL_INFO_H_
 #define _OSIP_CALL_INFO_H_
 
@@ -45,13 +44,12 @@ typedef struct osip_call_info osip_call_info_t;
  * @struct osip_call_info
  */
 struct osip_call_info {
-  char *element;              /**< Call-Info main value */
-  osip_list_t gen_params;     /**< Parameters for Call-Info header */
+  char *element;          /**< Call-Info main value */
+  osip_list_t gen_params; /**< Parameters for Call-Info header */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -93,7 +91,6 @@ char *osip_call_info_get_uri(osip_call_info_t *header);
  * @param uri The value of the element.
  */
 void osip_call_info_set_uri(osip_call_info_t *header, char *uri);
-
 
 #ifdef __cplusplus
 }

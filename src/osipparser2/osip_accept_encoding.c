@@ -59,7 +59,7 @@ int osip_message_get_accept_encoding(const osip_message_t *sip, int pos, osip_ac
   *dest = NULL;
 
   if (osip_list_size(&sip->accept_encodings) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   accept_encoding = (osip_accept_encoding_t *) osip_list_get(&sip->accept_encodings, pos);
   *dest = accept_encoding;
@@ -185,7 +185,7 @@ int osip_accept_encoding_clone(const osip_accept_encoding_t *ctt, osip_accept_en
 
   i = osip_accept_encoding_init(&ct);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   ct->element = osip_strdup(ctt->element);
@@ -216,7 +216,6 @@ int osip_accept_encoding_clone(const osip_accept_encoding_t *ctt, osip_accept_en
   *dest = ct;
   return OSIP_SUCCESS;
 }
-
 
 char *osip_accept_encoding_get_element(const osip_accept_encoding_t *ae) {
   return ae->element;

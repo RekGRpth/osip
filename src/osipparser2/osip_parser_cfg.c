@@ -36,11 +36,12 @@ static __osip_message_config_commaseparated_t pconfig_commasep[NUMBER_OF_HEADERS
 #ifdef __amd64__
 #define HASH_TABLE_SIZE 150
 #else
-#define HASH_TABLE_SIZE 150     /* set this to the hash table size, 150 is the
-                                   first size where no conflicts occur */
+#define HASH_TABLE_SIZE                              \
+  150 /* set this to the hash table size, 150 is the \
+         first size where no conflicts occur */
 #endif
 
-static int hdr_ref_table[HASH_TABLE_SIZE];      /* the hashtable contains indices to the pconfig table    */
+static int hdr_ref_table[HASH_TABLE_SIZE]; /* the hashtable contains indices to the pconfig table    */
 
 /*
   list of compact header:
@@ -186,7 +187,7 @@ int parser_init(void) {
   pconfig[i].hname = AUTHORIZATION;
   pconfig[i].ignored_when_invalid = 1;
   pconfig[i++].setheader = (&osip_message_set_authorization);
-  pconfig[i].hname = CONTENT_TYPE_SHORT;        /* "l" */
+  pconfig[i].hname = CONTENT_TYPE_SHORT; /* "l" */
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_content_type);
   pconfig[i].hname = CALL_ID;
@@ -215,26 +216,26 @@ int parser_init(void) {
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_cseq);
 #ifndef MINISIZE
-  pconfig[i].hname = CONTENT_ENCODING_SHORT;    /* "e" */
+  pconfig[i].hname = CONTENT_ENCODING_SHORT; /* "e" */
   pconfig[i].ignored_when_invalid = 1;
   pconfig[i++].setheader = (&osip_message_set_content_encoding);
   pconfig[i].hname = ERROR_INFO;
   pconfig[i].ignored_when_invalid = 1;
   pconfig[i++].setheader = (&osip_message_set_error_info);
 #endif
-  pconfig[i].hname = FROM_SHORT;        /* "f" */
+  pconfig[i].hname = FROM_SHORT; /* "f" */
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_from);
   pconfig[i].hname = FROM;
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_from);
-  pconfig[i].hname = CALL_ID_SHORT;     /* "i" */
+  pconfig[i].hname = CALL_ID_SHORT; /* "i" */
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_call_id);
-  pconfig[i].hname = CONTENT_LENGTH_SHORT;      /* "l" */
+  pconfig[i].hname = CONTENT_LENGTH_SHORT; /* "l" */
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_content_length);
-  pconfig[i].hname = CONTACT_SHORT;     /* "m" */
+  pconfig[i].hname = CONTACT_SHORT; /* "m" */
   pconfig[i].ignored_when_invalid = 0;
   pconfig[i++].setheader = (&osip_message_set_contact);
   pconfig[i].hname = MIME_VERSION;
@@ -252,10 +253,10 @@ int parser_init(void) {
   pconfig[i].ignored_when_invalid = 1;
   pconfig[i++].setheader = (&osip_message_set_proxy_authorization);
   pconfig[i].hname = RECORD_ROUTE;
-  pconfig[i].ignored_when_invalid = 1;  /* best effort - but should be 0 */
+  pconfig[i].ignored_when_invalid = 1; /* best effort - but should be 0 */
   pconfig[i++].setheader = (&osip_message_set_record_route);
   pconfig[i].hname = ROUTE;
-  pconfig[i].ignored_when_invalid = 1;  /* best effort - but should be 0 */
+  pconfig[i].ignored_when_invalid = 1; /* best effort - but should be 0 */
   pconfig[i++].setheader = (&osip_message_set_route);
   pconfig[i].hname = TO_SHORT;
   pconfig[i].ignored_when_invalid = 0;
@@ -277,7 +278,7 @@ int parser_init(void) {
 
   /* initialize the table */
   for (i = 0; i < HASH_TABLE_SIZE; i++) {
-    hdr_ref_table[i] = -1;      /* -1 -> no entry */
+    hdr_ref_table[i] = -1; /* -1 -> no entry */
   }
 
   for (i = 0; i < NUMBER_OF_HEADERS; i++) {

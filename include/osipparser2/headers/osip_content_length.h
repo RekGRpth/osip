@@ -17,10 +17,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CONTENT_LENGTH_H_
 #define _OSIP_CONTENT_LENGTH_H_
-
 
 /**
  * @file osip_content_length.h
@@ -44,12 +42,11 @@ typedef struct osip_content_length osip_content_length_t;
  * @struct osip_content_length
  */
 struct osip_content_length {
-  char *value;    /**< value for Content-Length (size of attachments) */
+  char *value; /**< value for Content-Length (size of attachments) */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -79,9 +76,7 @@ int osip_content_length_to_str(const osip_content_length_t *header, char **dest)
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-int osip_content_length_clone(const osip_content_length_t *header,
-                              osip_content_length_t **dest);
-
+int osip_content_length_clone(const osip_content_length_t *header, osip_content_length_t **dest);
 
 #ifdef __cplusplus
 }

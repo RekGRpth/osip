@@ -23,7 +23,6 @@
 #include <osipparser2/osip_message.h>
 #include <osipparser2/osip_parser.h>
 
-
 /* adds the mime_version header to message.       */
 /* INPUT : const char *hvalue | value of header.    */
 /* OUTPUT: osip_message_t *sip | structure to save results.  */

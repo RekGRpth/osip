@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifdef ENABLE_MPATROL
 #include <mpatrol.h>
 #endif
@@ -36,7 +35,7 @@ static void usage() {
 }
 
 static int read_binary(char **msg, int *len, FILE *torture_file) {
-  *msg = (char *) osip_malloc(100000);  /* msg are under 100000 */
+  *msg = (char *) osip_malloc(100000); /* msg are under 100000 */
 
   *len = fread(*msg, 1, 100000, torture_file);
   return ferror(torture_file) ? -1 : 0;
@@ -45,8 +44,8 @@ static int read_binary(char **msg, int *len, FILE *torture_file) {
 int main(int argc, char **argv) {
   int success = 1;
   int loop = 1;
-  int verbose = 0;              /* 1: verbose, 0 (or nothing: not verbose) */
-  int clone = 0;                /* 1: verbose, 0 (or nothing: not verbose) */
+  int verbose = 0; /* 1: verbose, 0 (or nothing: not verbose) */
+  int clone = 0;   /* 1: verbose, 0 (or nothing: not verbose) */
   FILE *torture_file;
   char *msg;
   char *ptr;

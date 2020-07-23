@@ -38,7 +38,7 @@ int __osip_ist_init(osip_ist_t **ist, osip_t *osip, osip_message_t *invite) {
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(invite, 0, &via);  /* get top via */
+    i = osip_message_get_via(invite, 0, &via); /* get top via */
 
     if (i < 0) {
       osip_free(*ist);
@@ -59,19 +59,19 @@ int __osip_ist_init(osip_ist_t **ist, osip_t *osip, osip_message_t *invite) {
       must be desactived by the external application */
       (*ist)->timer_g_length = DEFAULT_T1;
       (*ist)->timer_i_length = DEFAULT_T4;
-      (*ist)->timer_g_start.tv_sec = -1;        /* not started */
-      (*ist)->timer_i_start.tv_sec = -1;        /* not started */
+      (*ist)->timer_g_start.tv_sec = -1; /* not started */
+      (*ist)->timer_i_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
-      (*ist)->timer_g_length = -1;      /* A is not ACTIVE */
-      (*ist)->timer_i_length = 0;       /* MUST do the transition immediatly */
-      (*ist)->timer_g_start.tv_sec = -1;        /* not started */
-      (*ist)->timer_i_start.tv_sec = -1;        /* not started */
+    } else {                             /* reliable protocol is used: */
+      (*ist)->timer_g_length = -1;       /* A is not ACTIVE */
+      (*ist)->timer_i_length = 0;        /* MUST do the transition immediatly */
+      (*ist)->timer_g_start.tv_sec = -1; /* not started */
+      (*ist)->timer_i_start.tv_sec = -1; /* not started */
     }
   }
 
   (*ist)->timer_h_length = 64 * DEFAULT_T1;
-  (*ist)->timer_h_start.tv_sec = -1;    /* not started */
+  (*ist)->timer_h_start.tv_sec = -1; /* not started */
 
   return OSIP_SUCCESS;
 }

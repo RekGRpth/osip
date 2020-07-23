@@ -23,7 +23,6 @@
 #include "fsm.h"
 #include <osip2/osip_dialog.h>
 
-
 void osip_dialog_set_state(osip_dialog_t *dialog, state_t state) {
   if (dialog == NULL)
     return;
@@ -82,7 +81,7 @@ int osip_dialog_update_route_set_as_uac(osip_dialog_t *dialog, osip_message_t *r
   if (response == NULL)
     return OSIP_BADPARAMETER;
 
-  if (osip_list_eol(&response->contacts, 0)) {  /* no contact header in response? */
+  if (osip_list_eol(&response->contacts, 0)) { /* no contact header in response? */
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_WARNING, NULL, "missing a contact in response!\n"));
 
   } else {
@@ -101,11 +100,11 @@ int osip_dialog_update_route_set_as_uac(osip_dialog_t *dialog, osip_message_t *r
   }
 
   if (dialog->state == DIALOG_EARLY && osip_list_size(&dialog->route_set) > 0) {
-    osip_list_special_free(&dialog->route_set, (void (*)(void *)) &osip_record_route_free);
+    osip_list_special_free(&dialog->route_set, (void (*)(void *)) & osip_record_route_free);
     osip_list_init(&dialog->route_set);
   }
 
-  if (dialog->state == DIALOG_EARLY && osip_list_size(&dialog->route_set) == 0) {       /* update the route set */
+  if (dialog->state == DIALOG_EARLY && osip_list_size(&dialog->route_set) == 0) { /* update the route set */
     int pos = 0;
 
     while (!osip_list_eol(&response->record_routes, pos)) {
@@ -211,22 +210,20 @@ int osip_dialog_match_as_uac(osip_dialog_t *dlg, osip_message_t *answer) {
 
   i = osip_to_get_tag(answer->to, &tag_param_remote);
 
-  if (i != 0 && dlg->remote_tag != NULL)        /* no tag in response but tag in dialog */
-    return OSIP_SYNTAXERROR;    /* impossible... */
+  if (i != 0 && dlg->remote_tag != NULL) /* no tag in response but tag in dialog */
+    return OSIP_SYNTAXERROR;             /* impossible... */
 
-  if (i != 0 && dlg->remote_tag == NULL) {      /* no tag in response AND no tag in dialog */
-    if (0 == osip_from_compare((osip_from_t *) dlg->local_uri, (osip_from_t *) answer->from)
-        && 0 == osip_from_compare(dlg->remote_uri, answer->to))
+  if (i != 0 && dlg->remote_tag == NULL) { /* no tag in response AND no tag in dialog */
+    if (0 == osip_from_compare((osip_from_t *) dlg->local_uri, (osip_from_t *) answer->from) && 0 == osip_from_compare(dlg->remote_uri, answer->to))
       return OSIP_SUCCESS;
 
     return OSIP_UNDEFINED_ERROR;
   }
 
-  if (dlg->remote_tag == NULL) {        /* tag in response BUT no tag in dialog */
+  if (dlg->remote_tag == NULL) { /* tag in response BUT no tag in dialog */
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_WARNING, NULL, "Remote UA is not compliant: missing a tag in To fields!\n"));
 
-    if (0 == osip_from_compare((osip_from_t *) dlg->local_uri, (osip_from_t *) answer->from)
-        && 0 == osip_from_compare(dlg->remote_uri, answer->to))
+    if (0 == osip_from_compare((osip_from_t *) dlg->local_uri, (osip_from_t *) answer->from) && 0 == osip_from_compare(dlg->remote_uri, answer->to))
       return OSIP_SUCCESS;
 
     return OSIP_UNDEFINED_ERROR;
@@ -290,22 +287,20 @@ int osip_dialog_match_as_uas(osip_dialog_t *dlg, osip_message_t *request) {
 
   i = osip_from_get_tag(request->from, &tag_param_remote);
 
-  if (i != 0 && dlg->remote_tag != NULL)        /* no tag in request but tag in dialog */
-    return OSIP_SYNTAXERROR;    /* impossible... */
+  if (i != 0 && dlg->remote_tag != NULL) /* no tag in request but tag in dialog */
+    return OSIP_SYNTAXERROR;             /* impossible... */
 
-  if (i != 0 && dlg->remote_tag == NULL) {      /* no tag in request AND no tag in dialog */
-    if (0 == osip_from_compare((osip_from_t *) dlg->remote_uri, (osip_from_t *) request->from)
-        && 0 == osip_from_compare(dlg->local_uri, request->to))
+  if (i != 0 && dlg->remote_tag == NULL) { /* no tag in request AND no tag in dialog */
+    if (0 == osip_from_compare((osip_from_t *) dlg->remote_uri, (osip_from_t *) request->from) && 0 == osip_from_compare(dlg->local_uri, request->to))
       return OSIP_SUCCESS;
 
     return OSIP_UNDEFINED_ERROR;
   }
 
-  if (dlg->remote_tag == NULL) {        /* tag in response BUT no tag in dialog */
+  if (dlg->remote_tag == NULL) { /* tag in response BUT no tag in dialog */
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_WARNING, NULL, "Remote UA is not compliant: missing a tag in To feilds!\n"));
 
-    if (0 == osip_from_compare((osip_from_t *) dlg->remote_uri, (osip_from_t *) request->from)
-        && 0 == osip_from_compare(dlg->local_uri, request->to))
+    if (0 == osip_from_compare((osip_from_t *) dlg->remote_uri, (osip_from_t *) request->from) && 0 == osip_from_compare(dlg->local_uri, request->to))
       return OSIP_SUCCESS;
 
     return OSIP_UNDEFINED_ERROR;
@@ -345,7 +340,7 @@ static int __osip_dialog_init(osip_dialog_t **dialog, osip_message_t *invite, os
   if (MSG_IS_STATUS_2XX(response))
     (*dialog)->state = DIALOG_CONFIRMED;
 
-  else                          /* 1XX */
+  else /* 1XX */
     (*dialog)->state = DIALOG_EARLY;
 
   i = osip_call_id_to_str(response->call_id, &((*dialog)->call_id));
@@ -452,7 +447,7 @@ static int __osip_dialog_init(osip_dialog_t **dialog, osip_message_t *invite, os
     }
   }
 
-  (*dialog)->secure = -1;       /* non secure */
+  (*dialog)->secure = -1; /* non secure */
 
   return OSIP_SUCCESS;
 }
@@ -492,7 +487,7 @@ int osip_dialog_init_as_uac_with_remote_request(osip_dialog_t **dialog, osip_mes
   (*dialog)->type = CALLER;
   (*dialog)->state = DIALOG_CONFIRMED;
 
-  (*dialog)->local_cseq = local_cseq;   /* -1 osip_atoi (xxx->cseq->number); */
+  (*dialog)->local_cseq = local_cseq; /* -1 osip_atoi (xxx->cseq->number); */
   (*dialog)->remote_cseq = osip_atoi(next_request->cseq->number);
 
   return OSIP_SUCCESS;
@@ -526,7 +521,7 @@ void osip_dialog_free(osip_dialog_t *dialog) {
   osip_contact_free(dialog->remote_contact_uri);
   osip_from_free(dialog->local_uri);
   osip_to_free(dialog->remote_uri);
-  osip_list_special_free(&dialog->route_set, (void (*)(void *)) &osip_record_route_free);
+  osip_list_special_free(&dialog->route_set, (void (*)(void *)) & osip_record_route_free);
   osip_free(dialog->line_param);
   osip_free(dialog->remote_tag);
   osip_free(dialog->local_tag);

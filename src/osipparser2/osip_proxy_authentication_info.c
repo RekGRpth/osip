@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #include <osipparser2/internal.h>
 
 #include <osipparser2/osip_port.h>
@@ -55,8 +54,6 @@ int osip_message_set_proxy_authentication_info(osip_message_t *sip, const char *
   return OSIP_SUCCESS;
 }
 
-
-
 /* returns the proxy_authentication_info header.            */
 /* INPUT : osip_message_t *sip | sip message.   */
 /* returns null on error. */
@@ -66,10 +63,9 @@ int osip_message_get_proxy_authentication_info(const osip_message_t *sip, int po
   *dest = NULL;
 
   if (osip_list_size(&sip->proxy_authentication_infos) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
-  proxy_authentication_info = (osip_proxy_authentication_info_t *)
-                              osip_list_get(&sip->proxy_authentication_infos, pos);
+  proxy_authentication_info = (osip_proxy_authentication_info_t *) osip_list_get(&sip->proxy_authentication_infos, pos);
 
   *dest = proxy_authentication_info;
   return pos;

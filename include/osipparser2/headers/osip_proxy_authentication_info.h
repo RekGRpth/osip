@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_PROXY_AUTHENTICATION_INFO_H_
 #define _OSIP_PROXY_AUTHENTICATION_INFO_H_
 
@@ -41,8 +40,7 @@
 typedef osip_authentication_info_t osip_proxy_authentication_info_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -184,7 +182,6 @@ extern "C"
  * @param value The value of the new parameter.
  */
 #define osip_proxy_authentication_info_set_opaque(header, value) osip_authentication_info_set_opaque(header, value)
-
 
 #ifdef __cplusplus
 }

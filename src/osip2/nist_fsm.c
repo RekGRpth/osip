@@ -23,78 +23,13 @@
 #include "fsm.h"
 
 transition_t nist_transition[10] = {
-  {
-    NIST_PRE_TRYING,
-    RCV_REQUEST,
-    (void (*)(void *, void *)) &nist_rcv_request,
-    &nist_transition[1], NULL
-  }
-  ,
-  {
-    NIST_TRYING,
-    SND_STATUS_1XX,
-    (void (*)(void *, void *)) &nist_snd_1xx,
-    &nist_transition[2], NULL
-  }
-  ,
-  {
-    NIST_TRYING,
-    SND_STATUS_2XX,
-    (void (*)(void *, void *)) &nist_snd_23456xx,
-    &nist_transition[3], NULL
-  }
-  ,
-  {
-    NIST_TRYING,
-    SND_STATUS_3456XX,
-    (void (*)(void *, void *)) &nist_snd_23456xx,
-    &nist_transition[4], NULL
-  }
-  ,
-  {
-    NIST_PROCEEDING,
-    SND_STATUS_1XX,
-    (void (*)(void *, void *)) &nist_snd_1xx,
-    &nist_transition[5], NULL
-  }
-  ,
-  {
-    NIST_PROCEEDING,
-    SND_STATUS_2XX,
-    (void (*)(void *, void *)) &nist_snd_23456xx,
-    &nist_transition[6], NULL
-  }
-  ,
-  {
-    NIST_PROCEEDING,
-    SND_STATUS_3456XX,
-    (void (*)(void *, void *)) &nist_snd_23456xx,
-    &nist_transition[7], NULL
-  }
-  ,
-  {
-    NIST_PROCEEDING,
-    RCV_REQUEST,
-    (void (*)(void *, void *)) &nist_rcv_request,
-    &nist_transition[8], NULL
-  }
-  ,
-  {
-    NIST_COMPLETED,
-    TIMEOUT_J,
-    (void (*)(void *, void *)) &osip_nist_timeout_j_event,
-    &nist_transition[9], NULL
-  }
-  ,
-  {
-    NIST_COMPLETED,
-    RCV_REQUEST,
-    (void (*)(void *, void *)) &nist_rcv_request,
-    NULL, NULL
-  }
-};
+    {NIST_PRE_TRYING, RCV_REQUEST, (void (*)(void *, void *)) & nist_rcv_request, &nist_transition[1], NULL},       {NIST_TRYING, SND_STATUS_1XX, (void (*)(void *, void *)) & nist_snd_1xx, &nist_transition[2], NULL},
+    {NIST_TRYING, SND_STATUS_2XX, (void (*)(void *, void *)) & nist_snd_23456xx, &nist_transition[3], NULL},        {NIST_TRYING, SND_STATUS_3456XX, (void (*)(void *, void *)) & nist_snd_23456xx, &nist_transition[4], NULL},
+    {NIST_PROCEEDING, SND_STATUS_1XX, (void (*)(void *, void *)) & nist_snd_1xx, &nist_transition[5], NULL},        {NIST_PROCEEDING, SND_STATUS_2XX, (void (*)(void *, void *)) & nist_snd_23456xx, &nist_transition[6], NULL},
+    {NIST_PROCEEDING, SND_STATUS_3456XX, (void (*)(void *, void *)) & nist_snd_23456xx, &nist_transition[7], NULL}, {NIST_PROCEEDING, RCV_REQUEST, (void (*)(void *, void *)) & nist_rcv_request, &nist_transition[8], NULL},
+    {NIST_COMPLETED, TIMEOUT_J, (void (*)(void *, void *)) & osip_nist_timeout_j_event, &nist_transition[9], NULL}, {NIST_COMPLETED, RCV_REQUEST, (void (*)(void *, void *)) & nist_rcv_request, NULL, NULL}};
 
-osip_statemachine_t nist_fsm = { nist_transition };
+osip_statemachine_t nist_fsm = {nist_transition};
 
 static void nist_handle_transport_error(osip_transaction_t *nist, int err) {
   __osip_transport_error_callback(OSIP_NIST_TRANSPORT_ERROR, nist, err);
@@ -134,14 +69,14 @@ void nist_rcv_request(osip_transaction_t *nist, osip_event_t *evt) {
     else
       __osip_message_callback(OSIP_NIST_UNKNOWN_REQUEST_RECEIVED, nist, nist->orig_request);
 
-  } else {                      /* NIST_PROCEEDING or NIST_COMPLETED */
+  } else { /* NIST_PROCEEDING or NIST_COMPLETED */
 
     /* delete retransmission */
     osip_message_free(evt->sip);
 
     __osip_message_callback(OSIP_NIST_REQUEST_RECEIVED_AGAIN, nist, nist->orig_request);
 
-    if (nist->last_response != NULL) {  /* retransmit last response */
+    if (nist->last_response != NULL) { /* retransmit last response */
       i = __osip_transaction_snd_xxx(nist, nist->last_response);
 
       if (i != 0) {
@@ -223,14 +158,13 @@ void nist_snd_23456xx(osip_transaction_t *nist, osip_event_t *evt) {
       __osip_message_callback(OSIP_NIST_STATUS_6XX_SENT, nist, nist->last_response);
   }
 
-  if (nist->state != NIST_COMPLETED) {  /* start J timer */
+  if (nist->state != NIST_COMPLETED) { /* start J timer */
     osip_gettimeofday(&nist->nist_context->timer_j_start, NULL);
     add_gettimeofday(&nist->nist_context->timer_j_start, nist->nist_context->timer_j_length);
   }
 
   __osip_transaction_set_state(nist, NIST_COMPLETED);
 }
-
 
 void osip_nist_timeout_j_event(osip_transaction_t *nist, osip_event_t *evt) {
   nist->nist_context->timer_j_length = -1;

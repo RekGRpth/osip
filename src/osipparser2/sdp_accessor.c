@@ -236,7 +236,7 @@ sdp_connection_t *sdp_message_connection_get(sdp_message_t *sdp, int pos_media, 
   if (sdp == NULL)
     return NULL;
 
-  if (pos_media == -1)          /* pos is useless in this case: 1 global "c=" is allowed */
+  if (pos_media == -1) /* pos is useless in this case: 1 global "c=" is allowed */
     return sdp->c_connection;
 
   med = (sdp_media_t *) osip_list_get(&sdp->m_medias, pos_media);
@@ -638,7 +638,6 @@ int sdp_message_a_attribute_del_at_index(sdp_message_t *sdp, int pos_media, char
   return OSIP_BADPARAMETER;
 }
 
-
 sdp_attribute_t *sdp_message_attribute_get(sdp_message_t *sdp, int pos_media, int pos) {
   sdp_media_t *med;
 
@@ -682,9 +681,9 @@ int sdp_message_endof_media(sdp_message_t *sdp, int i) {
     return OSIP_SUCCESS;
 
   if (!osip_list_eol(&sdp->m_medias, i))
-    return OSIP_SUCCESS;        /* not end of list */
+    return OSIP_SUCCESS; /* not end of list */
 
-  return OSIP_UNDEFINED_ERROR;  /* end of list */
+  return OSIP_UNDEFINED_ERROR; /* end of list */
 }
 
 int sdp_message_m_media_add(sdp_message_t *sdp, char *media, char *port, char *number_of_port, char *proto) {

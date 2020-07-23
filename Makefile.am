@@ -21,10 +21,10 @@ doxygen:
 	doxygen $(top_srcdir)/help/doxygen/DoxyFile
 
 indent:
-	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/include/*/*.h
-	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/include/*/*/*.h
-	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/src/*/*.h
-	@type astyle --version >/dev/null 2>&1 || astyle --project=.astylerc $(top_srcdir)/src/*/*.c
+	@type clang-format --version >/dev/null 2>&1 || clang-format -i $(top_srcdir)/include/*/*.h
+	@type clang-format --version >/dev/null 2>&1 || clang-format -i $(top_srcdir)/include/*/*/*.h
+	@type clang-format --version >/dev/null 2>&1 || clang-format -i $(top_srcdir)/src/*/*.h
+	@type clang-format --version >/dev/null 2>&1 || clang-format -i $(top_srcdir)/src/*/*.c
 	rm -rf $(top_srcdir)/*/*/*.h~
 	rm -rf $(top_srcdir)/*/*/*/*.h~
 	rm -rf $(top_srcdir)/*/*/*.c~

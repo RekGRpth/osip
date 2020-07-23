@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifdef ENABLE_MPATROL
 #include <mpatrol.h>
 #endif
@@ -26,10 +25,8 @@
 #include <osipparser2/osip_port.h>
 #include <osipparser2/osip_message.h>
 
-
 int main(int argc, char **argv) {
   FILE *contacts_file;
-
 
   osip_contact_t *contact;
   char *a_contact;
@@ -44,10 +41,9 @@ int main(int argc, char **argv) {
   }
 
   a_contact = (char *) osip_malloc(500);
-  res = fgets(a_contact, 500, contacts_file);   /* lines are under 200 */
+  res = fgets(a_contact, 500, contacts_file); /* lines are under 200 */
 
   while (res != NULL) {
-
     int errcode;
 
     /* remove the last '\n' before parsing */
@@ -91,7 +87,7 @@ int main(int argc, char **argv) {
       printf("=================================================\n");
     }
 
-    res = fgets(a_contact, 500, contacts_file);         /* lines are under 200 */
+    res = fgets(a_contact, 500, contacts_file); /* lines are under 200 */
   }
 
   osip_free(a_contact);

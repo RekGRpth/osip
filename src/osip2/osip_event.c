@@ -64,7 +64,6 @@ osip_event_t *osip_parse(const char *buf, size_t length) {
   }
 }
 
-
 /* allocates an event from retransmitter.             */
 /* USED ONLY BY THE STACK.                            */
 /* INPUT : int transactionid | id of the transaction. */
@@ -135,7 +134,6 @@ type_t evt_set_type_incoming_sipmessage(osip_message_t *sip) {
 }
 
 type_t evt_set_type_outgoing_sipmessage(osip_message_t *sip) {
-
   if (MSG_IS_REQUEST(sip)) {
     if (MSG_IS_INVITE(sip))
       return SND_REQINVITE;

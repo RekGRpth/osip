@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CONTENT_DISPOSITION_H_
 #define _OSIP_CONTENT_DISPOSITION_H_
 
@@ -41,39 +40,37 @@
 typedef osip_call_info_t osip_content_disposition_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate a Content-Disposition element.
  * @param header The element to work on.
  */
-#define osip_content_disposition_init(header)      osip_call_info_init(header)
+#define osip_content_disposition_init(header) osip_call_info_init(header)
 /**
  * Free a Content-Disposition element.
  * @param header The element to work on.
  */
-#define osip_content_disposition_free(header)      osip_call_info_free(header)
+#define osip_content_disposition_free(header) osip_call_info_free(header)
 /**
  * Parse a Content-Disposition element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-int osip_content_disposition_parse(osip_content_disposition_t *header,
-                                   const char *hvalue);
+int osip_content_disposition_parse(osip_content_disposition_t *header, const char *hvalue);
 /**
  * Get a string representation of a Content-Disposition element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define osip_content_disposition_to_str(header,dest)   osip_call_info_to_str(header,dest)
+#define osip_content_disposition_to_str(header, dest) osip_call_info_to_str(header, dest)
 /**
  * Clone a Content-Disposition element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_content_disposition_clone  osip_call_info_clone
+#define osip_content_disposition_clone osip_call_info_clone
 
 /* type is of: "render" | "session" | "icon" | "alert" */
 /**
@@ -86,8 +83,7 @@ int osip_content_disposition_parse(osip_content_disposition_t *header,
  * Get the type from a Content-Disposition header.
  * @param header The element to work on.
  */
-#define osip_content_disposition_get_type(header)    osip_call_info_get_uri(header)
-
+#define osip_content_disposition_get_type(header) osip_call_info_get_uri(header)
 
 #ifdef __cplusplus
 }

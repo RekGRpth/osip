@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifdef ENABLE_MPATROL
 #include <mpatrol.h>
 #endif
@@ -26,10 +25,8 @@
 #include <osipparser2/osip_port.h>
 #include <osipparser2/osip_message.h>
 
-
 int main(int argc, char **argv) {
   FILE *content_types_file;
-
 
   osip_content_type_t *content_type;
   char *a_content_type;
@@ -44,10 +41,9 @@ int main(int argc, char **argv) {
   }
 
   a_content_type = (char *) osip_malloc(200);
-  res = fgets(a_content_type, 200, content_types_file);         /* lines are under 200 */
+  res = fgets(a_content_type, 200, content_types_file); /* lines are under 200 */
 
   while (res != NULL) {
-
     int errcode;
 
     /* remove the last '\n' before parsing */
@@ -73,7 +69,7 @@ int main(int argc, char **argv) {
       printf("=================================================\n");
     }
 
-    res = fgets(a_content_type, 200, content_types_file);       /* lines are under 200 */
+    res = fgets(a_content_type, 200, content_types_file); /* lines are under 200 */
   }
 
   osip_free(a_content_type);

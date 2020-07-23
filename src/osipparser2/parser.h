@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _MSG_H_
 #define _MSG_H_
 
@@ -54,7 +53,6 @@ int __osip_find_next_crlfcrlf(const char *start_of_part, const char **end_of_par
 
 int __osip_quoted_string_set(const char *name, const char *str, char **result, const char **next);
 int __osip_token_set(const char *name, const char *str, char **result, const char **next);
-
 
 int __osip_generic_param_parseall(osip_list_t *gen_params, const char *params);
 #endif

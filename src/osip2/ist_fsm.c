@@ -22,86 +22,19 @@
 
 #include "fsm.h"
 
-transition_t ist_transition[11] = {
-  {
-    IST_PRE_PROCEEDING,
-    RCV_REQINVITE,
-    (void (*)(void *, void *)) &ist_rcv_invite,
-    &ist_transition[1], NULL
-  }
-  ,
-  {
-    IST_PROCEEDING,
-    RCV_REQINVITE,
-    (void (*)(void *, void *)) &ist_rcv_invite,
-    &ist_transition[2], NULL
-  }
-  ,
-  {
-    IST_COMPLETED,
-    RCV_REQINVITE,
-    (void (*)(void *, void *)) &ist_rcv_invite,
-    &ist_transition[3], NULL
-  }
-  ,
-  {
-    IST_COMPLETED,
-    TIMEOUT_G,
-    (void (*)(void *, void *)) &osip_ist_timeout_g_event,
-    &ist_transition[4], NULL
-  }
-  ,
-  {
-    IST_COMPLETED,
-    TIMEOUT_H,
-    (void (*)(void *, void *)) &osip_ist_timeout_h_event,
-    &ist_transition[5], NULL
-  }
-  ,
-  {
-    IST_PROCEEDING,
-    SND_STATUS_1XX,
-    (void (*)(void *, void *)) &ist_snd_1xx,
-    &ist_transition[6], NULL
-  }
-  ,
-  {
-    IST_PROCEEDING,
-    SND_STATUS_2XX,
-    (void (*)(void *, void *)) &ist_snd_2xx,
-    &ist_transition[7], NULL
-  }
-  ,
-  {
-    IST_PROCEEDING,
-    SND_STATUS_3456XX,
-    (void (*)(void *, void *)) &ist_snd_3456xx,
-    &ist_transition[8], NULL
-  }
-  ,
-  {
-    IST_COMPLETED,
-    RCV_REQACK,
-    (void (*)(void *, void *)) &ist_rcv_ack,
-    &ist_transition[9], NULL
-  }
-  ,
-  {
-    IST_CONFIRMED,
-    RCV_REQACK,
-    (void (*)(void *, void *)) &ist_rcv_ack,
-    &ist_transition[10], NULL
-  }
-  ,
-  {
-    IST_CONFIRMED,
-    TIMEOUT_I,
-    (void (*)(void *, void *)) &osip_ist_timeout_i_event,
-    NULL, NULL
-  }
-};
+transition_t ist_transition[11] = {{IST_PRE_PROCEEDING, RCV_REQINVITE, (void (*)(void *, void *)) & ist_rcv_invite, &ist_transition[1], NULL},
+                                   {IST_PROCEEDING, RCV_REQINVITE, (void (*)(void *, void *)) & ist_rcv_invite, &ist_transition[2], NULL},
+                                   {IST_COMPLETED, RCV_REQINVITE, (void (*)(void *, void *)) & ist_rcv_invite, &ist_transition[3], NULL},
+                                   {IST_COMPLETED, TIMEOUT_G, (void (*)(void *, void *)) & osip_ist_timeout_g_event, &ist_transition[4], NULL},
+                                   {IST_COMPLETED, TIMEOUT_H, (void (*)(void *, void *)) & osip_ist_timeout_h_event, &ist_transition[5], NULL},
+                                   {IST_PROCEEDING, SND_STATUS_1XX, (void (*)(void *, void *)) & ist_snd_1xx, &ist_transition[6], NULL},
+                                   {IST_PROCEEDING, SND_STATUS_2XX, (void (*)(void *, void *)) & ist_snd_2xx, &ist_transition[7], NULL},
+                                   {IST_PROCEEDING, SND_STATUS_3456XX, (void (*)(void *, void *)) & ist_snd_3456xx, &ist_transition[8], NULL},
+                                   {IST_COMPLETED, RCV_REQACK, (void (*)(void *, void *)) & ist_rcv_ack, &ist_transition[9], NULL},
+                                   {IST_CONFIRMED, RCV_REQACK, (void (*)(void *, void *)) & ist_rcv_ack, &ist_transition[10], NULL},
+                                   {IST_CONFIRMED, TIMEOUT_I, (void (*)(void *, void *)) & osip_ist_timeout_i_event, NULL, NULL}};
 
-osip_statemachine_t ist_fsm = { ist_transition };
+osip_statemachine_t ist_fsm = {ist_transition};
 
 static void ist_handle_transport_error(osip_transaction_t *ist, int err) {
   __osip_transport_error_callback(OSIP_IST_TRANSPORT_ERROR, ist, err);
@@ -113,20 +46,20 @@ static void ist_handle_transport_error(osip_transaction_t *ist, int err) {
 void ist_rcv_invite(osip_transaction_t *ist, osip_event_t *evt) {
   int i;
 
-  if (ist->state == IST_PRE_PROCEEDING) {       /* announce new INVITE */
+  if (ist->state == IST_PRE_PROCEEDING) { /* announce new INVITE */
     /* Here we have ist->orig_request == NULL */
     ist->orig_request = evt->sip;
 
     __osip_message_callback(OSIP_IST_INVITE_RECEIVED, ist, evt->sip);
 
-  } else {                      /* IST_PROCEEDING or IST_COMPLETED */
+  } else { /* IST_PROCEEDING or IST_COMPLETED */
 
     /* delete retransmission */
     osip_message_free(evt->sip);
 
     __osip_message_callback(OSIP_IST_INVITE_RECEIVED_AGAIN, ist, ist->orig_request);
 
-    if (ist->last_response != NULL) {   /* retransmit last response */
+    if (ist->last_response != NULL) { /* retransmit last response */
       i = __osip_transaction_snd_xxx(ist, ist->last_response);
 
       if (i != 0) {
@@ -285,7 +218,7 @@ void ist_rcv_ack(osip_transaction_t *ist, osip_event_t *evt) {
   if (ist->state == IST_COMPLETED)
     __osip_message_callback(OSIP_IST_ACK_RECEIVED, ist, ist->ack);
 
-  else                          /* IST_CONFIRMED */
+  else /* IST_CONFIRMED */
     __osip_message_callback(OSIP_IST_ACK_RECEIVED_AGAIN, ist, ist->ack);
 
   /* set the timer to 0 for reliable, and T4 for unreliable (already set) */

@@ -23,7 +23,6 @@
 #include <osipparser2/osip_message.h>
 #include <osipparser2/osip_parser.h>
 
-
 /* Add a header to a SIP message.                           */
 /* INPUT :  char *hname | pointer to a header name.         */
 /* INPUT :  char *hvalue | pointer to a header value.       */
@@ -50,7 +49,7 @@ int osip_message_set_header(osip_message_t *sip, const char *hname, const char *
 
   osip_clrncpy(h->hname, hname, strlen(hname));
 
-  if (hvalue != NULL) {         /* some headers can be null ("subject:") */
+  if (hvalue != NULL) { /* some headers can be null ("subject:") */
     h->hvalue = (char *) osip_malloc(strlen(hvalue) + 1);
 
     if (h->hvalue == NULL) {
@@ -65,7 +64,7 @@ int osip_message_set_header(osip_message_t *sip, const char *hname, const char *
 
   sip->message_property = 2;
   osip_list_add(&sip->headers, h, -1);
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 /* Add a or replace exising header  to a SIP message.       */
@@ -96,7 +95,7 @@ int osip_message_replace_header(osip_message_t *sip, const char *hname, const ch
 
   osip_clrncpy(h->hname, hname, strlen(hname));
 
-  if (hvalue != NULL) {         /* some headers can be null ("subject:") */
+  if (hvalue != NULL) { /* some headers can be null ("subject:") */
     h->hvalue = (char *) osip_malloc(strlen(hvalue) + 1);
 
     if (h->hvalue == NULL) {
@@ -116,9 +115,8 @@ int osip_message_replace_header(osip_message_t *sip, const char *hname, const ch
 
   sip->message_property = 2;
   osip_list_add(&sip->headers, h, -1);
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
-
 
 #ifndef MINISIZE
 /* Add a header to a SIP message at the top of the list.    */
@@ -147,7 +145,7 @@ int osip_message_set_topheader(osip_message_t *sip, const char *hname, const cha
 
   osip_clrncpy(h->hname, hname, strlen(hname));
 
-  if (hvalue != NULL) {         /* some headers can be null ("subject:") */
+  if (hvalue != NULL) { /* some headers can be null ("subject:") */
     h->hvalue = (char *) osip_malloc(strlen(hvalue) + 1);
 
     if (h->hvalue == NULL) {
@@ -162,7 +160,7 @@ int osip_message_set_topheader(osip_message_t *sip, const char *hname, const cha
 
   sip->message_property = 2;
   osip_list_add(&sip->headers, h, 0);
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 /* Get a header in a SIP message.                       */
@@ -173,7 +171,7 @@ int osip_message_get_header(const osip_message_t *sip, int pos, osip_header_t **
   *dest = NULL;
 
   if (osip_list_size(&sip->headers) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* NULL */
+    return OSIP_UNDEFINED_ERROR; /* NULL */
 
   *dest = (osip_header_t *) osip_list_get(&sip->headers, pos);
   return pos;
@@ -193,7 +191,7 @@ int osip_message_header_get_byname(const osip_message_t *sip, const char *hname,
   i = pos;
 
   if (osip_list_size(&sip->headers) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* NULL */
+    return OSIP_UNDEFINED_ERROR; /* NULL */
 
   while (osip_list_size(&sip->headers) > i) {
     tmp = (osip_header_t *) osip_list_get(&sip->headers, i);
@@ -206,7 +204,7 @@ int osip_message_header_get_byname(const osip_message_t *sip, const char *hname,
     i++;
   }
 
-  return OSIP_UNDEFINED_ERROR;  /* not found */
+  return OSIP_UNDEFINED_ERROR; /* not found */
 }
 
 int osip_header_init(osip_header_t **header) {

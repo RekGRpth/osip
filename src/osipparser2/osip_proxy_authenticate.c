@@ -51,7 +51,6 @@ int osip_message_set_proxy_authenticate(osip_message_t *sip, const char *hvalue)
   return OSIP_SUCCESS;
 }
 
-
 #ifndef MINISIZE
 /* returns the proxy_authenticate header.            */
 /* INPUT : osip_message_t *sip | sip message.   */
@@ -62,10 +61,9 @@ int osip_message_get_proxy_authenticate(const osip_message_t *sip, int pos, osip
   *dest = NULL;
 
   if (osip_list_size(&sip->proxy_authenticates) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
-  proxy_authenticate = (osip_proxy_authenticate_t *)
-                       osip_list_get(&sip->proxy_authenticates, pos);
+  proxy_authenticate = (osip_proxy_authenticate_t *) osip_list_get(&sip->proxy_authenticates, pos);
 
   *dest = proxy_authenticate;
   return pos;

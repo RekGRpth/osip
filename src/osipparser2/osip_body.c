@@ -82,7 +82,6 @@ int osip_body_clone(const osip_body_t *body, osip_body_t **dest) {
   if (i != 0)
     return i;
 
-
   copy->body = (char *) osip_malloc(body->length + 2);
 
   if (copy->body == NULL) {
@@ -103,7 +102,7 @@ int osip_body_clone(const osip_body_t *body, osip_body_t **dest) {
     }
   }
 
-  i = osip_list_clone(body->headers, copy->headers, (int (*)(void *, void **)) &osip_header_clone);
+  i = osip_list_clone(body->headers, copy->headers, (int (*)(void *, void **)) & osip_header_clone);
 
   if (i != 0) {
     osip_body_free(copy);
@@ -126,7 +125,7 @@ int osip_message_get_body(const osip_message_t *sip, int pos, osip_body_t **dest
   *dest = NULL;
 
   if (osip_list_size(&sip->bodies) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   body = (osip_body_t *) osip_list_get(&sip->bodies, pos);
   *dest = body;
@@ -239,13 +238,13 @@ static int osip_body_parse_header(osip_body_t *body, const char *start_of_osip_b
 
     if (i == -2) {
     } else if (i != 0)
-      return i;                 /* error case: no end of body found */
+      return i; /* error case: no end of body found */
 
     /* find the header name */
     colon_index = strchr(start_of_line, ':');
 
     if (colon_index == NULL)
-      return OSIP_SYNTAXERROR;  /* this is also an error case */
+      return OSIP_SYNTAXERROR; /* this is also an error case */
 
     if (colon_index - start_of_line + 1 < 2)
       return OSIP_SYNTAXERROR;
@@ -342,12 +341,11 @@ int osip_body_parse_mime(osip_body_t *body, const char *start_of_body, size_t le
     start_of_osip_body_header = start_of_osip_body_header + 2;
 
   else {
-    if ((strncmp(start_of_osip_body_header, "\n", 1) == 0)
-        || (strncmp(start_of_osip_body_header, "\r", 1) == 0))
+    if ((strncmp(start_of_osip_body_header, "\n", 1) == 0) || (strncmp(start_of_osip_body_header, "\r", 1) == 0))
       start_of_osip_body_header = start_of_osip_body_header + 1;
 
     else
-      return OSIP_SYNTAXERROR;  /* message does not end with CRLFCRLF, CRCR or LFLF */
+      return OSIP_SYNTAXERROR; /* message does not end with CRLFCRLF, CRCR or LFLF */
   }
 
   end_of_osip_body_header = start_of_body + length;
@@ -366,7 +364,6 @@ int osip_body_parse_mime(osip_body_t *body, const char *start_of_body, size_t le
   body->body[body->length] = '\0';
 
   return OSIP_SUCCESS;
-
 }
 
 /* returns the body as a string.          */
@@ -403,7 +400,7 @@ int osip_body_to_str(const osip_body_t *body, char **dest, size_t *str_length) {
   if (tmp_body == NULL)
     return OSIP_NOMEM;
 
-  ptr = tmp_body;               /* save the initial address of the string */
+  ptr = tmp_body; /* save the initial address of the string */
 
   if (body->content_type != NULL) {
     tmp_body = osip_strn_append(tmp_body, "content-type: ", 14);
@@ -461,7 +458,7 @@ int osip_body_to_str(const osip_body_t *body, char **dest, size_t *str_length) {
       size_t len;
 
       len = tmp_body - ptr;
-      length = length + 3 + body->length;       /* add body->length, to avoid calling realloc often */
+      length = length + 3 + body->length; /* add body->length, to avoid calling realloc often */
       ptr = osip_realloc(ptr, length);
       tmp_body = ptr + len;
     }
@@ -487,7 +484,6 @@ int osip_body_to_str(const osip_body_t *body, char **dest, size_t *str_length) {
 
   *dest = ptr;
   return OSIP_SUCCESS;
-
 }
 
 /* deallocates a body structure.  */
@@ -502,7 +498,7 @@ void osip_body_free(osip_body_t *body) {
     osip_content_type_free(body->content_type);
   }
 
-  osip_list_special_free(body->headers, (void (*)(void *)) &osip_header_free);
+  osip_list_special_free(body->headers, (void (*)(void *)) & osip_header_free);
   osip_free(body->headers);
   osip_free(body);
 }

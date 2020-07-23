@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_MIME_VERSION_H_
 #define _OSIP_MIME_VERSION_H_
 
@@ -42,40 +41,37 @@
 typedef osip_content_length_t osip_mime_version_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate a Mime-Version element.
  * @param header The element to work on.
  */
-#define osip_mime_version_init(header)      osip_content_length_init(header)
+#define osip_mime_version_init(header) osip_content_length_init(header)
 /**
  * Parse a Mime-Version element.
  * @param header The element to work on.
  * @param hvalue The string to parse.
  */
-#define osip_mime_version_parse(header, hvalue)  osip_content_length_parse(header, hvalue)
+#define osip_mime_version_parse(header, hvalue) osip_content_length_parse(header, hvalue)
 /**
  * Get a string representation of a Mime-Version element.
  * @param header The element to work on.
  * @param dest A pointer on the new allocated string.
  */
-#define osip_mime_version_to_str(header, dest)  osip_content_length_to_str(header, dest)
+#define osip_mime_version_to_str(header, dest) osip_content_length_to_str(header, dest)
 /**
  * Free a Mime-Version element.
  * @param header The element to work on.
  */
-#define osip_mime_version_free(header)      osip_content_length_free(header)
+#define osip_mime_version_free(header) osip_content_length_free(header)
 /**
  * Clone a Mime-Version element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_mime_version_clone  osip_content_length_clone
-
-
+#define osip_mime_version_clone osip_content_length_clone
 
 #ifdef __cplusplus
 }

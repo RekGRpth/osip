@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CONTACT_H_
 #define _OSIP_CONTACT_H_
 
@@ -41,8 +40,7 @@
 typedef osip_from_t osip_contact_t;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifndef MINISIZE
@@ -77,54 +75,53 @@ int osip_contact_to_str(const osip_contact_t *header, char **dest);
  */
 int osip_contact_clone(const osip_contact_t *header, osip_contact_t **dest);
 #else
-#define osip_contact_init  osip_from_init
-#define osip_contact_free  osip_from_free
+#define osip_contact_init osip_from_init
+#define osip_contact_free osip_from_free
 #define osip_contact_clone osip_from_clone
 #endif
 /**
  * Get the displayname from a Contact header.
  * @param header The element to work on.
  */
-#define osip_contact_get_displayname(header) osip_from_get_displayname((osip_from_t*)header)
+#define osip_contact_get_displayname(header) osip_from_get_displayname((osip_from_t *) header)
 /**
  * Set the displayname in the Contact element.
  * @param header The element to work on.
  * @param value The value of the element.
  */
-#define osip_contact_set_displayname(header,value) osip_from_set_displayname((osip_from_t*)header, value)
+#define osip_contact_set_displayname(header, value) osip_from_set_displayname((osip_from_t *) header, value)
 /**
  * Get the url from a Contact header.
  * @param header The element to work on.
  */
-#define osip_contact_get_url(header)         osip_from_get_url((osip_from_t*)header)
+#define osip_contact_get_url(header) osip_from_get_url((osip_from_t *) header)
 /**
  * Set the url in the Contact element.
  * @param header The element to work on.
  * @param url The value of the element.
  */
-#define osip_contact_set_url(header,url)       osip_from_set_url((osip_from_t*)header,url)
+#define osip_contact_set_url(header, url) osip_from_set_url((osip_from_t *) header, url)
 /**
  * Get a header parameter from a Contact element.
  * @param header The element to work on.
  * @param pos The index of the element to get.
  * @param dest A pointer on the element found.
  */
-#define osip_contact_param_get(header,pos,dest) osip_from_param_get((osip_from_t*)header,pos,dest)
+#define osip_contact_param_get(header, pos, dest) osip_from_param_get((osip_from_t *) header, pos, dest)
 /**
  * Allocate and add a generic parameter element in a list.
  * @param header The element to work on.
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_contact_param_add(header,name, value) osip_generic_param_add((&(header)->gen_params), name,value)
+#define osip_contact_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in a Contact element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_contact_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
-
+#define osip_contact_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

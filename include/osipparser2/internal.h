@@ -20,7 +20,7 @@
 #ifndef _INTERNALOSIPPARSER_H_
 #define _INTERNALOSIPPARSER_H_
 
-#if defined (HAVE_CONFIG_H)
+#if defined(HAVE_CONFIG_H)
 #include <osip-config.h>
 #endif
 
@@ -80,9 +80,9 @@
 
 #endif
 
-#if defined (HAVE_STRING_H)
+#if defined(HAVE_STRING_H)
 #include <string.h>
-#elif defined (HAVE_STRINGS_H)
+#elif defined(HAVE_STRINGS_H)
 #include <strings.h>
 #else
 #include <string.h>
@@ -91,7 +91,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined (HAVE_SYS_TYPES_H)
+#if defined(HAVE_SYS_TYPES_H)
 #include <sys/types.h>
 #endif
 
@@ -99,7 +99,7 @@
 #include <time.h>
 #endif
 
-#if defined (HAVE_SYS_TIME_H)
+#if defined(HAVE_SYS_TIME_H)
 #include <sys/time.h>
 #endif
 
@@ -110,14 +110,12 @@
 #endif
 
 #ifdef __PSOS__
-#define VA_START(a, f)  va_start(a, f)
+#define VA_START(a, f) va_start(a, f)
 #include "pna.h"
 #include "stdlib.h"
 #include "time.h"
-#define timercmp(tvp, uvp, cmp) \
-((tvp)->tv_sec cmp (uvp)->tv_sec || \
-(tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp (uvp)->tv_usec)
-#define snprintf  osip_snprintf
+#define timercmp(tvp, uvp, cmp) ((tvp)->tv_sec cmp(uvp)->tv_sec || (tvp)->tv_sec == (uvp)->tv_sec && (tvp)->tv_usec cmp(uvp)->tv_usec)
+#define snprintf osip_snprintf
 #ifndef INT_MAX
 #define INT_MAX 0x7FFFFFFF
 #endif

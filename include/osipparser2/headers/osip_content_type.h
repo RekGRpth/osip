@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CONTENT_TYPE_H_
 #define _OSIP_CONTENT_TYPE_H_
 
@@ -45,14 +44,13 @@ typedef struct osip_content_type osip_content_type_t;
  * @struct osip_content_type
  */
 struct osip_content_type {
-  char *type;                 /**< Type of attachement */
-  char *subtype;              /**< Sub-Type of attachement */
-  osip_list_t gen_params;     /**< Content-Type parameters */
+  char *type;             /**< Type of attachement */
+  char *subtype;          /**< Sub-Type of attachement */
+  osip_list_t gen_params; /**< Content-Type parameters */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -82,8 +80,7 @@ int osip_content_type_to_str(const osip_content_type_t *header, char **dest);
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-int osip_content_type_clone(const osip_content_type_t *header,
-                            osip_content_type_t **dest);
+int osip_content_type_clone(const osip_content_type_t *header, osip_content_type_t **dest);
 
 /**
  * Allocate and add a generic parameter element in a list.
@@ -91,15 +88,14 @@ int osip_content_type_clone(const osip_content_type_t *header,
  * @param name The token name.
  * @param value The token value.
  */
-#define osip_content_type_param_add(header,name,value)  osip_generic_param_add((&(header)->gen_params),name,value)
+#define osip_content_type_param_add(header, name, value) osip_generic_param_add((&(header)->gen_params), name, value)
 /**
  * Find a header parameter in a Content-Type element.
  * @param header The element to work on.
  * @param name The token name to search.
  * @param dest A pointer on the element found.
  */
-#define osip_content_type_param_get_byname(header,name,dest) osip_generic_param_get_byname((&(header)->gen_params),name,dest)
-
+#define osip_content_type_param_get_byname(header, name, dest) osip_generic_param_get_byname((&(header)->gen_params), name, dest)
 
 #ifdef __cplusplus
 }

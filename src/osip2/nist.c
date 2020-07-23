@@ -39,7 +39,7 @@ int __osip_nist_init(osip_nist_t **nist, osip_t *osip, osip_message_t *invite) {
     osip_via_t *via;
     char *proto;
 
-    i = osip_message_get_via(invite, 0, &via);  /* get top via */
+    i = osip_message_get_via(invite, 0, &via); /* get top via */
 
     if (i < 0) {
       osip_free(*nist);
@@ -57,11 +57,11 @@ int __osip_nist_init(osip_nist_t **nist, osip_t *osip, osip_message_t *invite) {
 
     if (osip_strcasecmp(proto, "TCP") != 0 && osip_strcasecmp(proto, "TLS") != 0 && osip_strcasecmp(proto, "SCTP") != 0) {
       (*nist)->timer_j_length = 64 * DEFAULT_T1;
-      (*nist)->timer_j_start.tv_sec = -1;       /* not started */
+      (*nist)->timer_j_start.tv_sec = -1; /* not started */
 
-    } else {                    /* reliable protocol is used: */
-      (*nist)->timer_j_length = 0;      /* MUST do the transition immediatly */
-      (*nist)->timer_j_start.tv_sec = -1;       /* not started */
+    } else {                              /* reliable protocol is used: */
+      (*nist)->timer_j_length = 0;        /* MUST do the transition immediatly */
+      (*nist)->timer_j_start.tv_sec = -1; /* not started */
     }
   }
 
@@ -77,8 +77,6 @@ int __osip_nist_free(osip_nist_t *nist) {
   osip_free(nist);
   return OSIP_SUCCESS;
 }
-
-
 
 osip_event_t *__osip_nist_need_timer_j_event(osip_nist_t *nist, state_t state, int transactionid) {
   return __osip_transaction_need_timer_x_event(nist, &nist->timer_j_start, state == NIST_COMPLETED, transactionid, TIMEOUT_J);

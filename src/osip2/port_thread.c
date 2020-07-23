@@ -31,8 +31,8 @@
 #if !defined(__rtems__)
 #if (defined(WIN32) || defined(_WIN32_WCE)) && !defined(HAVE_PTHREAD_WIN32)
 #if defined _WIN32_WCE
-#define _beginthreadex  CreateThread
-#define _endthreadex  ExitThread
+#define _beginthreadex CreateThread
+#define _endthreadex ExitThread
 #elif defined WIN32
 #include <process.h>
 #endif
@@ -43,8 +43,7 @@
 #ifndef __VXWORKS_OS__
 #if defined(HAVE_PTHREAD) || defined(HAVE_PTH_PTHREAD_H) || defined(HAVE_PTHREAD_WIN32)
 
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   int i;
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
@@ -84,15 +83,13 @@ void osip_thread_exit() {
 #endif
 #endif
 
-
 #if (defined(WIN32) || defined(_WIN32_WCE)) && !defined(HAVE_PTHREAD_WIN32)
 
 #if defined(HAVE_CPP11_THREAD)
 #include <iostream>
 #include <thread>
 
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
   if (thread == NULL)
@@ -133,15 +130,14 @@ int osip_thread_set_priority(struct osip_thread *thread, int priority) {
 
 #else
 
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
   if (thread == NULL)
     return NULL;
 
-  thread->h = (HANDLE) _beginthreadex(NULL,     /* default security attr */
-                                      0,       /* use default one */
+  thread->h = (HANDLE) _beginthreadex(NULL, /* default security attr */
+                                      0,    /* use default one */
                                       (unsigned(__stdcall *)(void *)) func, arg, 0, &(thread->id));
 
   if (thread->h == 0) {
@@ -187,8 +183,7 @@ int osip_thread_set_priority(struct osip_thread *thread, int priority) {
 
 #ifndef __VXWORKS_OS__
 #ifdef __PSOS__
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
   if (thread == NULL)
@@ -236,8 +231,7 @@ void osip_thread_exit() {
 #endif
 
 #ifdef __VXWORKS_OS__
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
   if (thread == NULL)
@@ -278,8 +272,7 @@ void osip_thread_exit() {
 #endif /* #ifndef __rtems__ */
 
 #if defined(__rtems__)
-struct osip_thread *
-osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
+struct osip_thread *osip_thread_create(int stacksize, void *(*func)(void *), void *arg) {
   rtems_status_code status;
   osip_thread_t *thread = (osip_thread_t *) osip_malloc(sizeof(osip_thread_t));
 
@@ -312,7 +305,6 @@ int osip_thread_set_priority(struct osip_thread *_thread, int priority) {
   return OSIP_SUCCESS;
 }
 
-
 int osip_thread_join(struct osip_thread *_thread) {
   osip_thread_t *thread = (osip_thread_t *) _thread;
 
@@ -326,7 +318,6 @@ int osip_thread_join(struct osip_thread *_thread) {
 void osip_thread_exit() {
   rtems_task_delete(RTEMS_SELF);
 }
-
 
 #endif
 

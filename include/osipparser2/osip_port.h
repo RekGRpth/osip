@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_PORT_H_
 #define _OSIP_PORT_H_
 
@@ -40,7 +39,7 @@
 int osip_vsnprintf(char *buf, int max, const char *fmt, va_list ap);
 int osip_snprintf(char *buf, int max, const char *fmt, ...);
 
-#define snprintf  osip_snprintf
+#define snprintf osip_snprintf
 #define vsnprintf osip_vsnprintf
 #endif
 
@@ -48,11 +47,11 @@ int osip_snprintf(char *buf, int max, const char *fmt, ...);
 
 #include <osipparser2/osip_list.h>
 
-#define SIP_SYNTAX_ERROR    (-1)
-#define SIP_NETWORK_ERROR   (-2)
-#define SIP_ECONNREFUSED    (-3)
+#define SIP_SYNTAX_ERROR (-1)
+#define SIP_NETWORK_ERROR (-2)
+#define SIP_ECONNREFUSED (-3)
 #define SIP_RESSOURCE_ERROR (-4)
-#define SIP_GLOBAL_ERROR    (-5)
+#define SIP_GLOBAL_ERROR (-5)
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,9 +64,9 @@ extern "C" {
 #if !defined(WIN32) && !defined(_WIN32_WCE)
 
 #ifndef MINISIZE
-typedef void *osip_malloc_func_t (size_t size);
-typedef void osip_free_func_t (void *ptr);
-typedef void *osip_realloc_func_t (void *ptr, size_t size);
+typedef void *osip_malloc_func_t(size_t size);
+typedef void osip_free_func_t(void *ptr);
+typedef void *osip_realloc_func_t(void *ptr, size_t size);
 
 extern osip_malloc_func_t *osip_malloc_func;
 extern osip_realloc_func_t *osip_realloc_func;
@@ -83,26 +82,39 @@ void _osip_free(void *ptr);
 void *_osip_realloc(void *ptr, size_t size, char *file, unsigned short line);
 
 #ifndef osip_malloc
-#define osip_malloc(S) _osip_malloc(S,__FILE__,__LINE__)
+#define osip_malloc(S) _osip_malloc(S, __FILE__, __LINE__)
 #endif
 #ifndef osip_realloc
-#define osip_realloc(P,S) _osip_realloc(P,S,__FILE__,__LINE__)
+#define osip_realloc(P, S) _osip_realloc(P, S, __FILE__, __LINE__)
 #endif
 #ifndef osip_free
-#define osip_free(P) { if (P!=NULL) { _osip_free(P); } }
+#define osip_free(P) \
+  {                  \
+    if (P != NULL) { \
+      _osip_free(P); \
+    }                \
+  }
 #endif
 
 #else
 
 #ifndef MINISIZE
 #ifndef osip_malloc
-#define osip_malloc(S) (osip_malloc_func?osip_malloc_func(S):malloc(S))
+#define osip_malloc(S) (osip_malloc_func ? osip_malloc_func(S) : malloc(S))
 #endif
 #ifndef osip_realloc
-#define osip_realloc(P,S) (osip_realloc_func?osip_realloc_func(P,S):realloc(P,S))
+#define osip_realloc(P, S) (osip_realloc_func ? osip_realloc_func(P, S) : realloc(P, S))
 #endif
 #ifndef osip_free
-#define osip_free(P) { if (P!=NULL) { if (osip_free_func) osip_free_func(P); else free(P);} }
+#define osip_free(P)       \
+  {                        \
+    if (P != NULL) {       \
+      if (osip_free_func)  \
+        osip_free_func(P); \
+      else                 \
+        free(P);           \
+    }                      \
+  }
 #endif
 
 #else
@@ -111,10 +123,15 @@ void *_osip_realloc(void *ptr, size_t size, char *file, unsigned short line);
 #define osip_malloc(S) malloc(S)
 #endif
 #ifndef osip_realloc
-#define osip_realloc(P,S) realloc(P,S)
+#define osip_realloc(P, S) realloc(P, S)
 #endif
 #ifndef osip_free
-#define osip_free(P) { if (P!=NULL) { free(P);} }
+#define osip_free(P) \
+  {                  \
+    if (P != NULL) { \
+      free(P);       \
+    }                \
+  }
 #endif
 
 #endif
@@ -123,15 +140,20 @@ void *_osip_realloc(void *ptr, size_t size, char *file, unsigned short line);
 
 #else
 
-#if 0                           /* for windows test purpose */
+#if 0 /* for windows test purpose */
 #ifndef osip_malloc
-#define osip_malloc(S) _osip_malloc(S,__FILE__,__LINE__)
+#define osip_malloc(S) _osip_malloc(S, __FILE__, __LINE__)
 #endif
 #ifndef osip_realloc
-#define osip_realloc(P,S) _osip_realloc(P,S,__FILE__,__LINE__)
+#define osip_realloc(P, S) _osip_realloc(P, S, __FILE__, __LINE__)
 #endif
 #ifndef osip_free
-#define osip_free(P) { if (P!=NULL) { _osip_free(P); } }
+#define osip_free(P) \
+  {                  \
+    if (P != NULL) { \
+      _osip_free(P); \
+    }                \
+  }
 #endif
 
 void *_osip_malloc(size_t size, char *file, unsigned short line);
@@ -159,7 +181,7 @@ unsigned int osip_build_random_number(void);
 /* TIMER support          */
 /**************************/
 
-#define SP   " \0"
+#define SP " \0"
 
 void osip_usleep(int useconds);
 
@@ -169,9 +191,9 @@ int osip_strcasecmp(const char *s1, const char *s2);
 int osip_strncasecmp(const char *s1, const char *s2, size_t len);
 
 #else
-#define osip_atoi  atoi
-#define osip_strcasecmp  strcasecmp
-#define osip_strncasecmp  strncasecmp
+#define osip_atoi atoi
+#define osip_strcasecmp strcasecmp
+#define osip_strncasecmp strncasecmp
 #endif
 
 char *osip_strcasestr(const char *haystack, const char *needle);
@@ -200,31 +222,30 @@ char *osip_clrncpy(char *dst, const char *src, size_t len);
 /* LOG&DEBUG support      */
 /**************************/
 
-#define LOG_TRUE  1
+#define LOG_TRUE 1
 #define LOG_FALSE 0
 /* levels */
 typedef enum _trace_level {
   TRACE_LEVEL0 = 0,
-#define OSIP_FATAL    TRACE_LEVEL0
+#define OSIP_FATAL TRACE_LEVEL0
   TRACE_LEVEL1 = 1,
-#define OSIP_BUG      TRACE_LEVEL1
+#define OSIP_BUG TRACE_LEVEL1
   TRACE_LEVEL2 = 2,
-#define OSIP_ERROR    TRACE_LEVEL2
+#define OSIP_ERROR TRACE_LEVEL2
   TRACE_LEVEL3 = 3,
-#define OSIP_WARNING  TRACE_LEVEL3
+#define OSIP_WARNING TRACE_LEVEL3
   TRACE_LEVEL4 = 4,
-#define OSIP_INFO1    TRACE_LEVEL4
+#define OSIP_INFO1 TRACE_LEVEL4
   TRACE_LEVEL5 = 5,
-#define OSIP_INFO2    TRACE_LEVEL5
+#define OSIP_INFO2 TRACE_LEVEL5
   TRACE_LEVEL6 = 6,
-#define OSIP_INFO3    TRACE_LEVEL6
+#define OSIP_INFO3 TRACE_LEVEL6
   TRACE_LEVEL7 = 7,
-#define OSIP_INFO4    TRACE_LEVEL7
+#define OSIP_INFO4 TRACE_LEVEL7
   END_TRACE_LEVEL = 8
 } osip_trace_level_t;
 
-
-typedef void osip_trace_func_t (const char *fi, int li, osip_trace_level_t level, const char *chfr, va_list ap);
+typedef void osip_trace_func_t(const char *fi, int li, osip_trace_level_t level, const char *chfr, va_list ap);
 
 /* these are defined in all cases, but are empty when oSIP is compiled
    without trace */
@@ -238,17 +259,23 @@ int osip_is_trace_level_activate(osip_trace_level_t level);
 
 #ifndef ENABLE_TRACE
 
-#define TRACE_INITIALIZE(level, file)  do { } while (0)
-#define TRACE_ENABLE_LEVEL(level)      do { } while (0)
-#define TRACE_DISABLE_LEVEL(level)     do { } while (0)
+#define TRACE_INITIALIZE(level, file) \
+  do {                                \
+  } while (0)
+#define TRACE_ENABLE_LEVEL(level) \
+  do {                            \
+  } while (0)
+#define TRACE_DISABLE_LEVEL(level) \
+  do {                             \
+  } while (0)
 #define IS_TRACE_LEVEL_ACTIVATE(level) (-1)
 
 #else
 
-#define TRACE_INITIALIZE(level, file)  osip_trace_initialize(level, file)
-#define TRACE_ENABLE_LEVEL(level)      osip_trace_enable_level ( level )
-#define TRACE_DISABLE_LEVEL(level)     osip_trace_disable_level ( level )
-#define IS_TRACE_LEVEL_ACTIVATE(level) osip_is_trace_level_activate( level )
+#define TRACE_INITIALIZE(level, file) osip_trace_initialize(level, file)
+#define TRACE_ENABLE_LEVEL(level) osip_trace_enable_level(level)
+#define TRACE_DISABLE_LEVEL(level) osip_trace_disable_level(level)
+#define IS_TRACE_LEVEL_ACTIVATE(level) osip_is_trace_level_activate(level)
 
 #endif
 
@@ -262,71 +289,71 @@ int osip_trace(const char *fi, int li, osip_trace_level_t level, FILE *f, const 
 #ifdef ENABLE_TRACE
 #define OSIP_TRACE(P) P
 #else
-#define OSIP_TRACE(P) do {} while (0)
+#define OSIP_TRACE(P) \
+  do {                \
+  } while (0)
 #endif
 
-#define REMOVE_ELEMENT(first_element, element)   \
-       if (element->parent==NULL)                \
-  { first_element = element->next;         \
-          if (first_element!=NULL)               \
-          first_element->parent = NULL; }        \
-       else \
-        { element->parent->next = element->next; \
-          if (element->next!=NULL)               \
-  element->next->parent = element->parent; \
-  element->next = NULL;                    \
-  element->parent = NULL; }
+#define REMOVE_ELEMENT(first_element, element) \
+  if (element->parent == NULL) {               \
+    first_element = element->next;             \
+    if (first_element != NULL)                 \
+      first_element->parent = NULL;            \
+  } else {                                     \
+    element->parent->next = element->next;     \
+    if (element->next != NULL)                 \
+      element->next->parent = element->parent; \
+    element->next = NULL;                      \
+    element->parent = NULL;                    \
+  }
 
 #define ADD_ELEMENT(first_element, element) \
-   if (first_element==NULL)                 \
-    {                                       \
-      first_element   = element;            \
-      element->next   = NULL;               \
-      element->parent = NULL;               \
-    }                                       \
-  else                                      \
-    {                                       \
-      element->next   = first_element;      \
-      element->parent = NULL;               \
-      element->next->parent = element;      \
-      first_element = element;              \
-    }
+  if (first_element == NULL) {              \
+    first_element = element;                \
+    element->next = NULL;                   \
+    element->parent = NULL;                 \
+  } else {                                  \
+    element->next = first_element;          \
+    element->parent = NULL;                 \
+    element->next->parent = element;        \
+    first_element = element;                \
+  }
 
 #define APPEND_ELEMENT(type_of_element_t, first_element, element) \
-  if (first_element==NULL)                            \
-    { first_element = element;                        \
-      element->next   = NULL; /* useless */           \
-      element->parent = NULL; /* useless */ }         \
-  else                                                \
-    { type_of_element_t *f;                           \
-      for (f=first_element; f->next!=NULL; f=f->next) \
-         { }                                          \
-      f->next    = element;                           \
-      element->parent = f;                            \
-      element->next   = NULL;                         \
-    }
+  if (first_element == NULL) {                                    \
+    first_element = element;                                      \
+    element->next = NULL;   /* useless */                         \
+    element->parent = NULL; /* useless */                         \
+  } else {                                                        \
+    type_of_element_t *f;                                         \
+    for (f = first_element; f->next != NULL; f = f->next) {       \
+    }                                                             \
+    f->next = element;                                            \
+    element->parent = f;                                          \
+    element->next = NULL;                                         \
+  }
 
 const char *osip_strerror(int err);
 
 #ifdef __cplusplus
 }
 #endif
-#define OSIP_SUCCESS               0
-#define OSIP_UNDEFINED_ERROR      -1
-#define OSIP_BADPARAMETER         -2
-#define OSIP_WRONG_STATE          -3
-#define OSIP_NOMEM                -4
-#define OSIP_SYNTAXERROR          -5
-#define OSIP_NOTFOUND             -6
-#define OSIP_API_NOT_INITIALIZED  -7
-#define OSIP_NO_NETWORK           -10
-#define OSIP_PORT_BUSY            -11
-#define OSIP_UNKNOWN_HOST         -12
-#define OSIP_DISK_FULL            -30
-#define OSIP_NO_RIGHTS            -31
-#define OSIP_FILE_NOT_EXIST       -32
-#define OSIP_TIMEOUT              -50
-#define OSIP_TOOMUCHCALL          -51
-#define OSIP_WRONG_FORMAT         -52
-#define OSIP_NOCOMMONCODEC        -53
-#endif                          /* _PORT_H_ */
+#define OSIP_SUCCESS 0
+#define OSIP_UNDEFINED_ERROR -1
+#define OSIP_BADPARAMETER -2
+#define OSIP_WRONG_STATE -3
+#define OSIP_NOMEM -4
+#define OSIP_SYNTAXERROR -5
+#define OSIP_NOTFOUND -6
+#define OSIP_API_NOT_INITIALIZED -7
+#define OSIP_NO_NETWORK -10
+#define OSIP_PORT_BUSY -11
+#define OSIP_UNKNOWN_HOST -12
+#define OSIP_DISK_FULL -30
+#define OSIP_NO_RIGHTS -31
+#define OSIP_FILE_NOT_EXIST -32
+#define OSIP_TIMEOUT -50
+#define OSIP_TOOMUCHCALL -51
+#define OSIP_WRONG_FORMAT -52
+#define OSIP_NOCOMMONCODEC -53
+#endif /* _PORT_H_ */

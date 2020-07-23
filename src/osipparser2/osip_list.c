@@ -27,7 +27,7 @@ int osip_list_init(osip_list_t *li) {
     return OSIP_BADPARAMETER;
 
   memset(li, 0, sizeof(osip_list_t));
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 int osip_list_clone(const osip_list_t *src, osip_list_t *dst, int (*clone_func)(void *, void **)) {
@@ -88,9 +88,9 @@ int osip_list_eol(const osip_list_t *li, int i) {
     return OSIP_BADPARAMETER;
 
   if (i < li->nb_elt)
-    return OSIP_SUCCESS;        /* not end of list */
+    return OSIP_SUCCESS; /* not end of list */
 
-  return 1;                     /* end of list */
+  return 1; /* end of list */
 }
 
 /* index starts from 0; */
@@ -102,7 +102,6 @@ int osip_list_add(osip_list_t *li, void *el, int pos) {
     return OSIP_BADPARAMETER;
 
   if (li->nb_elt == 0) {
-
     li->node = (__node_t *) osip_malloc(sizeof(__node_t));
 
     if (li->node == NULL)
@@ -118,9 +117,9 @@ int osip_list_add(osip_list_t *li, void *el, int pos) {
     pos = li->nb_elt;
   }
 
-  ntmp = li->node;              /* exist because nb_elt>0  */
+  ntmp = li->node; /* exist because nb_elt>0  */
 
-  if (pos == 0) {               /* pos = 0 insert before first elt  */
+  if (pos == 0) { /* pos = 0 insert before first elt  */
     li->node = (__node_t *) osip_malloc(sizeof(__node_t));
 
     if (li->node == NULL) {
@@ -135,7 +134,6 @@ int osip_list_add(osip_list_t *li, void *el, int pos) {
     return li->nb_elt;
   }
 
-
   while (pos > i + 1) {
     i++;
     /* when pos>i next node exist  */
@@ -147,7 +145,7 @@ int osip_list_add(osip_list_t *li, void *el, int pos) {
     ntmp->next = osip_malloc(sizeof(__node_t));
 
     if (ntmp->next == NULL)
-      return OSIP_NOMEM;        /* leave the list unchanged */
+      return OSIP_NOMEM; /* leave the list unchanged */
 
     ntmp = ntmp->next;
     ntmp->element = el;
@@ -188,8 +186,7 @@ void *osip_list_get(const osip_list_t *li, int pos) {
     /* element does not exist */
     return NULL;
 
-
-  ntmp = li->node;              /* exist because nb_elt>0 */
+  ntmp = li->node; /* exist because nb_elt>0 */
 
   while (pos > i) {
     i++;
@@ -207,7 +204,7 @@ void *osip_list_get_first(const osip_list_t *li, osip_list_iterator_t *iterator)
   }
 
   iterator->actual = li->node;
-  iterator->prev = (__node_t **) & li->node;
+  iterator->prev = (__node_t **) &li->node;
   iterator->li = (osip_list_t *) li;
   iterator->pos = 0;
 
@@ -252,7 +249,6 @@ void *osip_list_iterator_remove(osip_list_iterator_t *iterator) {
 
 /* return -1 if failed */
 int osip_list_remove(osip_list_t *li, int pos) {
-
   __node_t *ntmp;
   int i = 0;
 
@@ -263,9 +259,9 @@ int osip_list_remove(osip_list_t *li, int pos) {
     /* element does not exist */
     return OSIP_UNDEFINED_ERROR;
 
-  ntmp = li->node;              /* exist because nb_elt>0 */
+  ntmp = li->node; /* exist because nb_elt>0 */
 
-  if (pos == 0) {               /* special case  */
+  if (pos == 0) { /* special case  */
     li->node = ntmp->next;
     li->nb_elt--;
     osip_free(ntmp);

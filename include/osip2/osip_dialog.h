@@ -37,14 +37,9 @@
 extern "C" {
 #endif
 
-
 #ifndef DOXYGEN
-typedef enum _osip_dialog_type_t {
-  CALLER,
-  CALLEE
-} osip_dialog_type_t;
+typedef enum _osip_dialog_type_t { CALLER, CALLEE } osip_dialog_type_t;
 #endif
-
 
 /**
  * Structure for referencing a dialog.
@@ -52,28 +47,27 @@ typedef enum _osip_dialog_type_t {
  */
 typedef struct osip_dialog osip_dialog_t;
 
-
 /**
  * Structure for referencing a dialog.
  * @struct osip_dialog
  */
 struct osip_dialog {
-  char *call_id;                                               /**< Call-ID*/
-  char *local_tag;                                             /**< local tag */
-  char *remote_tag;                                            /**< remote tag */
-  char *line_param;                                            /**< line param from request uri for incoming calls */
-  osip_list_t route_set;                              /**< route set */
-  int local_cseq;                                              /**< last local cseq */
-  int remote_cseq;                                             /**< last remote cseq*/
-  osip_to_t *remote_uri;                               /**< remote_uri */
-  osip_from_t *local_uri;                              /**< local_uri */
+  char *call_id;          /**< Call-ID*/
+  char *local_tag;        /**< local tag */
+  char *remote_tag;       /**< remote tag */
+  char *line_param;       /**< line param from request uri for incoming calls */
+  osip_list_t route_set;  /**< route set */
+  int local_cseq;         /**< last local cseq */
+  int remote_cseq;        /**< last remote cseq*/
+  osip_to_t *remote_uri;  /**< remote_uri */
+  osip_from_t *local_uri; /**< local_uri */
   osip_contact_t *remote_contact_uri;
   /**< remote contact_uri */
-  int secure;                                                          /**< use secure transport layer */
+  int secure; /**< use secure transport layer */
 
-  osip_dialog_type_t type;                             /**< type of dialog (CALLEE or CALLER) */
-  state_t state;                                               /**< DIALOG_EARLY || DIALOG_CONFIRMED || DIALOG_CLOSED */
-  void *your_instance;                                 /**< for application data reference */
+  osip_dialog_type_t type; /**< type of dialog (CALLEE or CALLER) */
+  state_t state;           /**< DIALOG_EARLY || DIALOG_CONFIRMED || DIALOG_CLOSED */
+  void *your_instance;     /**< for application data reference */
 };
 
 /**
@@ -81,14 +75,14 @@ struct osip_dialog {
  * @param dialog The osip dialog
  * @param instance The application instance
  */
-#define osip_dialog_set_instance(dialog,instance) (dialog)->your_instance = (void*)(instance)
+#define osip_dialog_set_instance(dialog, instance) (dialog)->your_instance = (void *) (instance)
 
 /**
  * Retrieve application instance from dialog
  * @param dialog The osip dialog
  * @return instance The application instance
  */
-#define osip_dialog_get_instance(dialog)          (dialog)->your_instance
+#define osip_dialog_get_instance(dialog) (dialog)->your_instance
 
 /**
  * Allocate a osip_dialog_t element as a UAC.
@@ -194,7 +188,6 @@ int osip_dialog_is_originator(osip_dialog_t *dialog);
  * @param dialog The element to work on.
  */
 int osip_dialog_is_callee(osip_dialog_t *dialog);
-
 
 #ifdef __cplusplus
 }

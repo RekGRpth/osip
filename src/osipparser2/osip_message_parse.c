@@ -28,7 +28,6 @@ static int osip_message_set__header(osip_message_t *sip, const char *hname, cons
 static int msg_headers_parse(osip_message_t *sip, const char *start_of_header, const char **body);
 static int msg_osip_body_parse(osip_message_t *sip, const char *start_of_buf, const char **next_body, size_t length);
 
-
 static int __osip_message_startline_parsereq(osip_message_t *dest, const char *buf, const char **headers) {
   const char *p1;
   const char *p2;
@@ -63,7 +62,7 @@ static int __osip_message_startline_parsereq(osip_message_t *dest, const char *b
   osip_strncpy(dest->sip_method, buf, p2 - buf);
 
   /* The second token is a sip-url or a uri: */
-  p1 = strchr(p2 + 2, ' ');     /* no space allowed inside sip-url */
+  p1 = strchr(p2 + 2, ' '); /* no space allowed inside sip-url */
 
   if (p1 == NULL) {
     OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "Uncompliant request-uri\n"));
@@ -113,7 +112,7 @@ static int __osip_message_startline_parsereq(osip_message_t *dest, const char *b
   {
     const char *hp = p1;
 
-    hp++;                       /* skip space */
+    hp++; /* skip space */
 
     if (*hp == '\0' || *(hp + 1) == '\0' || *(hp + 2) == '\0' || *(hp + 3) == '\0' || *(hp + 4) == '\0' || *(hp + 5) == '\0' || *(hp + 6) == '\0') {
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "Uncomplete request line\n"));
@@ -133,7 +132,7 @@ static int __osip_message_startline_parsereq(osip_message_t *dest, const char *b
       return OSIP_SYNTAXERROR;
     }
 
-    hp = hp + 4;                /* SIP/ */
+    hp = hp + 4; /* SIP/ */
 
     while ((*hp != '\r') && (*hp != '\n')) {
       if (*hp) {
@@ -205,12 +204,12 @@ static int __osip_message_startline_parseresp(osip_message_t *dest, const char *
 
   *headers = buf;
 
-  statuscode = strchr(buf, ' ');        /* search for first SPACE */
+  statuscode = strchr(buf, ' '); /* search for first SPACE */
 
   if (statuscode == NULL)
     return OSIP_SYNTAXERROR;
 
-  if (statuscode - (*headers) < 7)      /* must be at least "SIP" "/"  1*DIGIT "." 1*DIGIT */
+  if (statuscode - (*headers) < 7) /* must be at least "SIP" "/"  1*DIGIT "." 1*DIGIT */
     return OSIP_SYNTAXERROR;
 
   dest->sip_version = (char *) osip_malloc(statuscode - (*headers) + 1);
@@ -272,7 +271,6 @@ static int __osip_message_startline_parseresp(osip_message_t *dest, const char *
 }
 
 static int __osip_message_startline_parse(osip_message_t *dest, const char *buf, const char **headers) {
-
   if (0 == strncmp((const char *) buf, (const char *) "SIP/", 4))
     return __osip_message_startline_parseresp(dest, buf, headers);
 
@@ -283,7 +281,7 @@ static int __osip_message_startline_parse(osip_message_t *dest, const char *buf,
 int __osip_find_next_occurence(const char *str, const char *buf, const char **index_of_str, const char *end_of_buf) {
   size_t slen;
 
-  *index_of_str = NULL;         /* AMD fix */
+  *index_of_str = NULL; /* AMD fix */
 
   if (str == NULL || buf == NULL)
     return OSIP_BADPARAMETER;
@@ -317,21 +315,13 @@ static void osip_util_replace_all_lws(char *sip_message) {
   tmp = sip_message;
 
   for (; tmp[0] != '\0'; tmp++) {
-    if (('\0' == tmp[0])
-        || ('\0' == tmp[1]) || ('\0' == tmp[2]) || ('\0' == tmp[3]))
+    if (('\0' == tmp[0]) || ('\0' == tmp[1]) || ('\0' == tmp[2]) || ('\0' == tmp[3]))
       return;
 
-    if ((('\r' == tmp[0]) && ('\n' == tmp[1])
-         && ('\r' == tmp[2]) && ('\n' == tmp[3]))
-        || (('\r' == tmp[0]) && ('\r' == tmp[1]))
-        || (('\n' == tmp[0]) && ('\n' == tmp[1])))
-      return;                   /* end of message */
+    if ((('\r' == tmp[0]) && ('\n' == tmp[1]) && ('\r' == tmp[2]) && ('\n' == tmp[3])) || (('\r' == tmp[0]) && ('\r' == tmp[1])) || (('\n' == tmp[0]) && ('\n' == tmp[1])))
+      return; /* end of message */
 
-    if ((('\r' == tmp[0]) && ('\n' == tmp[1])
-         && ((' ' == tmp[2]) || ('\t' == tmp[2])))
-        || (('\r' == tmp[0])
-            && ((' ' == tmp[1]) || ('\t' == tmp[1])))
-        || (('\n' == tmp[0]) && ((' ' == tmp[1]) || ('\t' == tmp[1])))) {
+    if ((('\r' == tmp[0]) && ('\n' == tmp[1]) && ((' ' == tmp[2]) || ('\t' == tmp[2]))) || (('\r' == tmp[0]) && ((' ' == tmp[1]) || ('\t' == tmp[1]))) || (('\n' == tmp[0]) && ((' ' == tmp[1]) || ('\t' == tmp[1])))) {
       /* replace line end and TAB symbols by SP */
       tmp[0] = ' ';
       tmp[1] = ' ';
@@ -343,7 +333,7 @@ static void osip_util_replace_all_lws(char *sip_message) {
         tmp++;
       }
 
-      if (tmp[0] == '\0')       /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
+      if (tmp[0] == '\0') /* fixed Janv 13 2020: Heap-buffer-overflow with a final LWS without nothing after */
         return;
     }
   }
@@ -352,7 +342,7 @@ static void osip_util_replace_all_lws(char *sip_message) {
 int __osip_find_next_crlf(const char *start_of_header, const char **end_of_header) {
   const char *soh = start_of_header;
 
-  *end_of_header = NULL;        /* AMD fix */
+  *end_of_header = NULL; /* AMD fix */
 
   while (('\r' != *soh) && ('\n' != *soh)) {
     if (*soh)
@@ -368,7 +358,6 @@ int __osip_find_next_crlf(const char *start_of_header, const char **end_of_heade
     /* case 1: CRLF is the separator
        case 2 or 3: CR or LF is the separator */
     soh = soh + 1;
-
 
   /* VERIFY if TMP is the end of header or LWS.            */
   /* LWS are extra SP, HT, CR and LF contained in headers. */
@@ -397,12 +386,12 @@ int __osip_find_next_crlfcrlf(const char *start_of_part, const char **end_of_par
     i = __osip_find_next_crlf(start_of_line, &end_of_line);
 
     if (i == -2) {
-    } else if (i != 0) {        /* error case??? no end of mesage found */
+    } else if (i != 0) { /* error case??? no end of mesage found */
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "Final CRLF is missing\n"));
       return i;
     }
 
-    if ('\0' == end_of_line[0]) {       /* error case??? no end of message found */
+    if ('\0' == end_of_line[0]) { /* error case??? no end of message found */
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "Final CRLF is missing\n"));
       return OSIP_SYNTAXERROR;
 
@@ -432,7 +421,7 @@ static int osip_message_set__header(osip_message_t *sip, const char *hname, cons
   /* this method is used for selective parsing */
   my_index = __osip_message_is_known_header(hname);
 
-  if (my_index >= 0) {          /* ok */
+  if (my_index >= 0) { /* ok */
     int ret;
 
     ret = __osip_message_call_method(my_index, sip, hvalue);
@@ -454,11 +443,11 @@ static int osip_message_set__header(osip_message_t *sip, const char *hname, cons
 
 int osip_message_set_multiple_header(osip_message_t *sip, char *hname, char *hvalue) {
   int i;
-  char *ptr, *p;                /* current location of the search */
-  char *comma;                  /* This is the separator we are elooking for */
-  char *beg;                    /* beg of a header */
-  char *end;                    /* end of a header */
-  int inquotes, inuri;          /* state for inside/outside of double-qoutes or URI */
+  char *ptr, *p;       /* current location of the search */
+  char *comma;         /* This is the separator we are elooking for */
+  char *beg;           /* beg of a header */
+  char *end;           /* end of a header */
+  int inquotes, inuri; /* state for inside/outside of double-qoutes or URI */
 
   /* Find header based upon lowercase comparison */
   osip_tolower(hname);
@@ -499,19 +488,19 @@ int osip_message_set_multiple_header(osip_message_t *sip, char *hname, char *hva
     case '"':
 
       /* Check that the '"' is not escaped */
-      for (i = 0, p = ptr - 1; p >= beg && *p == '\\'; p--, i++);
+      for (i = 0, p = ptr - 1; p >= beg && *p == '\\'; p--, i++)
+        ;
 
       if (i % 2 == 0)
-        inquotes = !inquotes;   /* the '"' was not escaped */
+        inquotes = !inquotes; /* the '"' was not escaped */
 
       break;
 
     case '<':
       if (!inquotes) {
         if (!inuri) {
-          if ((osip_strncasecmp(ptr + 1, "sip:", 4) == 0 || osip_strncasecmp(ptr + 1, "sips:", 5) == 0 || osip_strncasecmp(ptr + 1, "http:", 5) == 0 || osip_strncasecmp(ptr + 1, "https:", 6) == 0
-               || osip_strncasecmp(ptr + 1, "tel:", 4) == 0)
-              && strchr(ptr, '>'))
+          if ((osip_strncasecmp(ptr + 1, "sip:", 4) == 0 || osip_strncasecmp(ptr + 1, "sips:", 5) == 0 || osip_strncasecmp(ptr + 1, "http:", 5) == 0 || osip_strncasecmp(ptr + 1, "https:", 6) == 0 || osip_strncasecmp(ptr + 1, "tel:", 4) == 0) &&
+              strchr(ptr, '>'))
             inuri = 1;
         }
 
@@ -546,13 +535,13 @@ int osip_message_set_multiple_header(osip_message_t *sip, char *hname, char *hva
         char *avalue;
 
         if (beg[0] == '\0')
-          return OSIP_SUCCESS;  /* empty header */
+          return OSIP_SUCCESS; /* empty header */
 
         end = ptr;
 
         if (end - beg + 1 < 2) {
           beg = end + 1;
-          break;                /* skip empty header */
+          break; /* skip empty header */
         }
 
         avalue = (char *) osip_malloc(end - beg + 1);
@@ -584,14 +573,14 @@ int osip_message_set_multiple_header(osip_message_t *sip, char *hname, char *hva
 
 /* set all headers */
 static int msg_headers_parse(osip_message_t *sip, const char *start_of_header, const char **body) {
-  const char *colon_index;      /* index of ':' */
+  const char *colon_index; /* index of ':' */
   char *hname;
   char *hvalue;
   const char *end_of_header;
   int i;
 
   for (;;) {
-    if (start_of_header[0] == '\0') {   /* final CRLF is missing */
+    if (start_of_header[0] == '\0') { /* final CRLF is missing */
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_INFO1, NULL, "SIP message does not end with CRLFCRLF\n"));
       return OSIP_SUCCESS;
     }
@@ -601,14 +590,14 @@ static int msg_headers_parse(osip_message_t *sip, const char *start_of_header, c
     if (i == -2) {
     } else if (i != 0) {
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "End of header Not found\n"));
-      return i;                 /* this is an error case!     */
+      return i; /* this is an error case!     */
     }
 
     /* the list of headers MUST always end with  */
     /* CRLFCRLF (also CRCR and LFLF are allowed) */
     if ((start_of_header[0] == '\r') || (start_of_header[0] == '\n')) {
       *body = start_of_header;
-      return OSIP_SUCCESS;      /* end of header found        */
+      return OSIP_SUCCESS; /* end of header found        */
     }
 
     /* find the header name */
@@ -616,7 +605,7 @@ static int msg_headers_parse(osip_message_t *sip, const char *start_of_header, c
 
     if (colon_index == NULL) {
       OSIP_TRACE(osip_trace(__FILE__, __LINE__, OSIP_ERROR, NULL, "End of header Not found\n"));
-      return OSIP_SYNTAXERROR;  /* this is also an error case */
+      return OSIP_SYNTAXERROR; /* this is also an error case */
     }
 
     if (colon_index - start_of_header + 1 < 2)
@@ -645,17 +634,17 @@ static int msg_headers_parse(osip_message_t *sip, const char *start_of_header, c
       else
         end = end_of_header - 1;
 
-      if ((end) - colon_index < 2)
-        hvalue = NULL;          /* some headers (subject) can be empty */
+      if ((end) -colon_index < 2)
+        hvalue = NULL; /* some headers (subject) can be empty */
       else {
-        hvalue = (char *) osip_malloc((end) - colon_index + 1);
+        hvalue = (char *) osip_malloc((end) -colon_index + 1);
 
         if (hvalue == NULL) {
           osip_free(hname);
           return OSIP_NOMEM;
         }
 
-        osip_clrncpy(hvalue, colon_index + 1, (end) - colon_index - 1);
+        osip_clrncpy(hvalue, colon_index + 1, (end) -colon_index - 1);
       }
     }
 
@@ -698,13 +687,13 @@ static int msg_osip_body_parse(osip_message_t *sip, const char *start_of_buf, co
   osip_generic_param_t *ct_param;
 
   if (sip->content_type == NULL || sip->content_type->type == NULL || sip->content_type->subtype == NULL)
-    return OSIP_SUCCESS;        /* no body is attached */
+    return OSIP_SUCCESS; /* no body is attached */
 
   if (0 != osip_strcasecmp(sip->content_type->type, "multipart")) {
     size_t osip_body_len;
 
     if (start_of_buf[0] == '\0')
-      return OSIP_SYNTAXERROR;  /* final CRLF is missing */
+      return OSIP_SYNTAXERROR; /* final CRLF is missing */
 
     /* get rid of the first CRLF */
     if ('\r' == start_of_buf[0]) {
@@ -718,10 +707,10 @@ static int msg_osip_body_parse(osip_message_t *sip, const char *start_of_buf, co
       start_of_body = start_of_buf + 1;
 
     else
-      return OSIP_SYNTAXERROR;  /* message does not end with CRLFCRLF, CRCR or LFLF */
+      return OSIP_SYNTAXERROR; /* message does not end with CRLFCRLF, CRCR or LFLF */
 
     /* update length (without CRLFCRLF */
-    length = length - (start_of_body - start_of_buf);   /* fixed 24 08 2004 */
+    length = length - (start_of_body - start_of_buf); /* fixed 24 08 2004 */
 
     if (length <= 0)
       return OSIP_SYNTAXERROR;
@@ -774,7 +763,7 @@ static int msg_osip_body_parse(osip_message_t *sip, const char *start_of_buf, co
     return OSIP_SYNTAXERROR;
 
   if (ct_param->gvalue == NULL)
-    return OSIP_SYNTAXERROR;    /* No boundary but multiple headers??? */
+    return OSIP_SYNTAXERROR; /* No boundary but multiple headers??? */
 
   {
     const char *boundary_prefix = "\n--";
@@ -855,7 +844,7 @@ static int msg_osip_body_parse(osip_message_t *sip, const char *start_of_buf, co
       return i;
     }
 
-    if (strncmp(end_of_body + len_sep_boundary, "--", 2) == 0) {        /* end of all bodies */
+    if (strncmp(end_of_body + len_sep_boundary, "--", 2) == 0) { /* end of all bodies */
       *next_body = end_of_body;
       osip_free(sep_boundary);
       return OSIP_SUCCESS;
@@ -885,7 +874,7 @@ static int _osip_message_parse(osip_message_t *sip, const char *buf, size_t leng
   }
 
   beg = tmp;
-  memcpy(tmp, buf, length);     /* may contain binary data */
+  memcpy(tmp, buf, length); /* may contain binary data */
   tmp[length] = '\0';
   /* skip initial \r\n */
   tmp += strspn(tmp, "\r\n");
@@ -929,7 +918,7 @@ static int _osip_message_parse(osip_message_t *sip, const char *buf, size_t leng
       osip_message_set_content_length(sip, "0");
 
     osip_free(beg);
-    return OSIP_SUCCESS;        /* no body found */
+    return OSIP_SUCCESS; /* no body found */
   }
 
   i = msg_osip_body_parse(sip, tmp, &next_header_index, length - (tmp - beg));
@@ -955,7 +944,6 @@ int osip_message_parse_sipfrag(osip_message_t *sip, const char *buf, size_t leng
   return _osip_message_parse(sip, buf, length, 1);
 }
 
-
 /* This method just add a received parameter in the Via
    as requested by rfc3261 */
 int osip_message_fix_last_via_header(osip_message_t *request, const char *ip_addr, int port) {
@@ -967,7 +955,7 @@ int osip_message_fix_last_via_header(osip_message_t *request, const char *ip_add
     return OSIP_BADPARAMETER;
 
   if (MSG_IS_RESPONSE(request))
-    return OSIP_SUCCESS;        /* Don't fix Via header */
+    return OSIP_SUCCESS; /* Don't fix Via header */
 
   via = osip_list_get(&request->vias, 0);
 
@@ -989,12 +977,12 @@ int osip_message_fix_last_via_header(osip_message_t *request, const char *ip_add
 #else
       snprintf(rport->gvalue, 8, "%i", port);
 #endif
-    }                           /* else bug? */
+    } /* else bug? */
   }
 
   /* only add the received parameter if the 'sent-by' value does not contains
      this ip address */
-  if (0 == strcmp(via->host, ip_addr))  /* don't need the received parameter */
+  if (0 == strcmp(via->host, ip_addr)) /* don't need the received parameter */
     return OSIP_SUCCESS;
 
   osip_via_set_received(via, osip_strdup(ip_addr));
@@ -1008,92 +996,69 @@ const char *osip_message_get_reason(int replycode) {
   };
 
   static const struct code_to_reason reasons1xx[] = {
-    {100, "Trying"},
-    {180, "Ringing"},
-    {181, "Call Is Being Forwarded"},
-    {182, "Queued"},
-    {183, "Session Progress"},
-    {199, "Early Dialog Terminated"},
+      {100, "Trying"}, {180, "Ringing"}, {181, "Call Is Being Forwarded"}, {182, "Queued"}, {183, "Session Progress"}, {199, "Early Dialog Terminated"},
   };
   static const struct code_to_reason reasons2xx[] = {
-    {200, "OK"},
-    {202, "Accepted"},
-    {204, "No Notification"},
+      {200, "OK"},
+      {202, "Accepted"},
+      {204, "No Notification"},
   };
   static const struct code_to_reason reasons3xx[] = {
-    {300, "Multiple Choices"},
-    {301, "Moved Permanently"},
-    {302, "Moved Temporarily"},
-    {305, "Use Proxy"},
-    {380, "Alternative Service"},
+      {300, "Multiple Choices"}, {301, "Moved Permanently"}, {302, "Moved Temporarily"}, {305, "Use Proxy"}, {380, "Alternative Service"},
   };
   static const struct code_to_reason reasons4xx[] = {
-    {400, "Bad Request"},
-    {401, "Unauthorized"},
-    {402, "Payment Required"},
-    {403, "Forbidden"},
-    {404, "Not Found"},
-    {405, "Method Not Allowed"},
-    {406, "Not Acceptable"},
-    {407, "Proxy Authentication Required"},
-    {408, "Request Timeout"},
-    {409, "Conflict"},
-    {410, "Gone"},
-    {411, "Length Required"},
-    {412, "Conditional Request Failed"},
-    {413, "Request Entity Too Large"},
-    {414, "Request-URI Too Long"},
-    {415, "Unsupported Media Type"},
-    {416, "Unsupported URI Scheme"},
-    {417, "Unknown Resource-Priority"},
-    {420, "Bad Extension"},
-    {421, "Extension Required"},
-    {422, "Session Interval Too Small"},
-    {423, "Interval Too Brief"},
-    {424, "Bad Location Information"},
-    {428, "Use Identity Header"},
-    {429, "Provide Referrer Identity"},
-    {430, "Flow Failed"},
-    {433, "Anonymity Disallowed"},
-    {436, "Bad Identity Info"},
-    {437, "Unsupported Credential"},
-    {438, "Invalid Identity Header"},
-    {439, "First Hop Lacks Outbound Support"},
-    {440, "Max-Breadth Exceeded"},
-    {469, "Bad Info Package"},
-    {470, "Consent Needed"},
-    {480, "Temporarily Unavailable"},
-    {481, "Call/Transaction Does Not Exist"},
-    {482, "Loop Detected"},
-    {483, "Too Many Hops"},
-    {484, "Address Incomplete"},
-    {485, "Ambiguous"},
-    {486, "Busy Here"},
-    {487, "Request Terminated"},
-    {488, "Not Acceptable Here"},
-    {489, "Bad Event"},
-    {491, "Request Pending"},
-    {493, "Undecipherable"},
-    {494, "Security Agreement Required"},
+      {400, "Bad Request"},
+      {401, "Unauthorized"},
+      {402, "Payment Required"},
+      {403, "Forbidden"},
+      {404, "Not Found"},
+      {405, "Method Not Allowed"},
+      {406, "Not Acceptable"},
+      {407, "Proxy Authentication Required"},
+      {408, "Request Timeout"},
+      {409, "Conflict"},
+      {410, "Gone"},
+      {411, "Length Required"},
+      {412, "Conditional Request Failed"},
+      {413, "Request Entity Too Large"},
+      {414, "Request-URI Too Long"},
+      {415, "Unsupported Media Type"},
+      {416, "Unsupported URI Scheme"},
+      {417, "Unknown Resource-Priority"},
+      {420, "Bad Extension"},
+      {421, "Extension Required"},
+      {422, "Session Interval Too Small"},
+      {423, "Interval Too Brief"},
+      {424, "Bad Location Information"},
+      {428, "Use Identity Header"},
+      {429, "Provide Referrer Identity"},
+      {430, "Flow Failed"},
+      {433, "Anonymity Disallowed"},
+      {436, "Bad Identity Info"},
+      {437, "Unsupported Credential"},
+      {438, "Invalid Identity Header"},
+      {439, "First Hop Lacks Outbound Support"},
+      {440, "Max-Breadth Exceeded"},
+      {469, "Bad Info Package"},
+      {470, "Consent Needed"},
+      {480, "Temporarily Unavailable"},
+      {481, "Call/Transaction Does Not Exist"},
+      {482, "Loop Detected"},
+      {483, "Too Many Hops"},
+      {484, "Address Incomplete"},
+      {485, "Ambiguous"},
+      {486, "Busy Here"},
+      {487, "Request Terminated"},
+      {488, "Not Acceptable Here"},
+      {489, "Bad Event"},
+      {491, "Request Pending"},
+      {493, "Undecipherable"},
+      {494, "Security Agreement Required"},
   };
   static const struct code_to_reason reasons5xx[] = {
-    {500, "Server Internal Error"},
-    {501, "Not Implemented"},
-    {502, "Bad Gateway"},
-    {503, "Service Unavailable"},
-    {504, "Server Time-out"},
-    {505, "Version Not Supported"},
-    {513, "Message Too Large"},
-    {580, "Precondition Failure"},
+      {500, "Server Internal Error"}, {501, "Not Implemented"}, {502, "Bad Gateway"}, {503, "Service Unavailable"}, {504, "Server Time-out"}, {505, "Version Not Supported"}, {513, "Message Too Large"}, {580, "Precondition Failure"},
   };
-  static const struct code_to_reason reasons6xx[] = {
-    {600, "Busy Everywhere"},
-    {603, "Decline"},
-    {604, "Does Not Exist Anywhere"},
-    {606, "Not Acceptable"},
-    {607, "Unwanted"},
-    {687, "Dialog Terminated"}
-  };
+  static const struct code_to_reason reasons6xx[] = {{600, "Busy Everywhere"}, {603, "Decline"}, {604, "Does Not Exist Anywhere"}, {606, "Not Acceptable"}, {607, "Unwanted"}, {687, "Dialog Terminated"}};
   const struct code_to_reason *reasons;
   int len, i;
 

@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_PROXY_AUHTHORIZATION_H_
 #define _OSIP_PROXY_AUHTHORIZATION_H_
 
@@ -40,17 +39,15 @@
  */
 typedef osip_authorization_t osip_proxy_authorization_t;
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Allocate a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_init(header)     osip_authorization_init(header)
+#define osip_proxy_authorization_init(header) osip_authorization_init(header)
 /**
  * Parse a Proxy-Authorization element.
  * @param header The element to work on.
@@ -67,19 +64,19 @@ extern "C"
  * Free a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_free     osip_authorization_free
+#define osip_proxy_authorization_free osip_authorization_free
 /**
  * Clone a Proxy-Authorization element.
  * @param header The element to work on.
  * @param dest A pointer on the copy of the element.
  */
-#define osip_proxy_authorization_clone  osip_authorization_clone
+#define osip_proxy_authorization_clone osip_authorization_clone
 
 /**
  * Get value of the auth_type parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_auth_type(header)    osip_authorization_get_auth_type(header)
+#define osip_proxy_authorization_get_auth_type(header) osip_authorization_get_auth_type(header)
 /**
  * Add the auth_type parameter from a Proxy-Authorization element.
  * @param header The element to work on.
@@ -90,7 +87,7 @@ extern "C"
  * Get value of the username parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_username(header)    osip_authorization_get_username(header)
+#define osip_proxy_authorization_get_username(header) osip_authorization_get_username(header)
 /**
  * Add the username parameter from a Proxy-Authorization element.
  * @param header The element to work on.
@@ -101,40 +98,40 @@ extern "C"
  * Get value of the realm parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_realm(header)       osip_authorization_get_realm(header)
+#define osip_proxy_authorization_get_realm(header) osip_authorization_get_realm(header)
 /**
  * Add the realm parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_realm(header, value)    osip_authorization_set_realm(header, value)
+#define osip_proxy_authorization_set_realm(header, value) osip_authorization_set_realm(header, value)
 /**
  * Get value of the nonce parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_nonce(header)       osip_authorization_get_nonce(header)
+#define osip_proxy_authorization_get_nonce(header) osip_authorization_get_nonce(header)
 /**
  * Add the nonce parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_nonce(header, value)    osip_authorization_set_nonce(header, value)
+#define osip_proxy_authorization_set_nonce(header, value) osip_authorization_set_nonce(header, value)
 /**
  * Get value of the uri parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_uri(header)         osip_authorization_get_uri(header)
+#define osip_proxy_authorization_get_uri(header) osip_authorization_get_uri(header)
 /**
  * Add the uri parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_uri(header, value)      osip_authorization_set_uri(header, value)
+#define osip_proxy_authorization_set_uri(header, value) osip_authorization_set_uri(header, value)
 /**
  * Get value of the response parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_response(header)    osip_authorization_get_response(header)
+#define osip_proxy_authorization_get_response(header) osip_authorization_get_response(header)
 /**
  * Add the response parameter from a Proxy-Authorization element.
  * @param header The element to work on.
@@ -145,46 +142,46 @@ extern "C"
  * Get value of the digest parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_digest(header)      osip_authorization_get_digest(header)
+#define osip_proxy_authorization_get_digest(header) osip_authorization_get_digest(header)
 /**
  * Add the digest parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_digest(header, value)   osip_authorization_set_digest(header, value)
+#define osip_proxy_authorization_set_digest(header, value) osip_authorization_set_digest(header, value)
 /**
  * Get value of the algorithm parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_algorithm(header)   osip_authorization_get_algorithm(header)
+#define osip_proxy_authorization_get_algorithm(header) osip_authorization_get_algorithm(header)
 /**
  * Add the algorithm parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_algorithm(header,value) osip_authorization_set_algorithm(header,value)
+#define osip_proxy_authorization_set_algorithm(header, value) osip_authorization_set_algorithm(header, value)
 /**
  * Get value of the cnonce parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_cnonce(header)      osip_authorization_get_cnonce(header)
+#define osip_proxy_authorization_get_cnonce(header) osip_authorization_get_cnonce(header)
 /**
  * Add the cnonce parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_cnonce(header, value)   osip_authorization_set_cnonce(header, value)
+#define osip_proxy_authorization_set_cnonce(header, value) osip_authorization_set_cnonce(header, value)
 /**
  * Get value of the opaque parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  */
-#define osip_proxy_authorization_get_opaque(header)      osip_authorization_get_opaque(header)
+#define osip_proxy_authorization_get_opaque(header) osip_authorization_get_opaque(header)
 /**
  * Add the opaque parameter from a Proxy-Authorization element.
  * @param header The element to work on.
  * @param value The value of the new parameter.
  */
-#define osip_proxy_authorization_set_opaque(header, value)   osip_authorization_set_opaque(header, value)
+#define osip_proxy_authorization_set_opaque(header, value) osip_authorization_set_opaque(header, value)
 /**
  * Get value of the message_qop parameter from a Proxy-Authorization element.
  * @param header The element to work on.
@@ -248,4 +245,3 @@ extern "C"
 /** @} */
 
 #endif
-

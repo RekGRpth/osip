@@ -43,7 +43,6 @@
 extern "C" {
 #endif
 
-
 #ifndef DOXYGEN
 
 typedef enum { osip_ok, osip_empty } osip_fifo_state;
@@ -62,12 +61,12 @@ typedef struct osip_fifo osip_fifo_t;
  */
 struct osip_fifo {
 #ifndef OSIP_MONOTHREAD
-  struct osip_mutex *qislocked;          /**< mutex for fifo */
-  struct osip_sem *qisempty;             /**< semaphore for fifo */
+  struct osip_mutex *qislocked; /**< mutex for fifo */
+  struct osip_sem *qisempty;    /**< semaphore for fifo */
 #endif
-  osip_list_t queue;                     /**< list of nodes containing elements */
-  int nb_elt;                            /**< nb of elements */
-  osip_fifo_state state;                 /**< state of the fifo */
+  osip_list_t queue;     /**< list of nodes containing elements */
+  int nb_elt;            /**< nb of elements */
+  osip_fifo_state state; /**< state of the fifo */
 };
 
 /**
@@ -115,9 +114,7 @@ void *osip_fifo_get(osip_fifo_t *ff);
  */
 void *osip_fifo_tryget(osip_fifo_t *ff);
 
-
 /** @} */
-
 
 #ifdef __cplusplus
 }

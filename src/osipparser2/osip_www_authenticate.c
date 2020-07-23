@@ -69,7 +69,7 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
   *next = str;
 
   if (*result != NULL)
-    return OSIP_SUCCESS;        /* already parsed */
+    return OSIP_SUCCESS; /* already parsed */
 
   *next = NULL;
 
@@ -78,7 +78,7 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
       str++;
 
     else
-      return OSIP_SYNTAXERROR;  /* bad header format */
+      return OSIP_SYNTAXERROR; /* bad header format */
 
   if (osip_strncasecmp(name, str, strlen(name)) == 0) {
     const char *quote1;
@@ -89,7 +89,7 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
     if (hack == NULL)
       return OSIP_SYNTAXERROR;
 
-    while (' ' == *(hack - 1))  /* get rid of extra spaces */
+    while (' ' == *(hack - 1)) /* get rid of extra spaces */
       hack--;
 
     if ((size_t)(hack - str) != strlen(name)) {
@@ -100,12 +100,12 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
     quote1 = __osip_quote_find(str);
 
     if (quote1 == NULL)
-      return OSIP_SYNTAXERROR;  /* bad header format... */
+      return OSIP_SYNTAXERROR; /* bad header format... */
 
     quote2 = __osip_quote_find(quote1 + 1);
 
     if (quote2 == NULL)
-      return OSIP_SYNTAXERROR;  /* bad header format... */
+      return OSIP_SYNTAXERROR; /* bad header format... */
 
     if (quote2 - quote1 == 1) {
       /* this is a special case! The quote contains nothing! */
@@ -113,22 +113,22 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
       /* in this case, we just forget the parameter... this  */
       /* this should prevent from user manipulating empty    */
       /* strings */
-      tmp = quote2 + 1;         /* next element start here */
+      tmp = quote2 + 1; /* next element start here */
       tmp += strspn(tmp, " \t");
       tmp += strspn(tmp, "\n\r");
       *next = NULL;
 
-      if (*tmp == '\0')         /* end of header detected */
+      if (*tmp == '\0') /* end of header detected */
         return OSIP_SUCCESS;
 
       if (*tmp != '\t' && *tmp != ' ')
         /* LWS here ? */
         *next = tmp;
 
-      else {                    /* it is: skip it... */
+      else { /* it is: skip it... */
         tmp += strspn(tmp, " \t");
 
-        if (*tmp == '\0')       /* end of header detected */
+        if (*tmp == '\0') /* end of header detected */
           return OSIP_SUCCESS;
 
         *next = tmp;
@@ -143,29 +143,29 @@ int __osip_quoted_string_set(const char *name, const char *str, char **result, c
       return OSIP_NOMEM;
 
     osip_strncpy(*result, quote1, quote2 - quote1 + 1);
-    tmp = quote2 + 1;           /* next element start here */
+    tmp = quote2 + 1; /* next element start here */
     tmp += strspn(tmp, " \t");
     tmp += strspn(tmp, "\n\r");
     *next = NULL;
 
-    if (*tmp == '\0')           /* end of header detected */
+    if (*tmp == '\0') /* end of header detected */
       return OSIP_SUCCESS;
 
     if (*tmp != '\t' && *tmp != ' ')
       /* LWS here ? */
       *next = tmp;
 
-    else {                      /* it is: skip it... */
+    else { /* it is: skip it... */
       tmp += strspn(tmp, " \t");
 
-      if (*tmp == '\0')         /* end of header detected */
+      if (*tmp == '\0') /* end of header detected */
         return OSIP_SUCCESS;
 
       *next = tmp;
     }
 
   } else
-    *next = str;                /* wrong header asked! */
+    *next = str; /* wrong header asked! */
 
   return OSIP_SUCCESS;
 }
@@ -177,24 +177,24 @@ int __osip_token_set(const char *name, const char *str, char **result, const cha
   *next = str;
 
   if (*result != NULL)
-    return OSIP_SUCCESS;        /* already parsed */
+    return OSIP_SUCCESS; /* already parsed */
 
   *next = NULL;
 
   beg = strchr(str, '=');
 
   if (beg == NULL)
-    return OSIP_SYNTAXERROR;    /* bad header format... */
+    return OSIP_SYNTAXERROR; /* bad header format... */
 
   if (strlen(str) < 6)
-    return OSIP_SUCCESS;        /* end of header... */
+    return OSIP_SUCCESS; /* end of header... */
 
   while ((' ' == *str) || ('\t' == *str) || (',' == *str))
     if (*str)
       str++;
 
     else
-      return OSIP_SYNTAXERROR;  /* bad header format */
+      return OSIP_SYNTAXERROR; /* bad header format */
 
   if (osip_strncasecmp(name, str, strlen(name)) == 0) {
     const char *end;
@@ -202,7 +202,7 @@ int __osip_token_set(const char *name, const char *str, char **result, const cha
     end = strchr(str, ',');
 
     if (end == NULL)
-      end = str + strlen(str);  /* This is the end of the header */
+      end = str + strlen(str); /* This is the end of the header */
 
     if (end - beg < 2)
       return OSIP_SYNTAXERROR;
@@ -220,24 +220,24 @@ int __osip_token_set(const char *name, const char *str, char **result, const cha
     tmp += strspn(tmp, "\n\r");
     *next = NULL;
 
-    if (*tmp == '\0')           /* end of header detected */
+    if (*tmp == '\0') /* end of header detected */
       return OSIP_SUCCESS;
 
     if (*tmp != '\t' && *tmp != ' ')
       /* LWS here ? */
       *next = tmp;
 
-    else {                      /* it is: skip it... */
+    else { /* it is: skip it... */
       tmp += strspn(tmp, " \t");
 
-      if (*tmp == '\0')         /* end of header detected */
+      if (*tmp == '\0') /* end of header detected */
         return OSIP_SUCCESS;
 
       *next = tmp;
     }
 
   } else
-    *next = str;                /* next element start here */
+    *next = str; /* next element start here */
 
   return OSIP_SUCCESS;
 }
@@ -255,7 +255,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
   const char *next = NULL;
   int i;
 
-  space = strchr(hvalue, ' ');  /* SEARCH FOR SPACE */
+  space = strchr(hvalue, ' '); /* SEARCH FOR SPACE */
 
   if (space == NULL)
     return OSIP_SYNTAXERROR;
@@ -279,7 +279,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -291,7 +291,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -303,7 +303,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -315,7 +315,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -327,7 +327,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -339,7 +339,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -351,7 +351,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -363,7 +363,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -375,7 +375,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -387,7 +387,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
       return i;
 
     if (next == NULL)
-      return OSIP_SUCCESS;      /* end of header detected! */
+      return OSIP_SUCCESS; /* end of header detected! */
     else if (next != space) {
       space = next;
       parse_ok++;
@@ -404,7 +404,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
 
       tmp = strchr(space + 1, ',');
 
-      if (tmp == NULL)          /* it was the last header */
+      if (tmp == NULL) /* it was the last header */
         return OSIP_SUCCESS;
 
       quote1 = __osip_quote_find(space);
@@ -413,15 +413,15 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
         quote2 = __osip_quote_find(quote1 + 1);
 
         if (quote2 == NULL)
-          return OSIP_SYNTAXERROR;      /* bad header format... */
+          return OSIP_SYNTAXERROR; /* bad header format... */
 
-        if (tmp < quote2)       /* the comma is inside the quotes! */
+        if (tmp < quote2) /* the comma is inside the quotes! */
           space = strchr(quote2, ',');
 
         else
           space = tmp;
 
-        if (space == NULL)      /* it was the last header */
+        if (space == NULL) /* it was the last header */
           return OSIP_SUCCESS;
 
       } else
@@ -431,7 +431,7 @@ int osip_www_authenticate_parse(osip_www_authenticate_t *wwwa, const char *hvalu
     }
   }
 
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 #ifndef MINISIZE
@@ -444,7 +444,7 @@ int osip_message_get_www_authenticate(const osip_message_t *sip, int pos, osip_w
   *dest = NULL;
 
   if (osip_list_size(&sip->www_authenticates) <= pos)
-    return OSIP_UNDEFINED_ERROR;        /* does not exist */
+    return OSIP_UNDEFINED_ERROR; /* does not exist */
 
   www_authenticate = (osip_www_authenticate_t *) osip_list_get(&sip->www_authenticates, pos);
 
@@ -540,8 +540,6 @@ char *osip_www_authenticate_get_gssapi_data(osip_www_authenticate_t *www_authent
 void osip_www_authenticate_set_gssapi_data(osip_www_authenticate_t *www_authenticate, char *gssapi_data) {
   www_authenticate->gssapi_data = (char *) gssapi_data;
 }
-
-
 
 /* returns the www_authenticate header as a string.          */
 /* INPUT : osip_www_authenticate_t *www_authenticate | www_authenticate header.  */
@@ -694,7 +692,7 @@ int osip_www_authenticate_clone(const osip_www_authenticate_t *wwwa, osip_www_au
 
   i = osip_www_authenticate_init(&wa);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   wa->auth_type = osip_strdup(wwwa->auth_type);

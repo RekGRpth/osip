@@ -72,7 +72,6 @@ int osip_call_id_init(osip_call_id_t **callid) {
   return OSIP_SUCCESS;
 }
 
-
 /* deallocates a osip_call_id_t structure. */
 /* INPUT : osip_call_id_t *| callid.       */
 void osip_call_id_free(osip_call_id_t *callid) {
@@ -99,7 +98,7 @@ int osip_call_id_parse(osip_call_id_t *callid, const char *hvalue) {
   callid->number = NULL;
   callid->host = NULL;
 
-  host = strchr(hvalue, '@');   /* SEARCH FOR '@' */
+  host = strchr(hvalue, '@'); /* SEARCH FOR '@' */
   end = hvalue + strlen(hvalue);
 
   if (host == NULL)
@@ -127,7 +126,7 @@ int osip_call_id_parse(osip_call_id_t *callid, const char *hvalue) {
 
   osip_clrncpy(callid->number, hvalue, host - hvalue);
 
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 /* returns the call_id as a string.          */
@@ -195,7 +194,7 @@ int osip_call_id_clone(const osip_call_id_t *callid, osip_call_id_t **dest) {
 
   i = osip_call_id_init(&ci);
 
-  if (i != 0)                   /* allocation failed */
+  if (i != 0) /* allocation failed */
     return i;
 
   ci->number = osip_strdup(callid->number);
@@ -208,7 +207,6 @@ int osip_call_id_clone(const osip_call_id_t *callid, osip_call_id_t **dest) {
 }
 
 int osip_call_id_match(osip_call_id_t *callid1, osip_call_id_t *callid2) {
-
   if (callid1 == NULL || callid2 == NULL)
     return OSIP_BADPARAMETER;
 

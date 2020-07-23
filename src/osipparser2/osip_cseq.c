@@ -78,7 +78,7 @@ int osip_cseq_parse(osip_cseq_t *cseq, const char *hvalue) {
   cseq->number = NULL;
   cseq->method = NULL;
 
-  method = strchr(hvalue, ' ');         /* SEARCH FOR SPACE */
+  method = strchr(hvalue, ' '); /* SEARCH FOR SPACE */
 
   if (method == NULL)
     return OSIP_SYNTAXERROR;
@@ -105,7 +105,7 @@ int osip_cseq_parse(osip_cseq_t *cseq, const char *hvalue) {
 
   osip_clrncpy(cseq->method, method + 1, end - method);
 
-  return OSIP_SUCCESS;          /* ok */
+  return OSIP_SUCCESS; /* ok */
 }
 
 #ifndef MINISIZE
@@ -202,8 +202,7 @@ int osip_cseq_match(osip_cseq_t *cseq1, osip_cseq_t *cseq2) {
     return OSIP_BADPARAMETER;
 
   if (0 == strcmp(cseq1->number, cseq2->number)) {
-    if (0 == strcmp(cseq2->method, "INVITE")
-        || 0 == strcmp(cseq2->method, "ACK")) {
+    if (0 == strcmp(cseq2->method, "INVITE") || 0 == strcmp(cseq2->method, "ACK")) {
       if (0 == strcmp(cseq1->method, "INVITE") || 0 == strcmp(cseq1->method, "ACK"))
         return OSIP_SUCCESS;
 

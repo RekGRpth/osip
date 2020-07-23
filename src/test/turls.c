@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifdef ENABLE_MPATROL
 #include <mpatrol.h>
 #endif
@@ -28,10 +27,8 @@
 
 int osip_uri_test_accessor_api(osip_uri_t *url);
 
-
 int main(int argc, char **argv) {
   FILE *urls_file;
-
 
   osip_uri_t *url;
   char *a_url;
@@ -46,7 +43,7 @@ int main(int argc, char **argv) {
   }
 
   a_url = (char *) osip_malloc(200);
-  res = fgets(a_url, 200, urls_file);   /* lines are under 200 */
+  res = fgets(a_url, 200, urls_file); /* lines are under 200 */
 
   while (res != NULL) {
     int errcode;
@@ -75,7 +72,7 @@ int main(int argc, char **argv) {
       printf("=================================================\n");
     }
 
-    res = fgets(a_url, 200, urls_file);         /* lines are under 200 */
+    res = fgets(a_url, 200, urls_file); /* lines are under 200 */
   }
 
   osip_free(a_url);

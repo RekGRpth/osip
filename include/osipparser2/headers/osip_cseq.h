@@ -17,7 +17,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef _OSIP_CSEQ_H_
 #define _OSIP_CSEQ_H_
 
@@ -43,13 +42,12 @@ typedef struct osip_cseq osip_cseq_t;
  * @struct osip_cseq
  */
 struct osip_cseq {
-  char *method;    /**< CSeq method */
-  char *number;    /**< CSeq number */
+  char *method; /**< CSeq method */
+  char *number; /**< CSeq number */
 };
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
