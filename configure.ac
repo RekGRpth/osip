@@ -1,11 +1,11 @@
 AC_PREREQ([2.69])
-AC_INIT([libosip2],[5.1.1])
+AC_INIT([libosip2],[5.1.2])
 AC_CONFIG_SRCDIR([include/osip2/osip.h])
 
 AC_MSG_NOTICE([libosip2                The GNU Open SIP library.])
 AC_MSG_NOTICE([Copyright (C) 2001-2020 Aymeric MOIZARD - <amoizard@antisip.com>])
 
-AC_SUBST(LIBOSIP_SO_VERSION, 12:0:1)
+AC_SUBST(LIBOSIP_SO_VERSION, 12:1:2)
 AC_SUBST(OSIP_VERSION, $VERSION)
 
 AC_MSG_RESULT([Configuring ${PACKAGE} ${VERSION}])

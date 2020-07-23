@@ -1,3 +1,9 @@
+libosip2 (5.1.2) - 2020-07-24
+	* new style format using clang-format
+	* timers for event will trigger when time is equal (not 1ms after). change required for libeXosip2-5.1.2.
+	* add detection of localtime // simplify logs and use readable time in it.
+	* use proper const for osip_trace API.
+
 libosip2 (5.1.1) - 2020-01-16
 	* fix vulnerability report: Authentication-Info or Proxy-Authentication-Info are affected by a buffer overflow when building sip messages.
 	* fix vulnerability report: when boundary only contains one quote, strncpy will use the unsigned value of -1 as size parameter.
