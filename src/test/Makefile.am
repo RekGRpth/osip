@@ -51,6 +51,15 @@ torture_test_SOURCES =  torture.c
 torture_test_LDADD = $(top_builddir)/src/osipparser2/libosipparser2.la $(PARSER_LIB) $(EXTRA_LIB)
 torture_test_LDFLAGS = -no-install
 
+valgrind:
+	@echo " ****************************************"
+	@echo " ****** starting valgrind tests! ********"
+	@echo " ****************************************"
+	@type valgrind --version >/dev/null 2>&1 || ./$(top_srcdir)/src/test/tst_valgrind ./$(top_srcdir)/src/test/res -c
+
+	@echo ""
+	@echo "In case you have a doubt, send the generated"
+	@echo "log file with your comment to <amoizard@antisip.com>."
 
 check:
 	@echo " *******************************"
@@ -62,6 +71,11 @@ check:
 	@echo "In case you have a doubt, send the generated"
 	@echo "log file with your comment to <amoizard@antisip.com>."
 else
+valgrind:
+	@echo " ************************************"
+	@echo " Please use ./configure --enable-test"
+	@echo " ************************************"
+
 check:
 	@echo " ************************************"
 	@echo " Please use ./configure --enable-test"

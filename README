@@ -51,6 +51,10 @@ the parser, type: (Note that some tests MUST fail!)
 
   $> make check
 
+If you wish to test with valgrind tool (same tests), you can use:
+
+  $> make valgrind
+
 Watch out the ./src/test/CHECK file for more informations.
 
        Contact Informations:

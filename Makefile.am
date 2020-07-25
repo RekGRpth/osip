@@ -31,3 +31,8 @@ indent:
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libosip2.pc
+
+valgrind:
+	cd src/test && $(MAKE) valgrind
+
+.PHONY: valgrind
