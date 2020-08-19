@@ -590,7 +590,7 @@ static int _osip_message_to_str(osip_message_t *sip, char **dest, size_t *messag
     return OSIP_SUCCESS; /* it's all done */
   }
 
-  if (sip->mime_version != NULL && sip->content_type && sip->content_type->type && !osip_strcasecmp(sip->content_type->type, "multipart")) {
+  if (sip->content_type && sip->content_type->type && !osip_strcasecmp(sip->content_type->type, "multipart")) {
     osip_generic_param_t *ct_param = NULL;
 
     /* find the boundary */
