@@ -1,4 +1,5 @@
-libosip2 (5.1.2) - 2020-07-29
+libosip2 (5.1.2) - 2020-08-22
+	* remove requirement for mime-version header when multipart body is used
 	* add "make valgrind" to run valgrind test. "make check" only runs without valgrind.
 	* new style format using clang-format
 	* timers for event will trigger when time is equal (not 1ms after). change required for libeXosip2-5.1.2.
