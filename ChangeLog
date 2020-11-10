@@ -1,3 +1,7 @@
+libosip2 (5.2.0) - 2020-11-10
+	* use localtime_r when __USE_POSIX is available
+	* sync versions with libexosip
+
 libosip2 (5.1.2) - 2020-08-22
 	* remove requirement for mime-version header when multipart body is used
 	* add "make valgrind" to run valgrind test. "make check" only runs without valgrind.
