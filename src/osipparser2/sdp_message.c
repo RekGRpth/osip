@@ -1292,7 +1292,10 @@ static int sdp_message_parse_k(sdp_message_t *sdp, char *buf, char **next) {
   else {
     sdp_media_t *last_sdp_media = (sdp_media_t *) osip_list_get(&sdp->m_medias, i - 1);
 
-    if (last_sdp_media != NULL) { /* fixed Jan 10,2020: avoid a possible memory leak with k appearing several times after media line */
+    /* fixed Jan 10,2020: avoid a possible memory leak with k appearing several times after media line */
+    /* fixed Nov 04,2020: wrong test was applied. Any media k= line was being rejected */
+    if (last_sdp_media->k_key != NULL) {
+      /* I believe such condition cannot happen any more: the method can't be called twice on a media */
       sdp_key_free(k_header);
       return -1;
     }
